@@ -18,7 +18,7 @@ public class HomeController : ControllerBase
         var teamMembers = new List<GroupMember>
         {
             new() { Name = "Navn Navnesen", Role = "Prosjektleder", Tags = new() { "Eksempel", "Eksempel", "Eksempel" } },
-            new() { Name = "Navn Navnesen", Role = "Utvikler", Tags = new() { "Eksempel", "Eksempel" } },
+            new() { Name = "Emil", Role = "Utvikler", Tags = new() { "Programmering", "Database" } },
             new() { Name = "Navn Navnesen", Role = "Designer", Tags = new() { "Eksempel", "Eksempel", "Eksempel" } },
             new() { Name = "Navn Navnesen", Role = "Utvikler", Tags = new() { "Eksempel", "Eksempel" } },
             new() { Name = "Navn Navnesen", Role = "Utvikler", Tags = new() { "Eksempel", "Eksempel" } },
