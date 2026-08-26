@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hjem - IS-310 Gruppeprosjekt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <a class="brand" href="/">IS-310</a>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Åpne meny" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Hjem</a></li>
+                <li><a href="/#om-oss">Om oss</a></li>
+                <li><a href="/Home/Prosjektbeskrivelse">Prosjektbeskrivelse</a></li>
+                <li><a href="/Home/GruppeVideo">Gruppevideo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="landing">
+            <div class="hero-bg" data-us-project="h1QfJCx9UZWIygGIzksa"></div>
+            <div class="hero-scrim"></div>
+            <div class="hero-inner">
+                <p class="eyebrow reveal">IS-310 &middot; Gruppeprosjekt</p>
+                <h1 class="reveal">Den beste IT gruppen på UiA, det finnes ikke bedre.</h1>
+                <p class="hero-lede reveal">En kort presentasjon av prosjektet vårt i IS-310, bygget med en enkel MVC-arkitektur i C# og JavaScript.</p>
+                <div class="hero-actions reveal">
+                    <a class="btn btn-primary" href="/Home/Prosjektbeskrivelse">Les prosjektbeskrivelsen</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="om-oss" id="om-oss">
+            <p class="eyebrow reveal">Teamet</p>
+            <h2 class="reveal">Om oss</h2>
+            <p class="om-oss-lede reveal">Vi er en gruppe studenter i IS-310 som samarbeider om dette prosjektet.</p>
+
+            <div class="team-list">
+                <!--TEAM_MEMBERS-->
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; <span id="year"></span> IS-310 Gruppeprosjekt</p>
+        <p>Laget med ASP.NET Core MVC</p>
+    </footer>
+
+    <script src="/js/site.js"></script>
+    <script type="text/javascript">
+        !function () {
+            var u = window.UnicornStudio;
+            if (u && u.init) {
+                if (document.readyState === "loading") {
+                    document.addEventListener("DOMContentLoaded", function () { u.init(); });
+                } else {
+                    u.init();
+                }
+            } else {
+                window.UnicornStudio = { isInitialized: false };
+                var i = document.createElement("script");
+                i.src = "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.2.12/dist/unicornStudio.umd.js";
+                i.onload = function () {
+                    if (document.readyState === "loading") {
+                        document.addEventListener("DOMContentLoaded", function () { UnicornStudio.init(); });
+                    } else {
+                        UnicornStudio.init();
+                    }
+                };
+                (document.head || document.body).appendChild(i);
+            }
+        }();
+    </script>
+</body>
+</html>
