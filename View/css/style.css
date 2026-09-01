@@ -438,7 +438,7 @@ body[data-theme="dark"] .quote-box {
 }
 
 .members-grid {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
 }
 
 .member-card {
@@ -497,6 +497,13 @@ body[data-theme="dark"] .member-card.card-violet {
   color: var(--muted);
   font-weight: 600;
   margin-bottom: 1rem;
+}
+
+.student-photo img {
+  width: 100%;
+  height: 240px;
+  object-fit: contain;
+  border-radius: 18px;
 }
 
 .student-text {
