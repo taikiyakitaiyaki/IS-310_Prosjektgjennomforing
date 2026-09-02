@@ -1,241 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="no">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IS-310 | Gruppeprosjekt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060C" />
+    <title>Gruppe 11 — IS-310 Prosjektgjennomføring</title>
     <meta
       name="description"
-      content="Nettside for IS-310 prosjektgjennomføring gruppe 11."
+      content="Gruppe 11 i IS-310 Prosjektgjennomføring. Fem studenter, én rute, ett mål: å levere noe vi faktisk står inne for."
     />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Gruppe 11 — Vi går hele veien" />
+    <meta property="og:description" content="Fem studenter, én rute, ett mål. Møt Gruppe 11 i IS-310 Prosjektgjennomføring." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Gruppe 11 — Vi går hele veien" />
+    <meta name="twitter:description" content="Fem studenter, én rute, ett mål. Møt Gruppe 11 i IS-310 Prosjektgjennomføring." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@75..125,300..900&family=Inter:wght@300..600&family=JetBrains+Mono:wght@300..500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="View/css/style.css" />
   </head>
   <body>
-    <header class="site-header">
-      <div class="container nav-wrap">
-        <div class="brand">
-          <span class="brand-mark">IS-310</span>
-          <span class="brand-text">Gruppeprosjekt</span>
-        </div>
-        <nav class="main-nav" aria-label="Hovednavigasjon">
-          <a href="#om-oss">Om oss</a>
-          <a href="#medlemmer">Medlemmer</a>
-          <a href="#video">Video</a>
-          <a href="#prosjekt">Prosjekt</a>
-          <a href="#kontakt">Kontakt</a>
-        </nav>
-        <button class="theme-toggle" type="button" aria-label="Bytt tema">🌙</button>
+    <div id="root"></div>
+    <noscript>
+      <div style="padding:4rem 2rem;font-family:system-ui;color:#EEF4FB;background:#04060C">
+        <h1>Gruppe 11 — IS-310</h1>
+        <p>Denne siden bruker JavaScript for 3D-grafikk og animasjon. Slå på JavaScript for å se den.</p>
       </div>
-    </header>
-
-    <main>
-      <section class="hero">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow">IS-310 • Projektgjennomføring • Gruppe 11</p>
-            <h1>Vi er en inkluderende gruppe som vil skape noe meningsfullt.</h1>
-            <h2>(Ja Yones, vi kan endre siden til hva enn du måtte ønske 😉)</h2>
-            <p class="lead">
-              Vi er en prosjektgruppe på 5 studenter som vil bruke semesteret til å
-              utvikle et spennende, relevant og praktisk prosjekt. Målet er å jobbe godt
-              sammen, lære av hverandre og skape en løsning som viser både kreativitet,
-              samarbeid og teknisk innsikt.
-            </p>
-            <div class="hero-actions">
-              <a class="button primary" href="#medlemmer">Se medlemmene</a>
-              <a class="button secondary" href="gruppe.html">Les om gruppen</a>
-            </div>
-            <ul class="hero-points" aria-label="Gruppefakta">
-              <li>5 studenter</li>
-              <li>Inkluderende og støttende</li>
-              <li>Ambisiøs og praktisk</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section id="om-oss" class="section">
-        <div class="container">
-          <div class="section-heading">
-            <p class="eyebrow">Om oss</p>
-            <h2>Et samarbeid bygget på respekt, nysgjerrighet og mål.</h2>
-          </div>
-
-          <div class="feature-grid">
-            <article class="feature-card">
-              <h3>Inkluderende</h3>
-              <p>
-                Vi vil skape et trygt og positivt arbeidsmiljø der nye studenter får være
-                med fra starten, få ansvar og få muligheten til å bidra med egne idéer.
-              </p>
-            </article>
-            <article class="feature-card">
-              <h3>Kreativt</h3>
-              <p>
-                Gruppen har et felles fokus på å utvikle noe som både er nyttig for
-                brukeren og interessant å bygge gjennom prosjektet.
-              </p>
-            </article>
-            <article class="feature-card">
-               <h3>Ambisiøs</h3>
-              <p>
-                Vi ønsker å ta opp utfordringer, lære gjennom prosessen og levere et
-                prosjekt som viser kvalitet og engasjement.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="medlemmer" class="section muted">
-        <div class="container">
-          <div class="section-heading">
-            <p class="eyebrow">Medlemmer</p>
-            <h2>Gruppe 11</h2>
-          </div>
-
-          <div class="student-grid members-grid">
-            <article class="student-card member-card card-lilac" tabindex="0" data-name="Student 1" data-role="Faglig fokus" data-bio="Kort biografi om deg, interesser og hva du vil bidra med i prosjektet." data-color="#9b9eff">
-              <div class="student-photo" aria-label="Bildeplakat for student 1">
-                <span>Legg inn bilde</span>
-              </div>
-              <div class="student-text">
-                <h3>Student 1</h3>
-                <p class="role">Faglig fokus</p>
-                <p>Kort biografi om deg, interesser og hva du vil bidra med i prosjektet.</p>
-              </div>
-            </article>
-
-            <article class="student-card member-card card-peach" tabindex="0" data-name="Student 2" data-role="Faglig fokus" data-bio="Kort biografi om deg, interesser og hva du vil bidra med i prosjektet." data-color="#ffb4a2">
-              <div class="student-photo" aria-label="Bildeplakat for student 2">
-                <span>Legg inn bilde</span>
-              </div>
-              <div class="student-text">
-                <h3>Student 2</h3>
-                <p class="role">Faglig fokus</p>
-                <p>Kort biografi om deg, interesser og hva du vil bidra med i prosjektet.</p>
-              </div>
-            </article>
-
-            <article class="student-card member-card card-sky" tabindex="0" data-name="Student 3" data-role="Faglig fokus" data-bio="Kort biografi om deg, interesser og hva du vil bidra med i prosjektet." data-color="#7dd3fc">
-              <div class="student-photo" aria-label="Bildeplakat for student 3">
-                <span>Legg inn bilde</span>
-              </div>
-              <div class="student-text">
-                <h3>Student 3</h3>
-                <p class="role">Faglig fokus</p>
-                <p>Kort biografi om deg, interesser og hva du vil bidra med i prosjektet.</p>
-              </div>
-            </article>
-
-            <article class="student-card member-card card-mint" tabindex="0" data-name="Student 4" data-role="Faglig fokus" data-bio="Kort biografi om deg, interesser og hva du vil bidra med i prosjektet." data-color="#7de2c7">
-              <div class="student-photo" aria-label="Bildeplakat for student 4">
-                <span>Legg inn bilde</span>
-              </div>
-              <div class="student-text">
-                <h3>Student 4</h3>
-                <p class="role">Faglig fokus</p>
-                <p>Kort biografi om deg, interesser og hva du vil bidra med i prosjektet.</p>
-              </div>
-            </article>
-
-            <article class="student-card member-card card-violet" tabindex="0" data-name="Student 5" data-role="Faglig fokus" data-bio="Kort biografi om deg, interesser og hva du vil bidra med i prosjektet." data-color="#c4a7ff">
-              <div class="student-photo" aria-label="Bildeplakat for student 5">
-                <span>Legg inn bilde</span>
-              </div>
-              <div class="student-text">
-                <h3>Student 5</h3>
-                <p class="role">Faglig fokus</p>
-                <p>Kort biografi om deg, interesser og hva du vil bidra med i prosjektet.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="video" class="section">
-        <div class="container">
-          <div class="section-heading">
-            <p class="eyebrow">Video</p>
-            <h2>Videopresentasjon</h2>
-          </div>
-
-          <div class="video-feature">
-            <div class="video-card">
-              <div class="video-placeholder">
-                <span class="play-button">▶</span>
-                <p>Legg inn kort videopresentasjon</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="prosjekt" class="section">
-        <div class="container two-column">
-          <div>
-            <p class="eyebrow">Tanker om gruppen</p>
-            <h2>Hva slags prosjekt ønsker vi å lage?</h2>
-            <p>
-              Vi ser for oss et prosjekt som er både nyttig for brukeren og realistisk å
-              gjennomføre innenfor rammen av emnet. Vi vil fokusere på løsninger som har
-              tydelig verdi, har en god idéhistorie og kan presenteres på en profesjonell og
-              moderne måte.
-            </p>
-            <p>
-              Derfor vil vi prøve å kombinere praktisk utvikling med god design, god brukerforståelse
-              og evne til å samarbeide effektivt som en gruppe. Ambisjonsnivået er høyt, men
-              vi vil også holde fokus på hva som er mulig, realistisk og lærerikt.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="kontakt" class="section cta">
-        <div class="container cta-box">
-          <div>
-            <p class="eyebrow">Kontakt</p>
-            <h2>Vil du vite mer om oss?</h2>
-          </div>
-          <a class="button primary" href="mailto:gruppe@is310.no">gruppe11@is310.no</a>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-wrap">
-        <p>© 2026 IS-310 Gruppe 11</p>
-      </div>
-    </footer>
-
-    <div class="student-modal" id="studentModal" aria-hidden="true">
-      <div class="student-modal-backdrop" data-close="true"></div>
-      <div class="student-modal-panel" role="dialog" aria-modal="true" aria-labelledby="studentModalTitle">
-        <button class="modal-close" type="button" aria-label="Lukk">×</button>
-        <div class="modal-header" id="studentModalHeader">
-          <div class="modal-photo">
-            <span>Legg inn bilde</span>
-          </div>
-          <div>
-            <p class="modal-label">Medlem</p>
-            <h3 id="studentModalTitle">Student</h3>
-            <p class="modal-role" id="studentModalRole">Faglig fokus</p>
-          </div>
-        </div>
-        <div class="modal-body">
-          <p id="studentModalBio"></p>
-          <p id="studentModalDetail"></p>
-        </div>
-      </div>
-    </div>
-
-    <script src="View/js/theme.js"></script>
-    <script src="View/js/student-modal.js"></script>
+    </noscript>
+    <script type="module" src="/main.jsx"></script>
+    <script type="text/javascript">
+      !function () {
+        var u = window.UnicornStudio;
+        if (u && u.init) {
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", function () { u.init(); });
+          } else {
+            u.init();
+          }
+        } else {
+          window.UnicornStudio = { isInitialized: false };
+          var i = document.createElement("script");
+          i.src = "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.2.12/dist/unicornStudio.umd.js";
+          i.onload = function () {
+            if (document.readyState === "loading") {
+              document.addEventListener("DOMContentLoaded", function () { UnicornStudio.init(); });
+            } else {
+              UnicornStudio.init();
+            }
+          };
+          (document.head || document.body).appendChild(i);
+        }
+      }();
+    </script>
   </body>
 </html>

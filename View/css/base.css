@@ -1,0 +1,236 @@
+/* ===========================================================================
+   BASE — design tokens, reset and typography.
+   The palette is sampled from the Unicorn Studio landing scene (alpine sky,
+   glacier shadow, snow) and extended with a single warm signal colour taken
+   from mountaineering safety gear.
+   =========================================================================== */
+
+:root {
+  /* --- Surfaces: night side of the mountain ---------------------------- */
+  --void: #04060c;
+  --deep: #070c16;
+  --slate: #0b1220;
+  --ridge: #111c2e;
+  --crevasse: #16233a;
+
+  /* --- Ink: snow and glacier ------------------------------------------- */
+  --snow: #eef4fb;
+  --glacier: #b9d3ee;
+  --frost: #7d9bbe;
+  --shadow-ink: #4a6485;
+
+  /* --- Accents: two, no more ------------------------------------------- */
+  --signal: #ff5a1e; /* rope / safety orange — actions, emphasis */
+  --ice: #6fd6e8; /* instrument cyan — data, HUD, meta */
+
+  /* --- Lines & veils ---------------------------------------------------- */
+  --hair: rgba(143, 182, 222, 0.16);
+  --hair-strong: rgba(143, 182, 222, 0.32);
+  --veil: rgba(4, 6, 12, 0.72);
+
+  /* --- Type ------------------------------------------------------------- */
+  --font-display: 'Anybody', 'Arial Narrow', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Fluid scale, 360px → 1600px viewport */
+  --t-hero: clamp(3.4rem, 12.5vw, 12.5rem);
+  --t-display: clamp(2.6rem, 7vw, 7rem);
+  --t-title: clamp(1.9rem, 3.6vw, 3.4rem);
+  --t-lead: clamp(1.05rem, 1.45vw, 1.4rem);
+  --t-body: clamp(0.95rem, 1.05vw, 1.05rem);
+  --t-meta: clamp(0.66rem, 0.78vw, 0.76rem);
+
+  /* --- Rhythm ----------------------------------------------------------- */
+  --gutter: clamp(1.25rem, 4.5vw, 4.5rem);
+  --stack-xs: 0.5rem;
+  --stack-s: 1rem;
+  --stack-m: 2rem;
+  --stack-l: clamp(3rem, 6vw, 6rem);
+  --stack-xl: clamp(6rem, 12vw, 12rem);
+
+  /* --- Motion ----------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.76, 0, 0.24, 1);
+
+  /* --- Depth ------------------------------------------------------------ */
+  --z-backdrop: 0;
+  --z-content: 1;
+  --z-hud: 40;
+  --z-nav: 50;
+  --z-panel: 70;
+  --z-cursor: 90;
+  --z-preloader: 100;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Lenis drives scrolling; native smooth scroll must stay out of the way. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--snow);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+/* The site hides the OS cursor on precise pointers and draws its own. */
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button {
+  cursor: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  font-stretch: 100%;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+img,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--void);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ice);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* --- Shared primitives ------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: 1560px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--frost);
+}
+
+.meta--ice {
+  color: var(--ice);
+}
+.meta--signal {
+  color: var(--signal);
+}
+
+.lead {
+  font-size: var(--t-lead);
+  line-height: 1.55;
+  color: var(--glacier);
+  max-width: 46ch;
+}
+
+.rule {
+  height: 1px;
+  width: 100%;
+  background: var(--hair);
+  border: 0;
+  margin: 0;
+}
+
+/* Mask-reveal primitive: a line of type that slides out from a clip. */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+}
+.reveal-line > span {
+  display: block;
+  will-change: transform;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- Accessibility ------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  body.has-custom-cursor,
+  body.has-custom-cursor a,
+  body.has-custom-cursor button {
+    cursor: auto;
+  }
+}
