@@ -1,0 +1,525 @@
+/* ===========================================================================
+   The sections, in page order.
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   The map. Drawn by ContourMap.jsx; every line's progress is one custom
+   property on the svg (--draw), read against the line's own start and span.
+   --------------------------------------------------------------------------- */
+.contours {
+  --draw: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.contours__line,
+.contours__route {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - clamp(0, (var(--draw) - var(--from)) / var(--span), 1));
+}
+
+.contours__line {
+  stroke: var(--map-line);
+  stroke-width: 1.4;
+}
+
+.contours__line.is-major {
+  stroke: var(--map-major);
+  stroke-width: 2.2;
+}
+
+.contours__route {
+  stroke: var(--accent);
+  stroke-width: 4.5;
+}
+
+.contours__summit {
+  fill: var(--accent);
+  opacity: clamp(0, (var(--draw) - 0.9) / 0.1, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   Vi sketcher en plan. The photograph in one column, the heading over the map
+   in the other.
+   --------------------------------------------------------------------------- */
+.plan {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(20rem, 38%) minmax(0, 1fr);
+}
+
+.plan__media {
+  position: relative;
+  min-height: 100dvh;
+}
+
+.plan__window {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--surface-strong);
+}
+
+/* Taller than its window, so the drift the scroll gives it never shows an
+   edge. */
+.plan__drift {
+  position: absolute;
+  inset: -8% 0;
+  will-change: transform;
+}
+
+.plan__drift img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.plan__media.is-ready img {
+  opacity: 1;
+}
+
+.plan__skeleton {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.plan__skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, color-mix(in srgb, var(--text) 10%, transparent) 50%, transparent 80%);
+  transform: translateX(-100%);
+  animation: skeleton-scan 1.4s ease-in-out infinite;
+}
+
+.plan__error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+/* The heading sits at the top of this column, centred over the map behind
+   it, in line with every other section's heading. */
+.plan__content {
+  position: relative;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  padding: var(--section-top) clamp(2rem, 7vw, 7rem) var(--section-y);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.plan__map {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.plan__title {
+  position: relative;
+  isolation: isolate;
+  max-width: 12ch;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 6.8vw, 7.25rem);
+  font-stretch: 104%;
+  font-weight: 610;
+  letter-spacing: -0.06em;
+  line-height: 0.88;
+  text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
+  /* A filter rather than a text shadow: the words sit inside clipped masks
+     while they arrive, and a shadow drawn in there would be cut to boxes. */
+  filter: drop-shadow(0 0 22px rgba(191, 224, 255, 0.28));
+}
+
+/* A soft clearing in the map behind the words, so the type sits on the sheet
+   rather than in the lines. */
+.plan__title::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -18% -12%;
+  background: radial-gradient(ellipse at center, var(--surface) 38%, transparent 72%);
+  pointer-events: none;
+}
+
+/* The photograph uncovers from the bottom as it arrives, settling from a
+   slight zoom. The opacity transition on the image is the load fade and stays
+   on the element; only the arrival belongs to the arrived state. */
+@media (prefers-reduced-motion: no-preference) {
+  .plan__window {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  .plan__media.is-in .plan__window {
+    clip-path: inset(0);
+    transition: clip-path 1.4s var(--ease-out);
+  }
+
+  .plan__drift img {
+    transform: scale(1.14);
+  }
+
+  .plan__media.is-in img {
+    transform: none;
+    transition:
+      opacity 0.6s ease,
+      transform 1.8s var(--ease-out);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Medlemmer: the group above, the five of them below.
+   --------------------------------------------------------------------------- */
+.members {
+  display: grid;
+  gap: clamp(2.25rem, 4.5vw, 4rem);
+}
+
+/* Centred, so the group sits under the heading above it. */
+.members__group {
+  justify-self: center;
+  width: min(100%, 64rem);
+  display: grid;
+  gap: 0.9rem;
+}
+
+/* Both frames sit stacked in this box and only their opacity moves, so the
+   crossfade never touches layout. */
+.members__frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--surface-strong);
+}
+
+.members__frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Biased above centre: a 3:2 window on a 4:3 photo crops top and bottom, and
+     the heads are nearer the top. */
+  object-position: center 38%;
+  opacity: 0;
+  transition: opacity 1.4s var(--ease-out);
+}
+
+.members__frame img.is-shown {
+  opacity: 1;
+}
+
+.members__caption {
+  justify-self: end;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.members__row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(0.75rem, 1.6vw, 1.75rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.member {
+  --mx: 0;
+  --my: 0;
+  --d: 0ms;
+  position: relative;
+}
+
+.member__figure {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.member__photo {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--surface-strong);
+  transition: box-shadow 0.6s ease;
+}
+
+/* Held a little larger than its frame, so it can follow the pointer without
+   showing an edge. */
+.member__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(calc(var(--mx) * -7px), calc(var(--my) * -7px)) scale(1.06);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.member:hover .member__photo {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35), 0 0 48px rgba(191, 224, 255, 0.28);
+}
+
+.member:hover .member__photo img {
+  transform: translate(calc(var(--mx) * -7px), calc(var(--my) * -7px)) scale(1.1);
+}
+
+.member__name {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* The fifth box, holding its place in the row until the photo arrives. */
+.member--pending {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 3 / 4;
+  border: 1px dashed var(--line);
+}
+
+.member__pending {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 0.75vw, 0.7rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* The frame uncovers from the top, on the frame itself rather than on the
+   figure the observer watches. The opacity transition on the images is the
+   crossfade between the two group shots and stays on the element. */
+@media (prefers-reduced-motion: no-preference) {
+  .members__frame {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  .members__group.is-in .members__frame {
+    clip-path: inset(0);
+    transition: clip-path 1.4s var(--ease-out);
+  }
+
+  .members__frame img {
+    transform: scale(1.08);
+  }
+
+  .members__group.is-in .members__frame img {
+    transform: none;
+    transition:
+      opacity 1.4s var(--ease-out),
+      transform 1.9s var(--ease-out);
+  }
+
+  .member:not(.is-in) {
+    opacity: 0;
+    transform: translate3d(0, 2.5rem, 0);
+  }
+
+  .member.is-in {
+    transition:
+      opacity 0.9s var(--ease-out) var(--d),
+      transform 1.1s var(--ease-out) var(--d);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Video: one frame, the width of the page.
+   --------------------------------------------------------------------------- */
+.video {
+  display: grid;
+  justify-items: center;
+}
+
+.video__frame {
+  width: min(100%, 76rem);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--ink);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 48px 90px -40px rgba(var(--shadow), 0.7);
+  will-change: transform;
+}
+
+.video__player {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.video__empty {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.video__map {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+}
+
+.video__map .contours__line {
+  stroke: rgba(255, 255, 255, 0.14);
+}
+
+.video__map .contours__line.is-major {
+  stroke: rgba(255, 255, 255, 0.24);
+}
+
+/* Light falls off toward the edges of the frame. */
+.video__empty::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(110% 85% at 50% 42%, transparent 35%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.video__pending {
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 0.8vw, 0.72rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------------
+   Ambisjonsnivå keeps the heading and the statement on their own rows and
+   gives the ridge the space below them, so the map never has to compete with
+   the type for contrast. The overflow clip is what keeps the scene inside this
+   one section.
+
+   A full viewport tall, and that height is load-bearing: the scene's progress
+   is measured by this section's top edge crossing the screen, and only a
+   section at least this tall lets that edge reach the top of the viewport while
+   it is the last thing on the page. Shorten it and the route stops short of the
+   summit.
+   --------------------------------------------------------------------------- */
+.topic--ambisjonsniva {
+  grid-template-rows: auto auto minmax(0, 1fr);
+  align-items: start;
+  row-gap: clamp(1.25rem, 3vw, 2.5rem);
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.topic--ambisjonsniva .topic__title {
+  grid-row: 1;
+}
+
+/* Set against the centred heading rather than under it: left, at reading
+   size, and held to a short measure so it stays a line of prose instead of
+   competing with the display type above it. */
+.ambition__body {
+  grid-row: 2;
+  justify-self: start;
+  max-width: 34ch;
+  color: var(--text);
+  font-size: clamp(1.05rem, 1.7vw, 1.5rem);
+  line-height: 1.45;
+  text-wrap: pretty;
+  text-shadow: 0 1px 14px rgba(8, 13, 20, 0.35);
+}
+
+/* Pulled out to the section's own edges: the scene fades out on its own terms
+   rather than stopping at a padding line. */
+.topic__scene {
+  position: relative;
+  z-index: 0;
+  grid-row: 3;
+  grid-column: 1 / -1;
+  align-self: stretch;
+  min-height: clamp(15rem, 40dvh, 30rem);
+  margin-inline: calc(-1 * var(--pad-x));
+  margin-bottom: calc(-1 * var(--section-y));
+  pointer-events: none;
+}
+
+.ridge {
+  position: absolute;
+  inset: 0;
+}
+
+@keyframes skeleton-scan {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Small screens.
+   --------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .plan {
+    grid-template-columns: 1fr;
+  }
+
+  .plan__media {
+    min-height: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .plan__content {
+    min-height: 72dvh;
+    padding: var(--section-top) 1.25rem 2.5rem;
+  }
+
+  .plan__title {
+    font-size: clamp(3rem, 14vw, 5.5rem);
+  }
+
+  /* Five across would be thumbnails at this width. */
+  .members__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* And the group is easier to read uncropped. */
+  .members__frame {
+    aspect-ratio: 4 / 3;
+  }
+
+  .members__caption {
+    justify-self: start;
+  }
+
+  .topic--ambisjonsniva {
+    min-height: 100dvh;
+  }
+
+  .topic__scene {
+    min-height: clamp(11rem, 32dvh, 19rem);
+    margin-inline: -1.25rem;
+    margin-bottom: calc(-1 * clamp(3rem, 12vw, 4.5rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plan__skeleton::after {
+    animation: none;
+  }
+}
