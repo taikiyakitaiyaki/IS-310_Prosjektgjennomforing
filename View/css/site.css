@@ -40,7 +40,7 @@
   width: min(46vw, 44rem);
   display: grid;
   justify-items: start;
-  gap: clamp(0.9rem, 1.65vw, 1.75rem);
+  gap: clamp(1.75rem, 3vw, 3.25rem);
   transform: translateY(-50%);
   color: rgba(255, 255, 255, 0.96);
 }
@@ -216,7 +216,7 @@
     left: auto;
     width: min(calc(100% - 1rem), 25rem);
     justify-items: end;
-    gap: 0.65rem;
+    gap: 1.15rem;
     transform: none;
     text-align: right;
   }
