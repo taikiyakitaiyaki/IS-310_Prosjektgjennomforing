@@ -1,26 +1,306 @@
-/* The Unicorn scene is intentionally kept exactly as the opening experience. */
+/* ===========================================================================
+   The chrome: what wraps the page, the weather behind it, and the landing.
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Skip link. Off screen until it is tabbed to.
+   --------------------------------------------------------------------------- */
+.skip-link {
+  position: fixed;
+  z-index: var(--z-skip);
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: var(--text);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------------
+   The cover the page opens from. See Veil.jsx.
+   --------------------------------------------------------------------------- */
+.veil {
+  position: fixed;
+  z-index: var(--z-veil);
+  inset: 0;
+  background: var(--surface);
+  clip-path: inset(0 0 0 0);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .veil {
+    transition: clip-path 1.15s var(--ease-in-out) 0.05s;
+  }
+
+  .is-ready .veil {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   The weather. Two banks of fog that drift across the page over a minute.
+   A fixed layer under everything, moved by transform alone, and held still
+   with the rest of the site.
+   --------------------------------------------------------------------------- */
+.fog {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fog__bank {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0));
+  will-change: transform;
+}
+
+.fog__bank--a {
+  top: -22vmax;
+  left: -18vmax;
+}
+
+.fog__bank--b {
+  right: -22vmax;
+  bottom: -26vmax;
+  background: radial-gradient(closest-side, rgba(191, 224, 255, 0.15), rgba(191, 224, 255, 0));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fog__bank--a {
+    animation: fog-a 46s ease-in-out infinite alternate;
+  }
+
+  .fog__bank--b {
+    animation: fog-b 58s ease-in-out infinite alternate;
+  }
+
+  .is-still .fog__bank {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes fog-a {
+  to {
+    transform: translate3d(20vmax, 12vmax, 0) scale(1.15);
+  }
+}
+
+@keyframes fog-b {
+  to {
+    transform: translate3d(-18vmax, -14vmax, 0) scale(1.1);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Grain: a fixed sheet of texture over everything. Never on a scrolling
+   element - a fixed, pointer-transparent layer composites once.
+   --------------------------------------------------------------------------- */
+.grain {
+  position: fixed;
+  z-index: var(--z-grain);
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+/* ---------------------------------------------------------------------------
+   The navigation. Nothing drawn behind it: white type with a little shadow,
+   which is enough over the fog, the night and the photographs alike. The
+   current section is underlined.
+
+   Three columns rather than two ends: the links sit in the middle one, so
+   they are centred on the page itself and do not shift when the group's name
+   beside them changes width.
+   --------------------------------------------------------------------------- */
+.site-nav {
+  position: fixed;
+  z-index: var(--z-nav);
+  top: 0;
+  right: 0;
+  left: 0;
+  min-height: var(--nav-h);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1.5rem;
+  padding-inline: var(--pad-x);
+  color: var(--text);
+  text-shadow: 0 1px 14px rgba(8, 13, 20, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-100%);
+  transition:
+    opacity 0.9s ease,
+    transform 1.1s var(--ease-out),
+    visibility 0s linear 1.1s;
+}
+
+.site-nav.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+/* Compact boxes, so a focus ring hugs the word rather than the bar. */
+.site-nav__brand,
+.site-nav__links a {
+  display: inline-block;
+  padding: 0.5rem 0.1rem;
+  font-family: var(--font-display);
+  font-stretch: 104%;
+  font-weight: 610;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.site-nav__brand {
+  grid-column: 1;
+  justify-self: start;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  /* Its column is only as wide as the one opposite, which is what keeps the
+     links on the middle of the page. The name must not wrap inside it. */
+  white-space: nowrap;
+  text-shadow: 0 0 24px rgba(191, 224, 255, 0.35);
+}
+
+.site-nav__links {
+  grid-column: 2;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: clamp(0.9rem, 2.6vw, 2.75rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav__links a {
+  font-size: clamp(0.78rem, 1.05vw, 1rem);
+  opacity: 0.72;
+  transition: opacity 0.3s ease;
+}
+
+/* Nothing is drawn under the links. The section the visitor is in, and the
+   one under the pointer, are simply the bright ones. */
+.site-nav__links a:hover,
+.site-nav__links a:focus-visible,
+.site-nav__links a[aria-current='true'] {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   The pause switch: the same corner on every screen, set like the navigation
+   so it can be read over the landing scene.
+   --------------------------------------------------------------------------- */
+.pause-toggle {
+  position: fixed;
+  z-index: var(--z-toggle);
+  left: var(--pad-x);
+  bottom: 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.2rem;
+  border: 0;
+  background: none;
+  color: var(--text);
+  text-shadow: 0 1px 14px rgba(8, 13, 20, 0.45);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.pause-toggle:hover,
+.pause-toggle:focus-visible {
+  opacity: 1;
+}
+
+.pause-toggle:active {
+  transform: translateY(1px);
+}
+
+/* Two bars when it will pause, one triangle when it will play. */
+.pause-toggle__mark {
+  width: 0.55rem;
+  height: 0.6rem;
+  border-inline: 2px solid currentColor;
+}
+
+.pause-toggle[aria-pressed='true'] .pause-toggle__mark {
+  width: 0;
+  height: 0;
+  border-block: 0.32rem solid transparent;
+  border-left: 0.55rem solid currentColor;
+  border-right: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   The landing. The Unicorn scene is kept exactly as the opening experience;
+   everything here is placed around it.
+   --------------------------------------------------------------------------- */
 .landing {
   position: relative;
   min-height: 100dvh;
   isolation: isolate;
   overflow: hidden;
-  background: #e8f2fc;
+  background: var(--sky);
 }
 
-.landing__scene,
-.landing__sky {
+.landing__sky,
+.landing__depth,
+.landing__scene {
   position: absolute;
   inset: 0;
 }
 
-.landing__scene {
-  z-index: 0;
-}
-
 .landing__sky {
+  z-index: 0;
   background:
     radial-gradient(120% 82% at 50% 6%, #ffffff 0%, transparent 56%),
     linear-gradient(178deg, #e8f2fc 0%, #d4e7f7 48%, #a8cdec 100%);
+}
+
+/* The layer the scroll moves: it sinks slower than the page as the visitor
+   leaves, and grows a little as it goes. */
+.landing__depth {
+  z-index: 1;
+  will-change: transform;
+}
+
+/* The scene fades up over the sky once it has actually loaded, instead of
+   popping in. */
+.landing__scene {
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+
+.landing__scene.is-loaded {
+  opacity: 1;
 }
 
 .landing__unicorn,
@@ -32,9 +312,21 @@
   height: 100% !important;
 }
 
-.hero-titles {
+/* The bottom edge dissolves into the fog rather than ending at a line. */
+.landing__mist {
   position: absolute;
   z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 28%;
+  background: linear-gradient(to bottom, transparent, var(--surface));
+  pointer-events: none;
+}
+
+.hero-titles {
+  position: absolute;
+  z-index: 3;
   top: 50%;
   right: clamp(2.25rem, 3vw, 3rem);
   width: max-content;
@@ -42,12 +334,14 @@
   display: grid;
   justify-items: start;
   gap: clamp(2.75rem, 4.5vw, 5.25rem);
-  transform: translateY(-50%);
+  /* The individual property rather than `transform`, which the scroll
+     animates on this element. */
+  translate: 0 -50%;
   text-align: left;
   color: rgba(255, 255, 255, 0.96);
 }
 
-.hero-titles a {
+.hero-title {
   position: relative;
   z-index: 0;
   isolation: isolate;
@@ -61,10 +355,11 @@
   line-height: 0.88;
   text-transform: uppercase;
   text-shadow: 0 2px 18px rgba(13, 51, 80, 0.18);
-  transition: opacity 0.25s ease, transform 0.45s var(--ease-out);
+  transition: opacity 0.35s ease;
 }
 
-.hero-titles a::before {
+/* The mist behind each title. */
+.hero-title::before {
   content: '';
   position: absolute;
   z-index: -1;
@@ -76,281 +371,214 @@
   pointer-events: none;
 }
 
-.hero-titles a:hover,
-.hero-titles a:focus-visible {
-  opacity: 0.68;
-  transform: translateX(-0.35rem);
+.hero-title__mask {
+  display: block;
+  overflow: hidden;
+  padding: 0.14em 0.06em 0.16em 0;
+  margin: -0.14em -0.06em -0.16em 0;
 }
 
-.hero-titles a:focus-visible {
+.hero-title__word {
+  position: relative;
+  display: block;
+}
+
+/* A line under the title in hand, drawn in from the left. */
+.hero-title__word::after {
+  content: '';
+  position: absolute;
+  right: 0.06em;
+  bottom: -0.08em;
+  left: 0.03em;
+  height: 0.06em;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.hero-titles:hover .hero-title,
+.hero-titles:focus-within .hero-title {
+  opacity: 0.55;
+}
+
+.hero-titles .hero-title:hover,
+.hero-titles .hero-title:focus-visible {
+  opacity: 1;
+}
+
+.hero-title:hover .hero-title__word::after,
+.hero-title:focus-visible .hero-title__word::after {
+  transform: scaleX(1);
+}
+
+.hero-title:focus-visible {
   outline-color: #ffffff;
 }
 
-.scroll-nav {
-  position: fixed;
-  z-index: 30;
-  top: 0;
-  right: 0;
-  left: 0;
-  min-height: 4.5rem;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  gap: clamp(1.25rem, 3.5vw, 3.75rem);
-  padding-inline: clamp(0.5rem, 2.5vw, 2.5rem);
-  background: rgba(8, 27, 42, 0.035);
-  color: rgba(255, 255, 255, 0.95);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-100%);
-  backdrop-filter: blur(5px) saturate(104%);
-  -webkit-backdrop-filter: blur(5px) saturate(104%);
-  transition:
-    opacity 1s ease,
-    transform 1.15s var(--ease-out),
-    visibility 0s linear 1.15s;
+/* The titles come up out of their lines once the cover has lifted. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-title__word {
+    transform: translateY(140%);
+    transition: transform 1.3s var(--ease-out) calc(var(--i, 0) * 95ms + 420ms);
+  }
+
+  .hero-title::before {
+    opacity: 0;
+    transition: opacity 1.4s ease calc(var(--i, 0) * 95ms + 700ms);
+  }
+
+  .is-ready .hero-title__word {
+    transform: none;
+  }
+
+  .is-ready .hero-title::before {
+    opacity: 0.78;
+  }
 }
 
-.scroll-nav.is-visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  transition-delay: 0s;
-}
-
-.scroll-nav a {
-  min-width: 0;
-  min-height: 4.5rem;
+/* ---------------------------------------------------------------------------
+   The section shell every topic shares: the heading at the top, centred over
+   the column, in the landing titles' own setting - then whatever the section
+   carries below it.
+   --------------------------------------------------------------------------- */
+.topic {
+  position: relative;
   display: grid;
-  place-items: center;
-  padding-inline: 0.65rem;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  row-gap: clamp(2rem, 4vw, 3.5rem);
+  padding: var(--section-top) var(--pad-x) var(--section-y);
+  border-top: 1px solid var(--line);
+  /* The navigation is fixed over the top of the page and draws no background,
+     so a section jumped to from it stops this far down - otherwise its heading
+     would come to rest underneath the links. */
+  scroll-margin-top: var(--nav-h);
+}
+
+.topic__title {
+  justify-self: center;
+  max-width: 100%;
+  color: var(--text);
   font-family: var(--font-display);
-  font-size: clamp(0.78rem, 1.15vw, 1.12rem);
+  font-size: clamp(2.2rem, 5vw, 5rem);
   font-stretch: 104%;
   font-weight: 610;
-  letter-spacing: -0.035em;
-  line-height: 1;
+  letter-spacing: -0.06em;
+  line-height: 0.88;
   text-align: center;
-  text-shadow: 0 1px 12px rgba(3, 16, 27, 0.48);
   text-transform: uppercase;
-  transition: color 0.3s ease, opacity 0.3s ease;
+  text-wrap: balance;
+  /* A filter rather than a text shadow: the words sit inside clipped masks
+     while they arrive, and a shadow drawn in there would be cut to boxes. */
+  filter: drop-shadow(0 0 22px rgba(191, 224, 255, 0.28));
 }
 
-.scroll-nav a:hover,
-.scroll-nav a:focus-visible {
-  color: #ffffff;
-  opacity: 0.72;
-}
-
-.plan {
-  min-height: 100dvh;
-  display: grid;
-  grid-template-columns: minmax(20rem, 34%) minmax(0, 1fr);
-  background: var(--surface);
-}
-
-.plan__media {
-  position: relative;
-  min-height: 100dvh;
-  overflow: hidden;
-  background: var(--surface-strong);
-}
-
-.plan__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.55s var(--ease-out);
-}
-
-.plan__media.is-ready img {
-  opacity: 1;
-}
-
-.plan__skeleton {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.plan__skeleton::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(100deg, transparent 20%, color-mix(in srgb, var(--text) 10%, transparent) 50%, transparent 80%);
-  transform: translateX(-100%);
-  animation: skeleton-scan 1.4s ease-in-out infinite;
-}
-
-.plan__error {
-  position: absolute;
-  inset: 0;
+/* A section with nothing in it yet holds its place, the way the fifth
+   portrait does. Centred, so it sits under the heading above it. */
+.topic__pending {
+  justify-self: center;
+  width: min(100%, 44rem);
+  aspect-ratio: 21 / 9;
   display: grid;
   place-items: center;
-  padding: 2rem;
+  border: 1px dashed var(--line);
+}
+
+.topic__pending-label {
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-align: center;
-}
-
-.plan__content {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  gap: clamp(4rem, 10vw, 9rem);
-  padding: clamp(4rem, 8vw, 8rem) clamp(2rem, 8vw, 8rem) clamp(3rem, 6vw, 5rem);
-}
-
-.plan__intro {
-  align-self: center;
-}
-
-.plan h2 {
-  max-width: 9ch;
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 7.2vw, 7.75rem);
-  font-stretch: 110%;
-  font-weight: 680;
-  letter-spacing: -0.065em;
-  line-height: 0.88;
-  text-wrap: balance;
-}
-
-.plan__intro p {
-  max-width: 34ch;
-  margin-top: clamp(1.75rem, 3vw, 2.75rem);
-  color: var(--text-muted);
-  font-size: clamp(1.05rem, 1.55vw, 1.45rem);
-  line-height: 1.45;
-  text-wrap: pretty;
-}
-
-.plan__markers {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 4vw, 4rem);
-  min-height: 9.75rem;
-  padding: 1.25rem 0 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  list-style: none;
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: clamp(0.66rem, 0.8vw, 0.76rem);
-}
-
-.topics {
-  background: var(--surface);
-}
-
-.topic {
-  min-height: clamp(20rem, 52dvh, 36rem);
-  display: grid;
-  grid-template-columns: minmax(3rem, 0.75fr) minmax(0, 5fr);
-  align-items: center;
-  gap: clamp(1rem, 4vw, 4rem);
-  padding: clamp(2rem, 5vw, 5rem);
-  border-top: 1px solid var(--line);
-  scroll-margin-top: 0;
-}
-
-.topic__index {
-  align-self: start;
-  padding-top: 0.45rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: clamp(0.6rem, 0.75vw, 0.7rem);
   letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.topic h2 {
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 10vw, 10rem);
-  font-stretch: 110%;
-  font-weight: 680;
-  letter-spacing: -0.065em;
-  line-height: 0.88;
-}
-
-@keyframes skeleton-scan {
-  to {
-    transform: translateX(100%);
-  }
-}
-
+/* ---------------------------------------------------------------------------
+   Small screens.
+   --------------------------------------------------------------------------- */
 @media (max-width: 767px) {
-  .scroll-nav,
-  .scroll-nav a {
-    min-height: 3.75rem;
+  :root {
+    --nav-h: 3.75rem;
   }
 
-  .scroll-nav {
-    gap: clamp(0.45rem, 2vw, 0.8rem);
-    padding-inline: 0;
+  .site-nav {
+    gap: 0.75rem;
   }
 
-  .scroll-nav a {
-    padding-inline: 0.2rem;
-    font-size: clamp(0.5rem, 2.25vw, 0.68rem);
+  .site-nav__brand {
+    font-size: 0.78rem;
+  }
+
+  .site-nav__links {
+    gap: clamp(0.55rem, 3vw, 1rem);
+  }
+
+  .site-nav__links a {
+    font-size: clamp(0.56rem, 2.6vw, 0.68rem);
     letter-spacing: -0.04em;
+  }
+
+  .pause-toggle {
+    bottom: 0.85rem;
+    font-size: 0.64rem;
   }
 
   .hero-titles {
     top: auto;
     right: 1.4rem;
-    bottom: 1.5rem;
+    bottom: 3.6rem;
     left: auto;
     width: max-content;
     max-width: calc(100% - 2.8rem);
     justify-items: start;
     gap: 1.8rem;
-    transform: none;
+    translate: none;
     text-align: left;
   }
 
-  .hero-titles a {
+  .hero-title {
     font-size: clamp(1.8rem, 8.5vw, 3.15rem);
   }
 
-  .plan {
-    grid-template-columns: 1fr;
-  }
-
-  .plan__media {
-    min-height: auto;
-    aspect-ratio: 4 / 5;
-  }
-
-  .plan__content {
-    min-height: 72dvh;
-    padding: clamp(3.5rem, 13vw, 6rem) 1.25rem 2rem;
-  }
-
-  .plan h2 {
-    font-size: clamp(3.65rem, 18vw, 6.25rem);
-  }
-
-  .plan__markers {
-    gap: 0.75rem;
-    min-height: 7.5rem;
+  .landing__mist {
+    height: 34%;
   }
 
   .topic {
-    min-height: 38dvh;
-    grid-template-columns: 2.5rem minmax(0, 1fr);
-    padding: 2rem 1.25rem;
+    padding: var(--section-top) 1.25rem clamp(3rem, 12vw, 4.5rem);
   }
 
-  .topic h2 {
-    font-size: clamp(3.2rem, 15vw, 6rem);
+  /* Sized so the longest of them, Ambisjonsnivå, fits the column instead of
+     running off the screen. */
+  .topic__title {
+    font-size: clamp(1.8rem, 8vw, 2.9rem);
+  }
+
+  .topic__pending {
+    aspect-ratio: 4 / 3;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .plan__skeleton::after {
-    animation: none;
+/* Centring the links needs as much room to the left of them as to the right,
+   and below this width the name no longer fits in it. The links take the whole
+   bar instead, still centred in it. */
+@media (max-width: 560px) {
+  .site-nav__brand {
+    display: none;
+  }
+
+  .site-nav__links {
+    grid-column: 1 / -1;
+    justify-self: center;
+    max-width: 100%;
+  }
+}
+
+/* Narrower still, and they spread edge to edge rather than crowd. */
+@media (max-width: 380px) {
+  .site-nav__links {
+    justify-self: stretch;
+    width: 100%;
+    justify-content: space-between;
   }
 }
