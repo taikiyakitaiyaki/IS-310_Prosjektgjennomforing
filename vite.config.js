@@ -41,6 +41,13 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('unicornstudio')) return 'unicorn'
+          /* The ridge scene is only fetched near its own section, so three and
+             its renderer stay out of the entry chunk. */
+          if (id.includes('node_modules/three/') || id.includes('@react-three/')) return 'three'
+          /* The scroll and animation runtime, cached on its own between
+             deploys that only touch the site's code. */
+          if (id.includes('node_modules/gsap') || id.includes('node_modules/@gsap/') || id.includes('node_modules/lenis'))
+            return 'motion'
           return undefined
         },
       },
