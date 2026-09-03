@@ -96,14 +96,13 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   padding-inline: clamp(0.5rem, 2.5vw, 2.5rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(8, 27, 42, 0.28);
+  background: rgba(8, 27, 42, 0.1);
   color: rgba(255, 255, 255, 0.95);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-100%);
-  backdrop-filter: blur(16px) saturate(115%);
-  -webkit-backdrop-filter: blur(16px) saturate(115%);
+  backdrop-filter: blur(10px) saturate(108%);
+  -webkit-backdrop-filter: blur(10px) saturate(108%);
   transition:
     opacity 1s ease,
     transform 1.15s var(--ease-out),
@@ -130,18 +129,15 @@
   letter-spacing: -0.035em;
   line-height: 1;
   text-align: center;
+  text-shadow: 0 1px 12px rgba(3, 16, 27, 0.48);
   text-transform: uppercase;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-.scroll-nav a + a {
-  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  transition: color 0.3s ease, opacity 0.3s ease;
 }
 
 .scroll-nav a:hover,
 .scroll-nav a:focus-visible {
-  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
+  opacity: 0.72;
 }
 
 .plan {
