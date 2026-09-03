@@ -86,6 +86,64 @@
   outline-color: #ffffff;
 }
 
+.scroll-nav {
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  right: 0;
+  left: 0;
+  min-height: 4.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding-inline: clamp(0.5rem, 2.5vw, 2.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(8, 27, 42, 0.28);
+  color: rgba(255, 255, 255, 0.95);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-100%);
+  backdrop-filter: blur(16px) saturate(115%);
+  -webkit-backdrop-filter: blur(16px) saturate(115%);
+  transition:
+    opacity 1s ease,
+    transform 1.15s var(--ease-out),
+    visibility 0s linear 1.15s;
+}
+
+.scroll-nav.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.scroll-nav a {
+  min-width: 0;
+  min-height: 4.5rem;
+  display: grid;
+  place-items: center;
+  padding-inline: 0.65rem;
+  font-family: var(--font-display);
+  font-size: clamp(0.78rem, 1.15vw, 1.12rem);
+  font-stretch: 104%;
+  font-weight: 610;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.scroll-nav a + a {
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.scroll-nav a:hover,
+.scroll-nav a:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
 .plan {
   min-height: 100dvh;
   display: grid;
@@ -226,6 +284,21 @@
 }
 
 @media (max-width: 767px) {
+  .scroll-nav,
+  .scroll-nav a {
+    min-height: 3.75rem;
+  }
+
+  .scroll-nav {
+    padding-inline: 0;
+  }
+
+  .scroll-nav a {
+    padding-inline: 0.2rem;
+    font-size: clamp(0.5rem, 2.25vw, 0.68rem);
+    letter-spacing: -0.04em;
+  }
+
   .hero-titles {
     top: auto;
     right: 1.4rem;

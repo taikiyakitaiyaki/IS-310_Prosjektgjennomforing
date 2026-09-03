@@ -1,4 +1,4 @@
-import { StrictMode, Suspense, lazy, useState } from 'react'
+import { StrictMode, Suspense, lazy, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { plan, sections, site } from './Model/site.js'
 import { MotionProvider } from './View/lib/motion.jsx'
@@ -25,6 +25,35 @@ function Landing() {
         ))}
       </nav>
     </section>
+  )
+}
+
+function ScrollNav() {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const landing = document.querySelector('.landing')
+    if (!landing) return undefined
+
+    const observer = new IntersectionObserver(([entry]) => setVisible(!entry.isIntersecting), {
+      threshold: 0,
+    })
+    observer.observe(landing)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <nav
+      className={`scroll-nav ${visible ? 'is-visible' : ''}`}
+      aria-label="Sidenavigasjon"
+      aria-hidden={!visible}
+    >
+      {sections.map((section) => (
+        <a key={section.id} href={`#${section.id}`} tabIndex={visible ? 0 : -1}>
+          {section.title}
+        </a>
+      ))}
+    </nav>
   )
 }
 
@@ -85,6 +114,7 @@ function TopicSections() {
 function App() {
   return (
     <MotionProvider>
+      <ScrollNav />
       <main>
         <Landing />
         <PlanSection />
