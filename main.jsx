@@ -17,11 +17,10 @@ function Landing() {
       <h1 id="landing-title" className="visually-hidden">
         {site.group} - vi går hele veien
       </h1>
-      <nav className="hero-nav" aria-label="Gå til en del av siden">
+      <nav className="hero-titles" aria-label="Gå til en del av siden">
         {sections.map((section) => (
           <a key={section.id} href={`#${section.id}`}>
-            <span>{section.title}</span>
-            <span className="hero-nav__arrow" aria-hidden="true">↘</span>
+            {section.title}
           </a>
         ))}
       </nav>
