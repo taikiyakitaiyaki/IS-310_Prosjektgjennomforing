@@ -39,11 +39,8 @@ export default defineConfig({
     target: 'es2020',
     rollupOptions: {
       output: {
-        // Keep the creative runtimes off the document's first parse path.
         manualChunks(id) {
           if (id.includes('unicornstudio')) return 'unicorn'
-          if (id.includes('three') || id.includes('@react-three')) return 'three'
-          if (id.includes('motion')) return 'motion'
           return undefined
         },
       },

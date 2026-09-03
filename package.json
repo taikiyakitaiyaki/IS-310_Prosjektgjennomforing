@@ -10,11 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@react-three/fiber": "^9.7.0",
-    "motion": "^13.2.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "three": "^0.185.1",
     "unicornstudio-react": "^2.2.10"
   },
   "devDependencies": {
