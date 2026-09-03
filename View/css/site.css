@@ -36,7 +36,7 @@
   position: absolute;
   z-index: 2;
   top: 50%;
-  right: clamp(1.5rem, 2vw, 2rem);
+  right: clamp(2.25rem, 3vw, 3rem);
   width: min(42vw, 40rem);
   display: grid;
   justify-items: end;
@@ -212,7 +212,7 @@
 @media (max-width: 767px) {
   .hero-titles {
     top: auto;
-    right: 1rem;
+    right: 1.4rem;
     bottom: 1.5rem;
     left: auto;
     width: min(calc(100% - 0.5rem), 25rem);
