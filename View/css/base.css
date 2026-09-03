@@ -1,3 +1,48 @@
+/* Fivo Sans Modern, in the four weights that exist: the same files the landing
+   scene already pulls down, since the published Unicorn scene is set in this
+   face. Pointing at the same URLs means the browser reuses what it has already
+   cached - no new host on the page, and no new bytes.
+
+   Worth replacing with a licensed woff2 under public/fonts when you have one:
+   this is somebody else's asset host, it can move its files whenever it likes,
+   and woff2 is roughly half the size of these otf files. If it ever does move,
+   every rule falls through to Anybody and the site still reads correctly. */
+@font-face {
+  font-family: 'Fivo Sans Modern';
+  src: url('https://assets.unicorn.studio/fonts/studio_picks/FivoSansModern/FivoSansModern-Regular.otf')
+    format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fivo Sans Modern';
+  src: url('https://assets.unicorn.studio/fonts/studio_picks/FivoSansModern/FivoSansModern-Medium.otf')
+    format('opentype');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fivo Sans Modern';
+  src: url('https://assets.unicorn.studio/fonts/studio_picks/FivoSansModern/FivoSansModern-Bold.otf')
+    format('opentype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fivo Sans Modern';
+  src: url('https://assets.unicorn.studio/fonts/studio_picks/FivoSansModern/FivoSansModern-Heavy.otf')
+    format('opentype');
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+}
+
 @font-face {
   font-family: 'Anybody';
   src: url('/fonts/anybody-latin.woff2') format('woff2');
@@ -15,31 +60,78 @@
   font-display: swap;
 }
 
+/* ---------------------------------------------------------------------------
+   Tokens.
+
+   The page is weather: the landing scene's sky and snow hand over to a fog
+   the rest of the page sits in, white type throughout, and one accent - the
+   ice-blue the contours and the route are drawn in. Sharp corners everywhere;
+   the site is set like a map sheet, and a map sheet has no rounded corners.
+   --------------------------------------------------------------------------- */
 :root {
-  --surface: #f4f7fb;
-  --surface-strong: #d6e1ed;
-  --text: #13202c;
-  --text-muted: #526477;
-  --accent: #245fa8;
-  --line: rgba(19, 32, 44, 0.2);
-  --font-display: 'Anybody', 'Arial Narrow', system-ui, sans-serif;
-  --font-body: 'Anybody', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --surface: #55606e;
+  --surface-2: #5d6876;
+  --surface-strong: #6a7684;
+  --fog: #8e99a7;
+  --sky: #e8f2fc;
+  --ink: #0f151c;
+  --text: #f3f6f9;
+  --text-muted: #dce2e9;
+  --accent: #bfe0ff;
+  --line: rgba(243, 246, 249, 0.24);
+  --line-soft: rgba(243, 246, 249, 0.1);
+  --map-line: rgba(205, 228, 255, 0.28);
+  --map-major: rgba(215, 234, 255, 0.55);
+  --shadow: 8, 13, 20;
+
+  --font-display: 'Fivo Sans Modern', 'Anybody', 'Arial Narrow', system-ui, sans-serif;
+  --font-body: 'Fivo Sans Modern', 'Anybody', system-ui, sans-serif;
+  /* The small tracked labels too, since the ask was for one face everywhere.
+     Swap this line back to 'JetBrains Mono' first if you want their monospaced
+     character back. */
+  --font-mono: 'Fivo Sans Modern', 'JetBrains Mono', ui-monospace, monospace;
+
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  color-scheme: light dark;
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --pad-x: clamp(1.25rem, 5vw, 5rem);
+  /* Sections carry their air underneath: the heading sits close to the line
+     that starts the section, and the room is given back before the next one. */
+  --section-top: clamp(2rem, 3.5vw, 3rem);
+  --section-y: clamp(4.5rem, 10vw, 9rem);
+  --nav-h: 4.5rem;
+
+  --z-nav: 30;
+  --z-toggle: 31;
+  --z-grain: 50;
+  --z-veil: 60;
+  --z-skip: 70;
+
+  color-scheme: dark;
 }
 
+/* Night: the same fog, later in the day. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --surface: #101820;
-    --surface-strong: #223140;
-    --text: #e9eef4;
-    --text-muted: #b7c3cf;
-    --accent: #72a6e8;
-    --line: rgba(233, 238, 244, 0.2);
+    --surface: #182230;
+    --surface-2: #1c2836;
+    --surface-strong: #283649;
+    --fog: #34455a;
+    --ink: #080e13;
+    --text: #eef2f6;
+    --text-muted: #c4cdd7;
+    --accent: #a8d4ff;
+    --line: rgba(238, 242, 246, 0.2);
+    --line-soft: rgba(238, 242, 246, 0.08);
+    --map-line: rgba(168, 212, 255, 0.3);
+    --map-major: rgba(168, 212, 255, 0.58);
+    --shadow: 0, 0, 0;
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Reset.
+   --------------------------------------------------------------------------- */
 *,
 *::before,
 *::after {
@@ -67,12 +159,15 @@ body {
 h1,
 h2,
 p,
-ul {
+ul,
+figure {
   margin: 0;
 }
 
 img,
-canvas {
+canvas,
+video,
+svg {
   display: block;
   max-width: 100%;
 }
@@ -82,9 +177,26 @@ a {
   text-decoration: none;
 }
 
+button {
+  font: inherit;
+  color: inherit;
+}
+
 :focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 4px;
+}
+
+/* Sections receive focus when a link jumps to them; they need no ring for it. */
+section:focus,
+main:focus {
+  outline: none;
+}
+
+/* The page sits above the weather layers, which are fixed beneath it. */
+main {
+  position: relative;
+  z-index: 1;
 }
 
 .visually-hidden {
@@ -98,7 +210,71 @@ a {
 
 ::selection {
   background: var(--accent);
-  color: var(--surface);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------------
+   The display setting the site's biggest words share: the landing titles'
+   own setting, carried through.
+   --------------------------------------------------------------------------- */
+.display {
+  font-family: var(--font-display);
+  font-stretch: 104%;
+  font-weight: 610;
+  letter-spacing: -0.06em;
+  line-height: 0.88;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+/* ---------------------------------------------------------------------------
+   Arrivals. The classes are set by View/lib/reveal.jsx; the motion is here.
+
+   The resting rules are the finished state, so a visitor who asked for
+   reduced motion simply gets everything where it ends up: the hidden states
+   and their transitions only exist for everyone else.
+   --------------------------------------------------------------------------- */
+.reveal {
+  --d: 0ms;
+}
+
+.split__mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Room for ascenders and descenders inside the clip, given back below so
+     the line boxes are unchanged. */
+  padding: 0.14em 0.06em 0.16em 0;
+  margin: -0.14em -0.06em -0.16em 0;
+}
+
+.split__word {
+  --d: 0ms;
+  display: inline-block;
+}
+
+/* The transition belongs to the arrived state, not to the element. That way
+   things animate in, but snap straight back when they re-arm - which happens
+   well off screen, and leaves nothing half-played to catch on the way back. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal:not(.is-in) {
+    opacity: 0;
+    transform: translate3d(0, 2.2rem, 0);
+  }
+
+  .reveal.is-in {
+    transition:
+      opacity 1s var(--ease-out) var(--d),
+      transform 1.2s var(--ease-out) var(--d);
+  }
+
+  .split:not(.is-in) .split__word {
+    transform: translateY(140%);
+  }
+
+  .split.is-in .split__word {
+    transition: transform 1.15s var(--ease-out) var(--d);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
