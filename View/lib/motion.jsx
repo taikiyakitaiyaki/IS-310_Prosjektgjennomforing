@@ -39,16 +39,24 @@ export function MotionProvider({ children }) {
 
   const togglePaused = useCallback(() => setPausedByUser((value) => !value), [])
 
+  const still = profile.reduced || pausedByUser
+
+  /* The one thing CSS alone animates - the fog - reads the same answer from a
+     class on the root, since it cannot read this context. */
+  useEffect(() => {
+    document.documentElement.classList.toggle('is-still', still)
+  }, [still])
+
   const value = useMemo(
     () => ({
       reduced: profile.reduced,
       lowPower: profile.lowPower,
       /* The one flag the scenes actually check. */
-      still: profile.reduced || pausedByUser,
+      still,
       pausedByUser,
       togglePaused,
     }),
-    [profile.reduced, profile.lowPower, pausedByUser, togglePaused],
+    [profile.reduced, profile.lowPower, still, pausedByUser, togglePaused],
   )
 
   return <MotionContext value={value}>{children}</MotionContext>
