@@ -93,16 +93,18 @@
   right: 0;
   left: 0;
   min-height: 4.5rem;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(1.25rem, 3.5vw, 3.75rem);
   padding-inline: clamp(0.5rem, 2.5vw, 2.5rem);
-  background: rgba(8, 27, 42, 0.1);
+  background: rgba(8, 27, 42, 0.035);
   color: rgba(255, 255, 255, 0.95);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-100%);
-  backdrop-filter: blur(10px) saturate(108%);
-  -webkit-backdrop-filter: blur(10px) saturate(108%);
+  backdrop-filter: blur(5px) saturate(104%);
+  -webkit-backdrop-filter: blur(5px) saturate(104%);
   transition:
     opacity 1s ease,
     transform 1.15s var(--ease-out),
@@ -286,6 +288,7 @@
   }
 
   .scroll-nav {
+    gap: clamp(0.45rem, 2vw, 0.8rem);
     padding-inline: 0;
   }
 
