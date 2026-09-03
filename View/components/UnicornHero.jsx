@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import UnicornScene from 'unicornstudio-react'
 import { useMotion } from '../lib/motion.jsx'
+import { cx } from '../lib/cx.js'
 
 /* The published Unicorn Studio scene that opens the site. */
 const PROJECT_ID = 'guBlT2Qaq2k0cGgNYT4I'
@@ -9,9 +10,12 @@ const PROJECT_ID = 'guBlT2Qaq2k0cGgNYT4I'
    The landing scene.
 
    It runs its own WebGL context, so it is only allowed to render while it is
-   actually on screen — once the visitor has scrolled past the fold that GPU
+   actually on screen - once the visitor has scrolled past the fold that GPU
    time belongs to the terrain below. It also stops when the visitor asks the
    site to hold still.
+
+   It sizes itself from the element it is given, never from the window, so it
+   fills whatever frame the site is shown in.
    =========================================================================== */
 export default function UnicornHero() {
   const frame = useRef(null)
@@ -20,11 +24,20 @@ export default function UnicornHero() {
   const [failed, setFailed] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [holdStill, setHoldStill] = useState(false)
+  const [overdue, setOverdue] = useState(false)
+
+  /* The scene fades up when it reports itself loaded. Should that report never
+     come, it is shown anyway after a while - a canvas the visitor cannot see
+     is worse than one that pops in. */
+  useEffect(() => {
+    const id = window.setTimeout(() => setOverdue(true), 6000)
+    return () => window.clearTimeout(id)
+  }, [])
 
   /* Reduced motion means stop moving, not disappear: pausing from the first
      render leaves an empty canvas and the mountain is never seen at all.
 
-     The wait has to hang off the scene's own load event rather than a timer —
+     The wait has to hang off the scene's own load event rather than a timer -
      the SDK is a ~900 kB chunk plus remote assets, and any fixed delay is a
      race that pauses an empty canvas on a slow connection. */
   useEffect(() => {
@@ -50,7 +63,7 @@ export default function UnicornHero() {
   }, [])
 
   return (
-    <div className="landing__scene" ref={frame} aria-hidden="true">
+    <div className={cx('landing__scene', (loaded || overdue) && 'is-loaded')} ref={frame} aria-hidden="true">
       {failed ? null : (
         <UnicornScene
           projectId={PROJECT_ID}
