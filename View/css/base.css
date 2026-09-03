@@ -48,6 +48,7 @@
 
 html {
   background: var(--surface);
+  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -76,6 +77,16 @@ canvas {
   max-width: 100%;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -91,6 +102,10 @@ canvas {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {

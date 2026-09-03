@@ -13,3 +13,10 @@ export const plan = {
     height: 1374,
   },
 }
+
+export const sections = [
+  { id: 'medlemmer', title: 'Medlemmer' },
+  { id: 'video', title: 'Video' },
+  { id: 'bedrift', title: 'Bedrift' },
+  { id: 'ambisjonsniva', title: 'Ambisjonsnivå' },
+]

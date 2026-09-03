@@ -1,6 +1,6 @@
 import { StrictMode, Suspense, lazy, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { plan, site } from './Model/site.js'
+import { plan, sections, site } from './Model/site.js'
 import { MotionProvider } from './View/lib/motion.jsx'
 import './View/css/base.css'
 import './View/css/site.css'
@@ -17,6 +17,14 @@ function Landing() {
       <h1 id="landing-title" className="visually-hidden">
         {site.group} - vi går hele veien
       </h1>
+      <nav className="hero-nav" aria-label="Gå til en del av siden">
+        {sections.map((section) => (
+          <a key={section.id} href={`#${section.id}`}>
+            <span>{section.title}</span>
+            <span className="hero-nav__arrow" aria-hidden="true">↘</span>
+          </a>
+        ))}
+      </nav>
     </section>
   )
 }
@@ -62,12 +70,26 @@ function PlanSection() {
   )
 }
 
+function TopicSections() {
+  return (
+    <div className="topics">
+      {sections.map((section, index) => (
+        <section className="topic" id={section.id} aria-labelledby={`${section.id}-title`} key={section.id}>
+          <span className="topic__index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <h2 id={`${section.id}-title`}>{section.title}</h2>
+        </section>
+      ))}
+    </div>
+  )
+}
+
 function App() {
   return (
     <MotionProvider>
       <main>
         <Landing />
         <PlanSection />
+        <TopicSections />
       </main>
     </MotionProvider>
   )
