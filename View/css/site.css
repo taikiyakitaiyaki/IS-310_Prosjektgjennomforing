@@ -37,12 +37,13 @@
   z-index: 2;
   top: 50%;
   right: clamp(2.25rem, 3vw, 3rem);
-  width: min(42vw, 40rem);
+  width: max-content;
+  max-width: calc(100% - 5.25rem);
   display: grid;
-  justify-items: end;
+  justify-items: start;
   gap: clamp(2.75rem, 4.5vw, 5.25rem);
   transform: translateY(-50%);
-  text-align: right;
+  text-align: left;
   color: rgba(255, 255, 255, 0.96);
 }
 
@@ -215,11 +216,12 @@
     right: 1.4rem;
     bottom: 1.5rem;
     left: auto;
-    width: min(calc(100% - 0.5rem), 25rem);
-    justify-items: end;
+    width: max-content;
+    max-width: calc(100% - 2.8rem);
+    justify-items: start;
     gap: 1.8rem;
     transform: none;
-    text-align: right;
+    text-align: left;
   }
 
   .hero-titles a {
