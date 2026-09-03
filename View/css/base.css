@@ -1,68 +1,54 @@
-/* ===========================================================================
-   BASE — design tokens, reset and typography.
-   The palette is sampled from the Unicorn Studio landing scene (alpine sky,
-   glacier shadow, snow) and extended with a single warm signal colour taken
-   from mountaineering safety gear.
-   =========================================================================== */
+@font-face {
+  font-family: 'Anybody';
+  src: url('/fonts/anybody-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 300 900;
+  font-stretch: 75% 125%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 300 500;
+  font-display: swap;
+}
 
 :root {
-  /* --- Surfaces: night side of the mountain ---------------------------- */
-  --void: #04060c;
-  --deep: #070c16;
-  --slate: #0b1220;
-  --ridge: #111c2e;
-  --crevasse: #16233a;
-
-  /* --- Ink: snow and glacier ------------------------------------------- */
-  --snow: #eef4fb;
-  --glacier: #b9d3ee;
-  --frost: #7d9bbe;
-  --shadow-ink: #4a6485;
-
-  /* --- Accents: two, no more ------------------------------------------- */
-  --signal: #ff5a1e; /* rope / safety orange — actions, emphasis */
-  --ice: #6fd6e8; /* instrument cyan — data, HUD, meta */
-
-  /* --- Lines & veils ---------------------------------------------------- */
-  --hair: rgba(143, 182, 222, 0.16);
-  --hair-strong: rgba(143, 182, 222, 0.32);
-  --veil: rgba(4, 6, 12, 0.72);
-
-  /* --- Type ------------------------------------------------------------- */
+  --surface: #f4f7fb;
+  --surface-raised: #e9f0f7;
+  --surface-strong: #d6e1ed;
+  --text: #13202c;
+  --text-muted: #526477;
+  --accent: #245fa8;
+  --on-accent: #f4f7fb;
+  --line: rgba(19, 32, 44, 0.18);
+  --line-strong: rgba(19, 32, 44, 0.42);
   --font-display: 'Anybody', 'Arial Narrow', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-
-  /* Fluid scale, 360px → 1600px viewport */
-  --t-hero: clamp(3.4rem, 12.5vw, 12.5rem);
-  --t-display: clamp(2.6rem, 7vw, 7rem);
-  --t-title: clamp(1.9rem, 3.6vw, 3.4rem);
-  --t-lead: clamp(1.05rem, 1.45vw, 1.4rem);
-  --t-body: clamp(0.95rem, 1.05vw, 1.05rem);
-  --t-meta: clamp(0.66rem, 0.78vw, 0.76rem);
-
-  /* --- Rhythm ----------------------------------------------------------- */
-  --gutter: clamp(1.25rem, 4.5vw, 4.5rem);
-  --stack-xs: 0.5rem;
-  --stack-s: 1rem;
-  --stack-m: 2rem;
-  --stack-l: clamp(3rem, 6vw, 6rem);
-  --stack-xl: clamp(6rem, 12vw, 12rem);
-
-  /* --- Motion ----------------------------------------------------------- */
+  --font-body: 'Anybody', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --section-space: clamp(6rem, 13vw, 12rem);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-inout: cubic-bezier(0.76, 0, 0.24, 1);
+  --layer-content: 1;
+  --layer-nav: 20;
+  color-scheme: light dark;
+  accent-color: var(--accent);
+}
 
-  /* --- Depth ------------------------------------------------------------ */
-  --z-backdrop: 0;
-  --z-content: 1;
-  --z-hud: 40;
-  --z-nav: 50;
-  --z-panel: 70;
-  --z-cursor: 90;
-  --z-preloader: 100;
-
-  color-scheme: dark;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #101820;
+    --surface-raised: #17232e;
+    --surface-strong: #223140;
+    --text: #e9eef4;
+    --text-muted: #b7c3cf;
+    --accent: #72a6e8;
+    --on-accent: #101820;
+    --line: rgba(233, 238, 244, 0.18);
+    --line-strong: rgba(233, 238, 244, 0.42);
+  }
 }
 
 *,
@@ -72,60 +58,47 @@
 }
 
 html {
+  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-}
-
-/* Lenis drives scrolling; native smooth scroll must stay out of the way. */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
 }
 
 body {
   margin: 0;
-  background: var(--void);
-  color: var(--snow);
-  font-family: var(--font-body);
-  font-size: var(--t-body);
-  font-weight: 400;
-  line-height: 1.65;
-  letter-spacing: -0.005em;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   overflow-x: clip;
-}
-
-/* The site hides the OS cursor on precise pointers and draws its own. */
-body.has-custom-cursor,
-body.has-custom-cursor a,
-body.has-custom-cursor button {
-  cursor: none;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.1vw, 1.08rem);
+  font-weight: 420;
+  line-height: 1.6;
+  letter-spacing: -0.012em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
 h1,
 h2,
 h3,
-h4 {
+p,
+blockquote,
+figure {
   margin: 0;
+}
+
+h1,
+h2,
+h3 {
   font-family: var(--font-display);
-  font-weight: 700;
-  line-height: 0.92;
-  letter-spacing: -0.035em;
-  font-stretch: 100%;
+  font-weight: 660;
+  letter-spacing: -0.055em;
+  line-height: 0.94;
   text-wrap: balance;
 }
 
 p {
-  margin: 0;
+  text-wrap: pretty;
 }
 
 a {
@@ -134,11 +107,16 @@ a {
 }
 
 button {
-  font: inherit;
+  padding: 0;
+  border: 0;
   color: inherit;
   background: none;
-  border: none;
-  padding: 0;
+  font: inherit;
+}
+
+button,
+a {
+  touch-action: manipulation;
 }
 
 img,
@@ -148,64 +126,59 @@ canvas {
 }
 
 ::selection {
-  background: var(--signal);
-  color: var(--void);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 :focus-visible {
-  outline: 2px solid var(--ice);
+  outline: 2px solid var(--accent);
   outline-offset: 4px;
-  border-radius: 2px;
 }
 
-/* --- Shared primitives ------------------------------------------------- */
-
 .shell {
-  width: 100%;
-  max-width: 1560px;
+  width: min(100%, 1400px);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
-.meta {
-  font-family: var(--font-mono);
-  font-size: var(--t-meta);
-  font-weight: 400;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--frost);
+.section {
+  position: relative;
+  z-index: var(--layer-content);
+  padding-block: var(--section-space);
+  scroll-margin-top: 5rem;
 }
 
-.meta--ice {
-  color: var(--ice);
-}
-.meta--signal {
-  color: var(--signal);
-}
-
-.lead {
-  font-size: var(--t-lead);
+.section-lead {
+  max-width: 58ch;
+  color: var(--text-muted);
+  font-size: clamp(1.06rem, 1.55vw, 1.35rem);
   line-height: 1.55;
-  color: var(--glacier);
-  max-width: 46ch;
 }
 
-.rule {
-  height: 1px;
-  width: 100%;
-  background: var(--hair);
-  border: 0;
-  margin: 0;
+.eyebrow {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
-/* Mask-reveal primitive: a line of type that slides out from a clip. */
-.reveal-line {
-  display: block;
-  overflow: hidden;
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.75rem 1rem;
+  transform: translateY(-160%);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  transition: transform 0.25s var(--ease-out);
 }
-.reveal-line > span {
-  display: block;
-  will-change: transform;
+
+.skip-link:focus-visible {
+  transform: translateY(0);
 }
 
 .visually-hidden {
@@ -217,20 +190,16 @@ canvas {
   white-space: nowrap;
 }
 
-/* --- Accessibility ------------------------------------------------------ */
-
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  body.has-custom-cursor,
-  body.has-custom-cursor a,
-  body.has-custom-cursor button {
-    cursor: auto;
   }
 }

@@ -39,11 +39,11 @@ export default defineConfig({
     target: 'es2020',
     rollupOptions: {
       output: {
-        // Rolldown expects a function here. Keeping the creative stack split
-        // lets the document and Unicorn landing paint before our WebGL world.
+        // Keep the creative runtimes off the document's first parse path.
         manualChunks(id) {
+          if (id.includes('unicornstudio')) return 'unicorn'
           if (id.includes('three') || id.includes('@react-three')) return 'three'
-          if (id.includes('gsap') || id.includes('motion') || id.includes('lenis')) return 'motion'
+          if (id.includes('motion')) return 'motion'
           return undefined
         },
       },
