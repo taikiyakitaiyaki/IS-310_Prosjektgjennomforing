@@ -3,10 +3,13 @@ import { controls } from '../../Model/site.js'
 import { useMotion } from '../lib/motion.jsx'
 
 /* ===========================================================================
-   One switch for everything on the page that moves on its own: the landing
-   scene, the crossfading group photo, the ridge, the eased scroll. It sits in
-   the same corner on every screen so it can be found while the hero is
-   playing, which is when it is most likely to be wanted.
+   The switch over the landing scene - the published 3D scene that opens the
+   site, and the one genuinely expensive thing on the page. Everything else the
+   site does, the ridge and the crossfades and the scrubbed timelines, is cheap
+   enough to keep running whichever way this sits.
+
+   It stays in the same corner on every screen so it can be found while the
+   scene is playing, which is when it is most likely to be wanted.
 
    The site opens still, so this starts as a play button. While it offers to
    start things a note follows the cursor saying what that will cost - the
