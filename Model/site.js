@@ -23,15 +23,17 @@ export const plan = {
   },
 }
 
-/* The group shot runs as two frames of the same scene, crossfading. The fifth
-   portrait is deliberately absent until the photo arrives - the box holds its
-   place in the row rather than letting the other four spread out. */
+/* The group shot cycles through these frames, crossfading between them; add or
+   remove one and the cycle follows. The row of portraits is complete; a row with
+   a `null` name still holds its place rather than letting the others spread out,
+   should one ever need to. */
 export const members = {
   group: {
     label: 'Her er vi samlet hos Kartverket',
     photos: [
       { src: '/media/group-1.webp', width: 1800, height: 1350 },
       { src: '/media/group-2.webp', width: 1800, height: 1350 },
+      { src: '/media/group-3.webp', width: 1800, height: 1350 },
     ],
   },
   people: [
@@ -39,7 +41,7 @@ export const members = {
     { name: 'My', src: '/media/member-my.webp' },
     { name: 'Oskar', src: '/media/member-oskar.webp' },
     { name: 'Sabrine', src: '/media/member-sabrine.webp' },
-    { name: null, src: null },
+    { name: 'Yones', src: '/media/member-yones.webp' },
   ],
   portrait: { width: 700, height: 934 },
   pendingLabel: 'Kommer',
