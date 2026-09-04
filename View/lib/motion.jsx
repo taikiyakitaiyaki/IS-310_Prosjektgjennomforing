@@ -27,7 +27,14 @@ export function MotionProvider({ children }) {
      values, and a post-mount change tears down and re-initialises a WebGL
      context that was already running. */
   const [profile, setProfile] = useState(() => (typeof window === 'undefined' ? STILL : readProfile()))
-  const [pausedByUser, setPausedByUser] = useState(false)
+
+  /* The site opens still and waits to be asked. Everything that moves here -
+     two WebGL scenes, the eased scroll, the scrubbed timelines - costs a
+     machine something, and the visitor is the one who knows whether theirs can
+     afford it. Nothing is hidden by starting this way: the landing scene still
+     renders and freezes on a frame, the map shows itself finished, and the
+     photographs simply do not cycle. */
+  const [pausedByUser, setPausedByUser] = useState(true)
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
