@@ -42,104 +42,16 @@
     />
   </head>
   <body>
-    <header class="site-header">
-      <div class="container nav-wrap">
-        <div class="brand">
-          <span class="brand-mark">IS-310</span>
-          <span class="brand-text">Gruppeprosjekt</span>
-        </div>
-        <nav class="main-nav" aria-label="Hovednavigasjon">
-          <a href="omoss.html">Om oss</a>
-          <a href="omoss.html#medlemmer">Medlemmer</a>
-          <a href="#video">Video</a>
-          <a href="#prosjekt">Prosjekt</a>
-          <a href="#kontakt">Kontakt</a>
-        </nav>
-        <button class="theme-toggle" type="button" aria-label="Bytt tema">🌙</button>
+    <div id="root"></div>
+    <noscript>
+      <div style="padding: 4rem 2rem; font-family: system-ui; color: #0c2338; background: #f4f9fe">
+        <h1>Gruppe 11 | IS-310 Prosjektgjennomføring</h1>
+        <p>
+          Denne siden bruker JavaScript til 3D-grafikk og animasjon. Slå på JavaScript for å se den, eller kontakt oss på
+          <a href="mailto:gruppe11@is310.no" style="color: #1f6fc4">gruppe11@is310.no</a>.
+        </p>
       </div>
-    </header>
-
-    <main>
-      <section class="hero">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow">IS-310 • Projektgjennomføring • Gruppe 11</p>
-            <h1>Vi er en inkluderende gruppe som vil skape noe meningsfullt.</h1>
-            <h2>(Ja Yones, vi kan endre siden til hva enn du måtte ønske 😉)</h2>
-            <p class="lead">
-              Vi er en prosjektgruppe på 5 studenter som vil bruke semesteret til å
-              utvikle et spennende, relevant og praktisk prosjekt. Målet er å jobbe godt
-              sammen, lære av hverandre og skape en løsning som viser både kreativitet,
-              samarbeid og teknisk innsikt.
-            </p>
-            <div class="hero-actions">
-              <a class="button primary" href="omoss.html#medlemmer">Se medlemmene</a>
-              <a class="button secondary" href="omoss.html">Les om gruppen</a>
-            </div>
-            <ul class="hero-points" aria-label="Gruppefakta">
-              <li>5 studenter</li>
-              <li>Inkluderende og støttende</li>
-              <li>Ambisiøs og praktisk</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section id="video" class="section">
-        <div class="container">
-          <div class="section-heading">
-            <p class="eyebrow">Video</p>
-            <h2>Videopresentasjon</h2>
-          </div>
-
-          <div class="video-feature">
-            <div class="video-card">
-              <div class="video-placeholder">
-                <span class="play-button">▶</span>
-                <p>Legg inn kort videopresentasjon</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="prosjekt" class="section">
-        <div class="container two-column">
-          <div>
-            <p class="eyebrow">Tanker om gruppen</p>
-            <h2>Hva slags prosjekt ønsker vi å lage?</h2>
-            <p>
-              Vi ser for oss et prosjekt som er både nyttig for brukeren og realistisk å
-              gjennomføre innenfor rammen av emnet. Vi vil fokusere på løsninger som har
-              tydelig verdi, har en god idéhistorie og kan presenteres på en profesjonell og
-              moderne måte.
-            </p>
-            <p>
-              Derfor vil vi prøve å kombinere praktisk utvikling med god design, god brukerforståelse
-              og evne til å samarbeide effektivt som en gruppe. Ambisjonsnivået er høyt, men
-              vi vil også holde fokus på hva som er mulig, realistisk og lærerikt.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="kontakt" class="section cta">
-        <div class="container cta-box">
-          <div>
-            <p class="eyebrow">Kontakt</p>
-            <h2>Vil du vite mer om oss?</h2>
-          </div>
-          <a class="button primary" href="mailto:gruppe@is310.no">gruppe11@is310.no</a>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-wrap">
-        <p>© 2026 IS-310 Gruppe 11</p>
-      </div>
-    </footer>
-
-    <script src="View/js/theme.js"></script>
+    </noscript>
+    <script type="module" src="/main.jsx"></script>
   </body>
 </html>
