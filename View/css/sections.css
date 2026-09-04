@@ -204,7 +204,7 @@
   gap: 0.9rem;
 }
 
-/* Both frames sit stacked in this box and only their opacity moves, so the
+/* The frames sit stacked in this box and only their opacity moves, so the
    crossfade never touches layout. */
 .members__frame {
   position: relative;
@@ -309,7 +309,7 @@
 
 /* The frame uncovers from the top, on the frame itself rather than on the
    figure the observer watches. The opacity transition on the images is the
-   crossfade between the two group shots and stays on the element. */
+   crossfade between the group shots and stays on the element. */
 @media (prefers-reduced-motion: no-preference) {
   .members__frame {
     clip-path: inset(0 0 100% 0);
