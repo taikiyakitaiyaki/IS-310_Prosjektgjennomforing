@@ -84,6 +84,7 @@ export const controls = {
   play: 'Spill av',
   pauseLabel: 'Pause animasjoner',
   playLabel: 'Spill av animasjoner',
+  playHint: 'Du trenger en bra Data for denne modusen',
   imageError: 'Bildet kunne ikke lastes.',
 }
 
