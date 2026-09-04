@@ -240,6 +240,40 @@
   opacity: 1;
 }
 
+/* The note that follows the cursor across the play button. Its position comes
+   from two custom properties the button writes on pointer move; it rides just
+   above and to the right, which keeps it off the pointer and off the button's
+   own label, and always on screen from a control this near the bottom left. */
+.pause-toggle__hint {
+  position: fixed;
+  z-index: calc(var(--z-toggle) + 1);
+  left: var(--x, var(--pad-x));
+  top: var(--y, 50dvh);
+  max-width: 16rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 0 6px 20px rgba(8, 13, 20, 0.16);
+  color: var(--text);
+  /* The button is small, spaced, shadowed capitals; a sentence is none of
+     those things. */
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.35;
+  text-align: left;
+  text-shadow: none;
+  text-transform: none;
+  opacity: 0;
+  transform: translate(0.9rem, calc(-100% - 0.8rem));
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+}
+
+.pause-toggle:hover .pause-toggle__hint {
+  opacity: 1;
+}
+
 .pause-toggle:active {
   transform: translateY(1px);
 }
