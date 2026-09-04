@@ -72,6 +72,12 @@ export const company = {
 /* The heading carries the section on its own; this is the line beside it. */
 export const ambition = {
   body: 'Vi sikter så høyt det går. Målet er toppen av fjellet, ikke et sted halvveis opp.',
+  goalsTitle: 'Våre ambisjoner for praksisperioden',
+  goals: [
+    'Få inngående erfaring med utvikling og implementering av moderne AI-løsninger i offentlig sektor.',
+    'Styrke kompetansen innen teamarbeid, smidig prosjektmetodikk og faglig formidling.',
+    'Skape et reelt, fungerende verktøy som gir merverdi for Kartverkets ansatte etter endt praksis.',
+  ],
 }
 
 /* Labels for the site's own controls. */
