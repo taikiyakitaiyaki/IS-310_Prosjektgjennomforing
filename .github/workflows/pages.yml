@@ -1,0 +1,58 @@
+# Bygger Vite-siden og publiserer dist/ til GitHub Pages.
+# Uten dette serverer Pages repoet slik det ligger, og da vises README-en
+# i stedet for siden - dist/ er nemlig ikke sjekket inn (se .gitignore).
+name: Publiser til GitHub Pages
+
+on:
+  push:
+    branches: [test]
+  workflow_dispatch:
+
+# Rettighetene deploy-pages trenger for å legge ut bygget.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Én publisering om gangen, og løpende publiseringer får fullføre.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  bygg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hent koden
+        uses: actions/checkout@v4
+
+      - name: Sett opp Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installer avhengigheter
+        run: npm ci
+
+      - name: Bygg siden
+        run: npm run build
+
+      - name: Klargjør Pages
+        uses: actions/configure-pages@v5
+
+      - name: Last opp bygget
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  publiser:
+    needs: bygg
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.utlegging.outputs.page_url }}
+    steps:
+      - name: Legg ut på Pages
+        id: utlegging
+        uses: actions/deploy-pages@v4
