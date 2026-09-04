@@ -12,14 +12,15 @@ const PROJECT_ID = 'guBlT2Qaq2k0cGgNYT4I'
    It runs its own WebGL context, so it is only allowed to render while it is
    actually on screen - once the visitor has scrolled past the fold that GPU
    time belongs to the terrain below. It also stops when the visitor asks the
-   site to hold still.
+   site to hold still, and it is the only thing the pause switch stops: the
+   rest of the site's motion costs little enough to leave running.
 
    It sizes itself from the element it is given, never from the window, so it
    fills whatever frame the site is shown in.
    =========================================================================== */
 export default function UnicornHero() {
   const frame = useRef(null)
-  const { still, lowPower } = useMotion()
+  const { heroStill, lowPower } = useMotion()
   const [onScreen, setOnScreen] = useState(true)
   const [failed, setFailed] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -41,13 +42,13 @@ export default function UnicornHero() {
      the SDK is a ~900 kB chunk plus remote assets, and any fixed delay is a
      race that pauses an empty canvas on a slow connection. */
   useEffect(() => {
-    if (!loaded || !still) {
+    if (!loaded || !heroStill) {
       setHoldStill(false)
       return undefined
     }
     const id = window.setTimeout(() => setHoldStill(true), 600)
     return () => window.clearTimeout(id)
-  }, [loaded, still])
+  }, [loaded, heroStill])
 
   useEffect(() => {
     const node = frame.current
