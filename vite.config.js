@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { sites } from '@openai/sites-vite-plugin'
 
 const sitesStaticWorker = () => ({
   name: 'sites-static-worker',
@@ -34,7 +33,10 @@ export default {
 // Relative base so the built site works from any sub-path (GitHub Pages, etc.)
 export default defineConfig({
   base: './',
-  plugins: [react(), sites(), sitesStaticWorker()],
+  /* The OpenAI Sites plugin is gone along with .openai/hosting.json, which it
+     read at the end of every build. The site publishes through GitHub Pages
+     (see .github/workflows/pages.yml). */
+  plugins: [react(), sitesStaticWorker()],
   build: {
     target: 'es2020',
     rollupOptions: {

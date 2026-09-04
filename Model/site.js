@@ -3,6 +3,14 @@
    Edit this file to change what the site says; no component needs touching.
    =========================================================================== */
 
+/* Pictures live in public/ and are addressed relative to wherever the site is
+   deployed, never from the domain root. GitHub Pages serves this project from
+   /IS-310_Prosjektgjennomforing/, so a leading slash sends the browser looking
+   for /media/... at the root of github.io and every photo 404s. Vite rewrites
+   the paths it can see - imports, CSS url() - but a src like this one is just a
+   string it hands to the browser, so it has to carry the base itself. */
+const media = (file) => `${import.meta.env.BASE_URL}media/${file}`
+
 /* `course` and `email` are not shown anywhere at the moment - the footer
    that carried them is gone. They are kept for whenever the page wants them
    back. */
@@ -16,7 +24,7 @@ export const site = {
 export const plan = {
   title: 'Vi sketcher en plan',
   image: {
-    src: '/media/process-table.webp',
+    src: media('process-table.webp'),
     alt: 'Studenter samarbeider over skisser og et rutekart på et arbeidsbord',
     width: 1100,
     height: 1374,
@@ -31,17 +39,17 @@ export const members = {
   group: {
     label: 'Her er vi samlet hos Kartverket',
     photos: [
-      { src: '/media/group-1.webp', width: 1800, height: 1350 },
-      { src: '/media/group-2.webp', width: 1800, height: 1350 },
-      { src: '/media/group-3.webp', width: 1800, height: 1350 },
+      { src: media('group-1.webp'), width: 1800, height: 1350 },
+      { src: media('group-2.webp'), width: 1800, height: 1350 },
+      { src: media('group-3.webp'), width: 1800, height: 1350 },
     ],
   },
   people: [
-    { name: 'Isak', src: '/media/member-isak.webp' },
-    { name: 'My', src: '/media/member-my.webp' },
-    { name: 'Oskar', src: '/media/member-oskar.webp' },
-    { name: 'Sabrine', src: '/media/member-sabrine.webp' },
-    { name: 'Yones', src: '/media/member-yones.webp' },
+    { name: 'Isak', src: media('member-isak.webp') },
+    { name: 'My', src: media('member-my.webp') },
+    { name: 'Oskar', src: media('member-oskar.webp') },
+    { name: 'Sabrine', src: media('member-sabrine.webp') },
+    { name: 'Yones', src: media('member-yones.webp') },
   ],
   portrait: { width: 700, height: 934 },
   pendingLabel: 'Kommer',
