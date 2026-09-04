@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Om oss | IS-310 Gruppe 11</title>
+    <meta name="description" content="Presentasjon av Gruppe 11 i IS-310." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="View/css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html" aria-label="Til forsiden">
+          <span class="brand-mark">IS-310</span>
+          <span class="brand-text">Gruppeprosjekt</span>
+        </a>
+        <nav class="main-nav" aria-label="Hovednavigasjon">
+          <a href="#om-oss">Om oss</a>
+          <a href="#medlemmer">Medlemmer</a>
+          <a href="index.html#video">Video</a>
+          <a href="index.html#prosjekt">Prosjekt</a>
+          <a href="index.html#kontakt">Kontakt</a>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="Bytt tema">🌙</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="om-oss" class="section page-hero">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Om oss</p>
+            <h1>Et samarbeid bygget på respekt, nysgjerrighet og mål.</h1>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <h2>Inkluderende</h2>
+              <p>Vi vil skape et trygt og positivt arbeidsmiljø der nye studenter får være med fra starten, få ansvar og få muligheten til å bidra med egne ideer.</p>
+            </article>
+            <article class="feature-card">
+              <h2>Kreativt</h2>
+              <p>Gruppen har et felles fokus på å utvikle noe som både er nyttig for brukeren og interessant å bygge gjennom prosjektet.</p>
+            </article>
+            <article class="feature-card">
+              <h2>Ambisiøs</h2>
+              <p>Vi ønsker å ta opp utfordringer, lære gjennom prosessen og levere et prosjekt som viser kvalitet og engasjement.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="medlemmer" class="section muted">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Medlemmer</p>
+            <h2>Gruppe 11</h2>
+          </div>
+          <div class="student-grid members-grid">
+            <article class="student-card member-card card-lilac" tabindex="0" data-name="Student 1" data-role="Faglig fokus" data-bio="Kort biografi om deg, interesser og hva du vil bidra med i prosjektet." data-detail="Skriv en lengre presentasjon av Student 1 her." data-color="#9b9eff">
+              <div class="student-photo" aria-label="Bildeplass for Student 1"><span>Legg inn bilde</span></div>
+              <div class="student-text"><h3>Student 1</h3><p class="role">Faglig fokus</p><p>Klikk for å lese mer.</p></div>
+            </article>
+            <article class="student-card member-card card-peach" tabindex="0" data-name="Student 2" data-role="Faglig fokus" data-bio="Kort biografi om deg, interesser og hva du vil bidra med i prosjektet." data-detail="Skriv en lengre presentasjon av Student 2 her." data-color="#ffb4a2">
+              <div class="student-photo" aria-label="Bildeplass for Student 2"><span>Legg inn bilde</span></div>
+              <div class="student-text"><h3>Student 2</h3><p class="role">Faglig fokus</p><p>Klikk for å lese mer.</p></div>
+            </article>
+            <article class="student-card member-card card-sky" tabindex="0" data-name="Student 3" data-role="Faglig fokus" data-bio="Kort biografi om deg, interesser og hva du vil bidra med i prosjektet." data-detail="Skriv en lengre presentasjon av Student 3 her." data-color="#7dd3fc">
+              <div class="student-photo" aria-label="Bildeplass for Student 3"><span>Legg inn bilde</span></div>
+              <div class="student-text"><h3>Student 3</h3><p class="role">Faglig fokus</p><p>Klikk for å lese mer.</p></div>
+            </article>
+            <article class="student-card member-card card-mint" tabindex="0" data-name="Student 4" data-role="Faglig fokus" data-bio="Kort biografi om deg, interesser og hva du vil bidra med i prosjektet." data-detail="Skriv en lengre presentasjon av Student 4 her." data-color="#7de2c7">
+              <div class="student-photo" aria-label="Bildeplass for Student 4"><span>Legg inn bilde</span></div>
+              <div class="student-text"><h3>Student 4</h3><p class="role">Faglig fokus</p><p>Klikk for å lese mer.</p></div>
+            </article>
+            <article class="student-card member-card card-violet" tabindex="0" data-name="Student 5" data-role="Faglig fokus" data-bio="Kort biografi om deg, interesser og hva du vil bidra med i prosjektet." data-detail="Skriv en lengre presentasjon av Student 5 her." data-color="#c4a7ff">
+              <div class="student-photo" aria-label="Bildeplass for Student 5"><span>Legg inn bilde</span></div>
+              <div class="student-text"><h3>Student 5</h3><p class="role">Faglig fokus</p><p>Klikk for å lese mer.</p></div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="container footer-wrap"><p>© 2026 IS-310 Gruppe 11</p></div></footer>
+
+    <div class="student-modal" id="studentModal" aria-hidden="true">
+      <div class="student-modal-backdrop" data-close="true"></div>
+      <div class="student-modal-panel" role="dialog" aria-modal="true" aria-labelledby="studentModalTitle">
+        <button class="modal-close" type="button" aria-label="Lukk">×</button>
+        <div class="modal-header" id="studentModalHeader">
+          <div class="modal-photo"><span>Legg inn bilde</span></div>
+          <div><p class="modal-label">Medlem</p><h3 id="studentModalTitle">Student</h3><p class="modal-role" id="studentModalRole">Faglig fokus</p></div>
+        </div>
+        <div class="modal-body"><p id="studentModalBio"></p><p id="studentModalDetail"></p></div>
+      </div>
+    </div>
+
+    <script src="View/js/theme.js"></script>
+    <script src="View/js/student-modal.js"></script>
+  </body>
+</html>
