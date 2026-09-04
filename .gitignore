@@ -1,0 +1,10 @@
+node_modules
+dist
+.DS_Store
+*.local
+awwwards-animations-skill/
+agent-skills/
+taste-skill/
+
+.claude/settings.local.json
+.sites-package/
