@@ -46,10 +46,22 @@ export function MotionProvider({ children }) {
 
   const togglePaused = useCallback(() => setPausedByUser((value) => !value), [])
 
-  const still = profile.reduced || pausedByUser
+  /* Two questions that look alike and are not:
+
+     still      the system asked for reduced motion, so nothing on the page
+                should move. Every scene reads this one.
+     heroStill  that, or the visitor pressed pause. The switch reaches only the
+                landing scene - it is the expensive thing here, a whole WebGL
+                context running a published 3D scene, and it is what someone
+                pausing this page is trying to switch off. The ridge, the
+                crossfades, the scrubbed timelines and the eased scroll are
+                cheap by comparison and keep going either way. */
+  const still = profile.reduced
+  const heroStill = profile.reduced || pausedByUser
 
   /* The one thing CSS alone animates - the fog - reads the same answer from a
-     class on the root, since it cannot read this context. */
+     class on the root, since it cannot read this context. It drifts behind the
+     whole page rather than belonging to the landing, so it follows `still`. */
   useEffect(() => {
     document.documentElement.classList.toggle('is-still', still)
   }, [still])
@@ -58,12 +70,14 @@ export function MotionProvider({ children }) {
     () => ({
       reduced: profile.reduced,
       lowPower: profile.lowPower,
-      /* The one flag the scenes actually check. */
+      /* The flag every scene but one checks. */
       still,
+      /* And the one the landing scene checks instead. */
+      heroStill,
       pausedByUser,
       togglePaused,
     }),
-    [profile.reduced, profile.lowPower, still, pausedByUser, togglePaused],
+    [profile.reduced, profile.lowPower, still, heroStill, pausedByUser, togglePaused],
   )
 
   return <MotionContext value={value}>{children}</MotionContext>
