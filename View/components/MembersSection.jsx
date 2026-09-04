@@ -10,7 +10,7 @@ import { cx } from '../lib/cx.js'
 
 const SWAP_INTERVAL = 5200
 
-/* Two frames of the same group, crossfading. Both sit in the frame at once and
+/* The group's frames, crossfading in turn. They all sit in the frame at once and
    only their opacity moves, so the swap costs a composite rather than a layout
    and never shifts the page. The frame uncovers from the bottom as it arrives. */
 function GroupPhotos() {
@@ -46,8 +46,8 @@ function GroupPhotos() {
 
   return (
     <figure className={cx('members__group', inView && 'is-in')} ref={figure}>
-      {/* One image as far as assistive technology is concerned: the two frames
-          are the same group, and announcing a swap between them would be noise. */}
+      {/* One image as far as assistive technology is concerned: every frame is
+          the same group, and announcing a swap between them would be noise. */}
       <div className="members__frame" ref={host} role="img" aria-label={members.group.label}>
         {photos.map((photo, index) => (
           <img
