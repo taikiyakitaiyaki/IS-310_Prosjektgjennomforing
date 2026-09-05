@@ -63,11 +63,15 @@ export default function PauseToggle() {
       <span className="pause-toggle__mark" aria-hidden="true" />
       <span aria-hidden="true">{pausedByUser ? controls.play : controls.pause}</span>
 
-      {pausedByUser ? (
-        <span className="pause-toggle__hint" id="pause-toggle-hint" ref={hint}>
-          {controls.playHint}
-        </span>
-      ) : null}
+      {/* Always here, never mounted and unmounted with the paused state. The
+          note remembers where the cursor is in two custom properties written
+          on this element; tearing it down on every press threw that away, and
+          a fresh one drawn before the next pointer move landed wherever its
+          fallback put it. Whether it is seen is CSS's business - see the
+          aria-pressed rule beside it. */}
+      <span className="pause-toggle__hint" id="pause-toggle-hint" ref={hint}>
+        {controls.playHint}
+      </span>
     </button>
   )
 }
