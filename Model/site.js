@@ -65,7 +65,11 @@ export const members = {
       interests: [],
       description:
         'Interessert i prosjektstyring, systemutvikling og å bygge gode digitale løsninger. Liker å kombinere positiv innstilling med struktur, samarbeid og teknisk utvikling i prosjekter.',
-      links: { linkedin: '', github: '', portfolio: '' },
+      links: {
+        linkedin: 'https://www.linkedin.com/in/isak-gulaker-8b53423b0',
+        github: 'https://github.com/IsakJG',
+        portfolio: '',
+      },
     },
     {
       name: 'My',
@@ -76,7 +80,11 @@ export const members = {
       interests: [],
       description:
         'Interessert i frontendutvikling, webutvikling og kunstig intelligens. Liker å lage brukervennlige digitale løsninger og lære nye teknologier.',
-      links: { linkedin: '', github: '', portfolio: '' },
+      links: {
+        linkedin: 'https://www.linkedin.com/in/my-t-hoang-2bb246385',
+        github: 'https://github.com/taikiyakitaiyaki',
+        portfolio: '',
+      },
     },
     {
       name: 'Oskar',
@@ -87,7 +95,11 @@ export const members = {
       interests: [],
       description:
         'Liker å utforske nye teknologier og bygge brukervennlige systemer. Brenner for problemløsning og godt samarbeid. Erfaring med fullstackutvikling og har en generell interesse for teknologi og innovasjon.',
-      links: { linkedin: '', github: '', portfolio: '' },
+      links: {
+        linkedin: 'https://www.linkedin.com/in/oskar-kirkbride',
+        github: 'https://github.com/oskarmk24',
+        portfolio: '',
+      },
     },
     {
       name: 'Sabrine',
@@ -98,7 +110,11 @@ export const members = {
       interests: [],
       description:
         'Team building, sluttbrukeropplevelse, frontend, backend-arkitektur, databasedesign og AI-integrasjon.',
-      links: { linkedin: '', github: '', portfolio: '' },
+      links: {
+        linkedin: 'https://www.linkedin.com/in/sabrine-hansen-791264406',
+        github: 'https://github.com/snbhansen',
+        portfolio: '',
+      },
     },
     {
       name: 'Yones',
@@ -109,7 +125,11 @@ export const members = {
       interests: [],
       description:
         'Kreativ teknolog med kompetanse i grensesnittet mellom UI/UX-design og frontend. Brenner for romfart, dyp tech og integrering av ny AI-teknologi for å skape fremtidsrettede løsninger som enda ikke finnes. Har også et helhetlig blikk innenfor backend og systemarkitektur.',
-      links: { linkedin: '', github: '', portfolio: '' },
+      links: {
+        linkedin: 'https://www.linkedin.com/in/yones-m-44616536a',
+        github: 'https://github.com/YonesF',
+        portfolio: 'https://yonesf.github.io/Portfolio/',
+      },
     },
   ],
   portrait: { width: 700, height: 934 },
@@ -150,11 +170,11 @@ export const company = {
 /* The heading carries the section on its own; this is the line beside it. */
 export const ambition = {
   body: 'Vi sikter så høyt det går. Målet er toppen av fjellet, ikke et sted halvveis opp.',
-  goalsTitle: 'Våre ambisjoner for praksisperioden',
+  goalsTitle: 'Våre ambisjoner',
   goals: [
     'Få inngående erfaring med utvikling og implementering av moderne AI-løsninger i offentlig sektor.',
     'Styrke kompetansen innen teamarbeid, smidig prosjektmetodikk og faglig formidling.',
-    'Skape et reelt, fungerende verktøy som gir merverdi for Kartverkets ansatte etter endt praksis.',
+    'Skape et reelt, fungerende verktøy som gir merverdi for bedrifter vi samarbeider med.',
   ],
 }
 
