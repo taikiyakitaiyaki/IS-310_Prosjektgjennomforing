@@ -486,6 +486,24 @@
   gap: 0.5rem;
 }
 
+/* The description lights word by word as it rises up the panel. The paragraph
+   carries the progress; each word carries where its own share of that progress
+   begins, exactly as the contour lines do with --draw. Default 1 so the text is
+   readable before a single line of script has run, or if none ever does. */
+.member-panel__about {
+  --lit: 1;
+}
+
+/* --span here is the WORD_SPAN constant in MemberPanel.jsx; the two describe
+   the same overlap and should move together. */
+.member-panel__word {
+  --span: 0.16;
+  color: var(--text);
+  /* The floor is a readable grey rather than a whisper: a word waiting its turn
+     is still a word somebody might need to read. */
+  opacity: clamp(0.34, calc(0.34 + (var(--lit) - var(--from)) / var(--span)), 1);
+}
+
 .member-panel__label {
   color: var(--text);
   font-family: var(--font-mono);
