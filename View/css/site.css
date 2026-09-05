@@ -215,7 +215,6 @@
   position: fixed;
   z-index: var(--z-toggle);
   left: var(--pad-x);
-  bottom: 1.15rem;
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
@@ -234,20 +233,26 @@
   /* Hidden until the landing scene is on screen, and gone again once it has
      scrolled away - it drives nothing that is still in view. `visibility` is
      what keeps it off the tab order while it is away; the delay holds it
-     visible long enough for the fade out to be seen. */
+     visible long enough for the fade out to be seen.
+
+     The slide is on `bottom` rather than on a transform, and that is not a
+     stylistic choice: any transform here would make this button the containing
+     block for the hint below, which is positioned `fixed` from cursor
+     coordinates. It would then be placed relative to the button and land far
+     off the screen. */
+  bottom: 0.6rem;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(0.5rem);
   transition:
     opacity 0.45s ease,
-    transform 0.55s var(--ease-out),
+    bottom 0.55s var(--ease-out),
     visibility 0s linear 0.55s;
 }
 
 .pause-toggle.is-visible {
+  bottom: 1.15rem;
   opacity: 0.85;
   visibility: visible;
-  transform: translateY(0);
   transition-delay: 0s;
 }
 
@@ -280,14 +285,36 @@
   text-align: left;
   text-shadow: none;
   text-transform: none;
+  /* It comes out of the air rather than switching on: blurred and low and a
+     little small, with its shadow spread wide like haze, then drawing itself
+     together as it settles. Going the other way it thins back out into the
+     same mist. The site does this trick elsewhere - the banks behind the page
+     and the haze behind the hero titles - so the note arrives in the same
+     weather as everything else. */
   opacity: 0;
-  transform: translate(0.9rem, calc(-100% - 0.8rem));
-  transition: opacity 0.18s ease;
+  /* Soft focus rather than a smear. A heavy blur here reads as something wrong
+     with your eyes rather than as weather, and the eye strains at it while it
+     resolves - so the blur is light, and it clears sooner than the rest of the
+     movement settles. */
+  filter: blur(5px);
+  transform: translate(0.9rem, calc(-100% - 0.15rem)) scale(0.97);
+  box-shadow: 0 0 26px 9px rgba(8, 13, 20, 0.08);
+  transition:
+    opacity 0.45s ease,
+    filter 0.34s var(--ease-out),
+    transform 0.62s var(--ease-out),
+    box-shadow 0.62s var(--ease-out);
   pointer-events: none;
 }
 
-.pause-toggle:hover .pause-toggle__hint {
+/* Only while the button is offering to start things - aria-pressed is already
+   carrying exactly that fact, so the note needs no state of its own. The
+   element stays in the page either way, which is what keeps its position. */
+.pause-toggle[aria-pressed='true']:hover .pause-toggle__hint {
   opacity: 1;
+  filter: blur(0);
+  transform: translate(0.9rem, calc(-100% - 0.8rem)) scale(1);
+  box-shadow: 0 6px 20px rgba(8, 13, 20, 0.16);
 }
 
 .pause-toggle:active {
