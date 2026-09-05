@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { controls, sections, site } from '../../Model/site.js'
+import { useLandingInView } from '../lib/landing.js'
 import { cx } from '../lib/cx.js'
 
 /* ===========================================================================
@@ -11,19 +12,11 @@ import { cx } from '../lib/cx.js'
    =========================================================================== */
 
 export default function SiteNav() {
-  const [visible, setVisible] = useState(false)
   const [active, setActive] = useState(null)
 
-  useEffect(() => {
-    const landing = document.querySelector('.landing')
-    if (!landing) return undefined
-
-    const observer = new IntersectionObserver(([entry]) => setVisible(!entry.isIntersecting), {
-      threshold: 0,
-    })
-    observer.observe(landing)
-    return () => observer.disconnect()
-  }, [])
+  /* The navigation is what the landing hands over to, so it appears exactly
+     when the landing leaves. */
+  const visible = !useLandingInView()
 
   /* Whichever section is crossing the upper-middle band of the viewport is
      the current one; none of them there means none is marked. */
