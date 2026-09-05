@@ -3,6 +3,7 @@ import { members } from '../../Model/site.js'
 import { useMotion } from '../lib/motion.jsx'
 import { useReveal } from '../lib/reveal.jsx'
 import { cx } from '../lib/cx.js'
+import MemberPanel from './MemberPanel.jsx'
 
 /* ===========================================================================
    Medlemmer: the group above, the five of them below.
@@ -84,7 +85,7 @@ function release(event) {
   node.style.setProperty('--my', '0')
 }
 
-function Portrait({ person, index }) {
+function Portrait({ person, index, onOpen }) {
   const [ref, inView] = useReveal()
   const { still } = useMotion()
   const pending = !person.src
@@ -100,34 +101,55 @@ function Portrait({ person, index }) {
       {pending ? (
         <span className="member__pending">{members.pendingLabel}</span>
       ) : (
-        <figure className="member__figure">
-          <div className="member__photo">
-            <img
-              src={person.src}
-              alt=""
-              width={members.portrait.width}
-              height={members.portrait.height}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <figcaption className="member__name">{person.name}</figcaption>
-        </figure>
+        /* The whole portrait is the control that opens the panel. It carries
+           its own name rather than reading the caption, so the button says
+           what it does instead of only who it shows. */
+        <button
+          type="button"
+          className="member__open"
+          aria-label={`${members.detail.open} ${person.fullName ?? person.name}`}
+          onClick={() => onOpen(person)}
+        >
+          <figure className="member__figure">
+            <div className="member__photo">
+              <img
+                src={person.src}
+                alt=""
+                width={members.portrait.width}
+                height={members.portrait.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <figcaption className="member__name">{person.name}</figcaption>
+          </figure>
+        </button>
       )}
     </li>
   )
 }
 
 export default function MembersSection() {
+  /* Which portrait is open, or null. One panel serves all five: the person is
+     what changes, not the panel. */
+  const [opened, setOpened] = useState(null)
+
   return (
     <div className="members">
       <GroupPhotos />
 
       <ul className="members__row">
         {members.people.map((person, index) => (
-          <Portrait person={person} index={index} key={person.name ?? `pending-${index}`} />
+          <Portrait
+            person={person}
+            index={index}
+            onOpen={setOpened}
+            key={person.name ?? `pending-${index}`}
+          />
         ))}
       </ul>
+
+      <MemberPanel person={opened} onClose={() => setOpened(null)} />
     </div>
   )
 }
