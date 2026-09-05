@@ -59,7 +59,6 @@ export const members = {
     {
       name: 'Isak',
       fullName: 'Isak Gulaker',
-      role: 'Prosjektstyring & Utvikler',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-isak.webp'),
       age: null,
@@ -71,7 +70,6 @@ export const members = {
     {
       name: 'My',
       fullName: 'My Trinh Hoang',
-      role: 'Frontend & AI',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-my.webp'),
       age: null,
@@ -83,7 +81,6 @@ export const members = {
     {
       name: 'Oskar',
       fullName: 'Oskar Moberg Kirkbride',
-      role: 'Utvikler & Frontend',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-oskar.webp'),
       age: null,
@@ -95,7 +92,6 @@ export const members = {
     {
       name: 'Sabrine',
       fullName: 'Sabrine N B Hansen',
-      role: 'Fullstack-utvikling & AI',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-sabrine.webp'),
       age: null,
@@ -107,7 +103,6 @@ export const members = {
     {
       name: 'Yones',
       fullName: 'Yones Feili',
-      role: 'UX/UI-designer, Utvikler & Innovasjon med AI',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-yones.webp'),
       age: null,
