@@ -231,12 +231,28 @@
   line-height: 1;
   text-transform: uppercase;
   cursor: pointer;
-  opacity: 0.85;
-  transition: opacity 0.3s ease;
+  /* Hidden until the landing scene is on screen, and gone again once it has
+     scrolled away - it drives nothing that is still in view. `visibility` is
+     what keeps it off the tab order while it is away; the delay holds it
+     visible long enough for the fade out to be seen. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.5rem);
+  transition:
+    opacity 0.45s ease,
+    transform 0.55s var(--ease-out),
+    visibility 0s linear 0.55s;
 }
 
-.pause-toggle:hover,
-.pause-toggle:focus-visible {
+.pause-toggle.is-visible {
+  opacity: 0.85;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.pause-toggle.is-visible:hover,
+.pause-toggle.is-visible:focus-visible {
   opacity: 1;
 }
 
