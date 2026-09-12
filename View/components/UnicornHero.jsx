@@ -1,8 +1,8 @@
-import mountainHero from '../../Assets/Images/mountain-hero.svg'
+import mountainHero from '../../Assets/Images/mountain-hero.png'
 
 /* ===========================================================================
    The landing scene: Lightweight, high-performance mountain atmosphere.
-   Zero WebGL overhead, loaded from Assets/Images/mountain-hero.svg.
+   Zero WebGL overhead, loaded from Assets/Images/mountain-hero.png.
    =========================================================================== */
 export default function UnicornHero() {
   return (
