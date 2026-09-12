@@ -530,7 +530,7 @@ class SceneBoundary extends Component {
    frame - including while the section is off screen and should be idle. */
 const CAMERA = { fov: 30, near: 0.1, far: 80, position: [0, 8, 12] }
 const CONTEXT = { alpha: true, antialias: true, powerPreference: 'high-performance', stencil: false }
-const DPR_RANGE = [1, 1.6]
+const DPR_RANGE = [1, 1.25]
 /* The canvas sets pointer-events on itself, so refuse them here rather than
    relying on the wrapper's inherited none. */
 const CANVAS_STYLE = { pointerEvents: 'none' }
@@ -556,7 +556,7 @@ export default function RidgeCanvas() {
     if (!node) return undefined
 
     const observer = new IntersectionObserver(([entry]) => setActive(entry.isIntersecting), {
-      rootMargin: '15% 0px',
+      rootMargin: '5% 0px',
     })
     observer.observe(node)
     return () => observer.disconnect()

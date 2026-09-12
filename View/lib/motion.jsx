@@ -11,13 +11,30 @@ const MotionContext = createContext(null)
 const STILL = { reduced: true, lowPower: true }
 
 function readProfile() {
-  /* deviceMemory and hardwareConcurrency are absent on Safari and Firefox.
-     Assume a capable machine there rather than punishing it with the fallback. */
-  const memory = navigator.deviceMemory || 8
-  const cores = navigator.hardwareConcurrency || 8
+  if (typeof window === 'undefined') return STILL
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const memory = navigator.deviceMemory
+  const cores = navigator.hardwareConcurrency || 4
+  const isTouch = window.matchMedia('(pointer: coarse)').matches
+  const isSmallScreen = window.innerWidth < 1024
+
+  /* Activate lowPower on:
+     - Mobile, tablet, or touch devices
+     - Screens with width under 1024px
+     - Systems with 4 or fewer cores
+     - Systems with known memory < 8GB
+     - Safari/Firefox without memory API where cores < 8 */
+  const lowPower =
+    reduced ||
+    isTouch ||
+    isSmallScreen ||
+    cores <= 4 ||
+    (typeof memory === 'number' ? memory < 8 : cores < 8)
+
   return {
-    reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-    lowPower: memory < 4 || cores < 4,
+    reduced,
+    lowPower,
   }
 }
 
@@ -59,12 +76,12 @@ export function MotionProvider({ children }) {
   const still = profile.reduced
   const heroStill = profile.reduced || pausedByUser
 
-  /* The one thing CSS alone animates - the fog - reads the same answer from a
-     class on the root, since it cannot read this context. It drifts behind the
-     whole page rather than belonging to the landing, so it follows `still`. */
+  /* The root classes reflect both the still and lowPower states so CSS
+     animations like fog can pause or soften. */
   useEffect(() => {
     document.documentElement.classList.toggle('is-still', still)
-  }, [still])
+    document.documentElement.classList.toggle('is-low-power', profile.lowPower)
+  }, [still, profile.lowPower])
 
   const value = useMemo(
     () => ({

@@ -22,56 +22,7 @@ import { cx } from '../lib/cx.js'
    stopped, so for them the switch would do nothing and is not shown.
    =========================================================================== */
 export default function PauseToggle() {
-  const { reduced, pausedByUser, togglePaused } = useMotion()
-  const hint = useRef(null)
-
-  /* The switch belongs to the landing scene and goes when it goes. Below the
-     fold it controls nothing that is on screen, and the corner is better spent
-     on the page itself. */
-  const onLanding = useLandingInView()
-
-  /* Written straight to custom properties on the note rather than through
-     state: following a cursor should cost one style write per move, not a
-     re-render of the one control that lives on every screen of the site. */
-  const follow = (event) => {
-    if (event.pointerType !== 'mouse') return
-
-    const node = hint.current
-    if (!node) return
-
-    node.style.setProperty('--x', `${event.clientX}px`)
-    node.style.setProperty('--y', `${event.clientY}px`)
-  }
-
-  if (reduced) return null
-
-  return (
-    <button
-      type="button"
-      className={cx('pause-toggle', onLanding && 'is-visible')}
-      /* Out of the tab order as well as out of sight once it has gone. */
-      tabIndex={onLanding ? undefined : -1}
-      aria-hidden={onLanding ? undefined : 'true'}
-      aria-pressed={pausedByUser}
-      aria-label={pausedByUser ? controls.playLabel : controls.pauseLabel}
-      /* The note is a mouse affordance; this is how everyone else is told. */
-      aria-describedby={pausedByUser ? 'pause-toggle-hint' : undefined}
-      onClick={togglePaused}
-      onPointerEnter={follow}
-      onPointerMove={follow}
-    >
-      <span className="pause-toggle__mark" aria-hidden="true" />
-      <span aria-hidden="true">{pausedByUser ? controls.play : controls.pause}</span>
-
-      {/* Always here, never mounted and unmounted with the paused state. The
-          note remembers where the cursor is in two custom properties written
-          on this element; tearing it down on every press threw that away, and
-          a fresh one drawn before the next pointer move landed wherever its
-          fallback put it. Whether it is seen is CSS's business - see the
-          aria-pressed rule beside it. */}
-      <span className="pause-toggle__hint" id="pause-toggle-hint" ref={hint}>
-        {controls.playHint}
-      </span>
-    </button>
-  )
+  /* The heavy 3D scene has been replaced with lightweight vector graphics,
+     so the pause/performance warning toggle is no longer needed. */
+  return null
 }

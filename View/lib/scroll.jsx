@@ -1,35 +1,14 @@
 import { createContext, use, useCallback, useEffect, useRef } from 'react'
-import Lenis from 'lenis'
-import 'lenis/dist/lenis.css'
-import { gsap, ScrollTrigger } from './gsap.js'
+import { ScrollTrigger } from './gsap.js'
 import { useMotion } from './motion.jsx'
 
 /* ===========================================================================
-   How the page scrolls.
-
-   On a desktop with a mouse the scroll is eased through Lenis, which is what
-   lets the scroll-driven scenes feel continuous rather than stepped. Everywhere
-   else the scroll is left native: on touch screens the browser's own physics
-   are better than anything scripted, a visitor who asked for reduced motion
-   gets exactly the scroll they asked for, and inside an embed the wheel must
-   keep reaching the host page once this one runs out - a smoothed scroll would
-   swallow it at the bottom edge.
-
-   In-page anchors are handled here too, so the hero titles and the navigation
-   behave the same whichever scroll is in charge, and a link straight to a
-   section (#medlemmer) lands on it even though the section is rendered after
-   the browser has already tried to jump there.
+   Native hardware-accelerated scroll.
+   Lenis smooth-wheel has been completely removed to eliminate input latency,
+   artificial damping, and sluggishness on all devices (especially Mac trackpads).
    =========================================================================== */
 
 const ScrollContext = createContext(null)
-
-function isEmbedded() {
-  try {
-    return window.self !== window.top
-  } catch {
-    return true
-  }
-}
 
 function targetFor(hash) {
   const id = decodeURIComponent(hash.replace(/^#/, ''))
@@ -37,46 +16,16 @@ function targetFor(hash) {
 }
 
 export function SmoothScroll({ children }) {
-  const { still, lowPower } = useMotion()
-  const lenis = useRef(null)
-
-  /* Read through a ref rather than closed over, so that pausing and resuming
-     does not rebuild `scrollTo` below. Only event handlers read it, so a
-     render's worth of lag cannot be observed. */
+  const { still } = useMotion()
   const stillRef = useRef(still)
   useEffect(() => {
     stillRef.current = still
   }, [still])
 
+  /* Sync ScrollTrigger with native browser scroll */
   useEffect(() => {
-    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
-    if (still || lowPower || isEmbedded() || !fine) return undefined
-
-    const instance = new Lenis({
-      lerp: 0.085,
-      smoothWheel: true,
-      syncTouch: false,
-      autoRaf: false,
-      anchors: false,
-    })
-    lenis.current = instance
-    window.__lenis = instance
-
-    /* One clock for everything: Lenis steps on GSAP's ticker, and tells
-       ScrollTrigger whenever it has moved the page. */
-    instance.on('scroll', ScrollTrigger.update)
-    const tick = (time) => instance.raf(time * 1000)
-    gsap.ticker.add(tick)
-    gsap.ticker.lagSmoothing(0)
-
-    return () => {
-      gsap.ticker.remove(tick)
-      instance.destroy()
-      lenis.current = null
-      delete window.__lenis
-      ScrollTrigger.refresh()
-    }
-  }, [still, lowPower])
+    ScrollTrigger.refresh()
+  }, [])
 
   /* Deliberately stable, and that stability is load-bearing: the effect below
      jumps to the address bar's section, and it must run when the page arrives
@@ -86,14 +35,6 @@ export function SmoothScroll({ children }) {
   const scrollTo = useCallback((target, { immediate = false } = {}) => {
     const node = typeof target === 'string' ? targetFor(target) : target
     if (!node) return
-
-    /* Both paths read scroll-margin-top from the stylesheet on their own, so
-       how far under the navigation a section comes to rest is set in one
-       place, in CSS, and never passed as an offset from here. */
-    if (lenis.current) {
-      lenis.current.scrollTo(node === document.documentElement ? 0 : node, { immediate, force: immediate })
-      return
-    }
 
     const behavior = immediate || stillRef.current ? 'auto' : 'smooth'
     if (node === document.documentElement) {
