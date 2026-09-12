@@ -21,6 +21,7 @@ export default function Landing() {
   const root = useRef(null)
   const depth = useRef(null)
   const titles = useRef(null)
+  const brand = useRef(null)
   const { still } = useMotion()
 
   useGSAP(
@@ -33,6 +34,7 @@ export default function Landing() {
         })
         .to(depth.current, { yPercent: 24, scale: 1.08, ease: 'none' }, 0)
         .to(titles.current, { yPercent: -36, autoAlpha: 0, ease: 'none' }, 0)
+        .to(brand.current, { yPercent: -28, autoAlpha: 0, ease: 'none' }, 0)
 
       /* A mouse, not a finger: a title that leans toward a fingertip only
          moves after the tap, which is too late to mean anything. */
@@ -71,6 +73,10 @@ export default function Landing() {
 
       <div className="landing__depth" ref={depth}>
         <UnicornHero />
+      </div>
+
+      <div className="hero-brand" ref={brand}>
+        <span className="hero-brand__name">SYMITO</span>
       </div>
 
       <h1 id="landing-title" className="visually-hidden">
