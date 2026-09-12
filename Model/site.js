@@ -21,16 +21,6 @@ export const site = {
   tagline: 'Vi går hele veien',
 }
 
-export const plan = {
-  title: 'Vi sketcher en plan',
-  image: {
-    src: media('process-table.webp'),
-    alt: 'Studenter samarbeider over skisser og et rutekart på et arbeidsbord',
-    width: 1100,
-    height: 1374,
-  },
-}
-
 /* The group shot cycles through these frames, crossfading between them; add or
    remove one and the cycle follows. The row of portraits is complete; a row with
    a `null` name still holds its place rather than letting the others spread out,

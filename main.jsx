@@ -8,7 +8,6 @@ import Veil from './View/components/Veil.jsx'
 import SiteNav from './View/components/SiteNav.jsx'
 import PauseToggle from './View/components/PauseToggle.jsx'
 import Landing from './View/components/Landing.jsx'
-import PlanSection from './View/components/PlanSection.jsx'
 import MembersSection from './View/components/MembersSection.jsx'
 import VideoSection from './View/components/VideoSection.jsx'
 import PendingSection from './View/components/PendingSection.jsx'
@@ -66,7 +65,6 @@ function App() {
         <SiteNav />
         <main id="innhold">
           <Landing />
-          <PlanSection />
           <TopicSections />
         </main>
         <PauseToggle />

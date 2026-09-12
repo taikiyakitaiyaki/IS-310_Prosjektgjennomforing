@@ -44,151 +44,6 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Vi sketcher en plan. The photograph in one column, the heading over the map
-   in the other.
-   --------------------------------------------------------------------------- */
-.plan {
-  position: relative;
-  min-height: 100dvh;
-  display: grid;
-  grid-template-columns: minmax(20rem, 38%) minmax(0, 1fr);
-}
-
-.plan__media {
-  position: relative;
-  min-height: 100dvh;
-}
-
-.plan__window {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background: var(--surface-strong);
-}
-
-/* Taller than its window, so the drift the scroll gives it never shows an
-   edge. */
-.plan__drift {
-  position: absolute;
-  inset: -8% 0;
-  will-change: transform;
-}
-
-.plan__drift img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.plan__media.is-ready img {
-  opacity: 1;
-}
-
-.plan__skeleton {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.plan__skeleton::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(100deg, transparent 20%, color-mix(in srgb, var(--text) 10%, transparent) 50%, transparent 80%);
-  transform: translateX(-100%);
-  animation: skeleton-scan 1.4s ease-in-out infinite;
-}
-
-.plan__error {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 2rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-align: center;
-}
-
-/* The heading sits at the top of this column, centred over the map behind
-   it, in line with every other section's heading. */
-.plan__content {
-  position: relative;
-  display: grid;
-  align-content: start;
-  justify-items: center;
-  padding: var(--section-top) clamp(2rem, 7vw, 7rem) var(--section-y);
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.plan__map {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.plan__title {
-  position: relative;
-  isolation: isolate;
-  max-width: 12ch;
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: clamp(3.4rem, 6.8vw, 7.25rem);
-  font-stretch: 104%;
-  font-weight: 610;
-  letter-spacing: -0.06em;
-  line-height: 0.88;
-  text-align: center;
-  text-transform: uppercase;
-  text-wrap: balance;
-  /* A filter rather than a text shadow: the words sit inside clipped masks
-     while they arrive, and a shadow drawn in there would be cut to boxes. */
-  filter: drop-shadow(0 0 22px rgba(191, 224, 255, 0.28));
-}
-
-/* A soft clearing in the map behind the words, so the type sits on the sheet
-   rather than in the lines. */
-.plan__title::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  inset: -18% -12%;
-  background: radial-gradient(ellipse at center, var(--surface) 38%, transparent 72%);
-  pointer-events: none;
-}
-
-/* The photograph uncovers from the bottom as it arrives, settling from a
-   slight zoom. The opacity transition on the image is the load fade and stays
-   on the element; only the arrival belongs to the arrived state. */
-@media (prefers-reduced-motion: no-preference) {
-  .plan__window {
-    clip-path: inset(100% 0 0 0);
-  }
-
-  .plan__media.is-in .plan__window {
-    clip-path: inset(0);
-    transition: clip-path 1.4s var(--ease-out);
-  }
-
-  .plan__drift img {
-    transform: scale(1.14);
-  }
-
-  .plan__media.is-in img {
-    transform: none;
-    transition:
-      opacity 0.6s ease,
-      transform 1.8s var(--ease-out);
-  }
-}
-
-/* ---------------------------------------------------------------------------
    Medlemmer: group showcase (photo on the left, info on the right) above,
    the five of them below.
    --------------------------------------------------------------------------- */
@@ -1014,34 +869,10 @@ a.member-panel__link:focus-visible {
   inset: 0;
 }
 
-@keyframes skeleton-scan {
-  to {
-    transform: translateX(100%);
-  }
-}
-
 /* ---------------------------------------------------------------------------
    Small screens.
    --------------------------------------------------------------------------- */
 @media (max-width: 767px) {
-  .plan {
-    grid-template-columns: 1fr;
-  }
-
-  .plan__media {
-    min-height: auto;
-    aspect-ratio: 4 / 5;
-  }
-
-  .plan__content {
-    min-height: 72dvh;
-    padding: var(--section-top) 1.25rem 2.5rem;
-  }
-
-  .plan__title {
-    font-size: clamp(3rem, 14vw, 5.5rem);
-  }
-
   /* Five across would be thumbnails at this width. */
   .members__row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1064,11 +895,5 @@ a.member-panel__link:focus-visible {
     min-height: clamp(11rem, 32dvh, 19rem);
     margin-inline: -1.25rem;
     margin-bottom: calc(-1 * clamp(3rem, 12vw, 4.5rem));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .plan__skeleton::after {
-    animation: none;
   }
 }
