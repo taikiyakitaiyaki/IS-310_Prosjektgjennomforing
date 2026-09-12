@@ -56,7 +56,6 @@ export const members = {
     },
     photos: [
       { src: media('group-1.webp'), width: 1800, height: 1350 },
-      { src: media('group-3.webp'), width: 1800, height: 1350 },
     ],
   },
   /* Every portrait opens a panel, and this is what the panel says. `name` is
