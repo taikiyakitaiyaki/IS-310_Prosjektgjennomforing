@@ -1,9 +1,8 @@
-import { Suspense, lazy, useRef } from 'react'
+import { useRef } from 'react'
 import { controls, sections, site } from '../../Model/site.js'
 import { gsap, useGSAP } from '../lib/gsap.js'
 import { useMotion } from '../lib/motion.jsx'
-
-const LazyUnicornHero = lazy(() => import('./UnicornHero.jsx'))
+import UnicornHero from './UnicornHero.jsx'
 
 /* ===========================================================================
    The landing: the Unicorn scene, and the four titles that are the way in.
@@ -71,9 +70,7 @@ export default function Landing() {
       <div className="landing__sky" aria-hidden="true" />
 
       <div className="landing__depth" ref={depth}>
-        <Suspense fallback={null}>
-          <LazyUnicornHero />
-        </Suspense>
+        <UnicornHero />
       </div>
 
       <h1 id="landing-title" className="visually-hidden">

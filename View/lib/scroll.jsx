@@ -22,16 +22,56 @@ export function SmoothScroll({ children }) {
     stillRef.current = still
   }, [still])
 
-  /* Sync ScrollTrigger with native browser scroll */
+  /* Native scroll restoration */
   useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'auto'
+    }
     ScrollTrigger.refresh()
   }, [])
 
-  /* Deliberately stable, and that stability is load-bearing: the effect below
-     jumps to the address bar's section, and it must run when the page arrives
-     and at no other time. Give this callback a dependency and every pause or
-     resume would rebuild it, re-run that effect, and drag the visitor back to
-     whichever section they last opened from the navigation. */
+  /* Preserve scroll position across refreshes when no hash is present */
+  useEffect(() => {
+    if (window.location.hash.length >= 2) return undefined
+
+    let timer = null
+    const onScroll = () => {
+      if (timer) return
+      timer = setTimeout(() => {
+        timer = null
+        if (window.scrollY > 0) {
+          sessionStorage.setItem('scroll_y', String(window.scrollY))
+        }
+      }, 100)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (timer) clearTimeout(timer)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (window.location.hash.length >= 2) return undefined
+
+    const saved = sessionStorage.getItem('scroll_y')
+    if (saved) {
+      const top = parseInt(saved, 10)
+      if (top > 0) {
+        const html = document.documentElement
+        const prevBehavior = html.style.scrollBehavior
+        html.style.scrollBehavior = 'auto'
+        window.scrollTo({ top, behavior: 'auto' })
+        requestAnimationFrame(() => {
+          html.style.scrollBehavior = prevBehavior
+          ScrollTrigger.refresh()
+        })
+      }
+    }
+  }, [])
+
+  /* Deliberately stable: jumps to the address bar's section */
   const scrollTo = useCallback((target, { immediate = false } = {}) => {
     const node = typeof target === 'string' ? targetFor(target) : target
     if (!node) return
@@ -44,13 +84,7 @@ export function SmoothScroll({ children }) {
     }
   }, [])
 
-  /* A link straight to a section: the browser tried to honour it before React
-     had rendered anything, so do it again once the page exists - and once more
-     when the web font lands, since that is what settles the layout.
-
-     On arrival only. The hash keeps changing as the visitor uses the
-     navigation, so anything that re-ran this later would read a stale
-     destination and move the page out from under them. */
+  /* A link straight to a section: jump immediately without smooth crawl on load */
   useEffect(() => {
     if (window.location.hash.length < 2) return undefined
 
@@ -58,7 +92,16 @@ export function SmoothScroll({ children }) {
     const jump = () => {
       if (cancelled) return
       const node = targetFor(window.location.hash)
-      if (node && node !== document.documentElement) scrollTo(node, { immediate: true })
+      if (node && node !== document.documentElement) {
+        const html = document.documentElement
+        const prevBehavior = html.style.scrollBehavior
+        html.style.scrollBehavior = 'auto'
+        node.scrollIntoView({ block: 'start', behavior: 'auto' })
+        requestAnimationFrame(() => {
+          html.style.scrollBehavior = prevBehavior
+          ScrollTrigger.refresh()
+        })
+      }
     }
 
     const frame = requestAnimationFrame(() => requestAnimationFrame(jump))
@@ -69,7 +112,7 @@ export function SmoothScroll({ children }) {
       cancelled = true
       cancelAnimationFrame(frame)
     }
-  }, [scrollTo])
+  }, [])
 
   /* Every in-page anchor on the site goes through one handler. */
   useEffect(() => {
