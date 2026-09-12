@@ -72,6 +72,10 @@ function GroupPhotos({ onOpen }) {
               className={index === shown ? 'is-shown' : undefined}
             />
           ))}
+          <span className="members__group-badge" aria-hidden="true">
+            <span>{members.group.panel.open}</span>
+            <span className="members__group-arrow">→</span>
+          </span>
         </div>
       </button>
       <figcaption className="members__caption">{members.group.label}</figcaption>
@@ -131,8 +135,19 @@ function Portrait({ person, index, onOpen }) {
                 loading="lazy"
                 decoding="async"
               />
+              <span className="member__corner-hint" aria-hidden="true">
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" />
+                </svg>
+              </span>
             </div>
-            <figcaption className="member__name">{person.name}</figcaption>
+            <figcaption className="member__caption">
+              <span className="member__name">{person.name}</span>
+              <span className="member__action">
+                <span>{members.detail.actionLabel}</span>
+                <span className="member__arrow" aria-hidden="true">→</span>
+              </span>
+            </figcaption>
           </figure>
         </button>
       )}

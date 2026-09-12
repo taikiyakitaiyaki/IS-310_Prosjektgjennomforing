@@ -56,7 +56,6 @@ export const members = {
     },
     photos: [
       { src: media('group-1.webp'), width: 1800, height: 1350 },
-      { src: media('group-2.webp'), width: 1800, height: 1350 },
       { src: media('group-3.webp'), width: 1800, height: 1350 },
     ],
   },
@@ -166,6 +165,7 @@ export const members = {
       { key: 'portfolio', label: 'Portefølje' },
     ],
     linkPending: 'Kommer',
+    actionLabel: 'Se profil',
   },
 }
 

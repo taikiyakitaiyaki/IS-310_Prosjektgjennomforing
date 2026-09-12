@@ -230,6 +230,54 @@
   opacity: 1;
 }
 
+/* A floating glassmorphic badge indicating the group photo can be clicked */
+.members__group-badge {
+  position: absolute;
+  bottom: clamp(0.75rem, 2vw, 1.25rem);
+  right: clamp(0.75rem, 2vw, 1.25rem);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(14, 21, 37, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--text);
+  font-family: var(--font-display, inherit);
+  font-size: clamp(0.78rem, 1vw, 0.88rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s var(--ease-out),
+    box-shadow 0.3s ease;
+  pointer-events: none;
+}
+
+.members__group-arrow {
+  display: inline-block;
+  color: var(--accent);
+  transition: transform 0.3s ease;
+}
+
+.members__open:hover .members__group-badge,
+.members__open:focus-visible .members__group-badge {
+  background: rgba(20, 32, 56, 0.92);
+  border-color: rgba(255, 255, 255, 0.38);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 20px rgba(191, 224, 255, 0.2);
+}
+
+.members__open:hover .members__group-arrow,
+.members__open:focus-visible .members__group-arrow {
+  transform: translateX(3px);
+}
+
 .members__caption {
   justify-self: end;
   color: var(--text-muted);
@@ -252,9 +300,7 @@
   position: relative;
 }
 
-/* The portrait became a button; it should still look exactly like a portrait.
-   `display: contents` would drop the focus ring, so the element stays in the
-   layout and simply carries none of a button's own appearance. */
+/* The portrait is a clickable card with clear visual affordances */
 .member__open {
   display: block;
   width: 100%;
@@ -277,7 +323,47 @@
   aspect-ratio: 3 / 4;
   overflow: hidden;
   background: var(--surface-strong);
-  transition: box-shadow 0.6s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  transition:
+    box-shadow 0.6s ease,
+    border-color 0.4s ease,
+    transform 0.4s var(--ease-out);
+}
+
+/* A subtle corner indicator icon signifying that the portrait can be opened */
+.member__corner-hint {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  z-index: 2;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(14, 21, 37, 0.68);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-muted);
+  opacity: 0.8;
+  transition:
+    opacity 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease,
+    border-color 0.3s ease;
+  pointer-events: none;
+}
+
+.member:hover .member__corner-hint,
+.member__open:focus-visible .member__corner-hint {
+  opacity: 1;
+  color: #fff;
+  background: rgba(20, 32, 56, 0.9);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: scale(1.1);
 }
 
 /* Held a little larger than its frame, so it can follow the pointer without
@@ -290,12 +376,22 @@
   transition: transform 0.6s var(--ease-out);
 }
 
-.member:hover .member__photo {
+.member:hover .member__photo,
+.member__open:focus-visible .member__photo {
+  border-color: rgba(255, 255, 255, 0.28);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35), 0 0 48px rgba(191, 224, 255, 0.28);
+  transform: translateY(-2px);
 }
 
 .member:hover .member__photo img {
   transform: translate(calc(var(--mx) * -7px), calc(var(--my) * -7px)) scale(1.1);
+}
+
+.member__caption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
 }
 
 .member__name {
@@ -304,6 +400,39 @@
   font-size: clamp(0.95rem, 1.2vw, 1.1rem);
   font-weight: 600;
   letter-spacing: -0.02em;
+  transition: color 0.3s ease;
+}
+
+.member__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  color: var(--text-muted);
+  font-size: clamp(0.74rem, 0.88vw, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: color 0.3s ease;
+}
+
+.member__arrow {
+  display: inline-block;
+  color: var(--accent);
+  transition: transform 0.3s ease;
+}
+
+.member:hover .member__name,
+.member__open:focus-visible .member__name {
+  color: #fff;
+}
+
+.member:hover .member__action,
+.member__open:focus-visible .member__action {
+  color: var(--text);
+}
+
+.member:hover .member__arrow,
+.member__open:focus-visible .member__arrow {
+  transform: translateX(3px);
 }
 
 /* ---------------------------------------------------------------------------
