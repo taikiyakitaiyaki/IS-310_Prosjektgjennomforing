@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { members } from '../../Model/site.js'
-import { follow, release } from '../lib/follow.js'
 import { gsap, useGSAP } from '../lib/gsap.js'
 import { useMotion } from '../lib/motion.jsx'
-import { portraitId, warmPortrait } from '../lib/portrait.js'
 import { useReveal } from '../lib/reveal.jsx'
 import { cx } from '../lib/cx.js'
 import LitText from './LitText.jsx'
-import MemberProfile from './MemberProfile.jsx'
+import MemberBook from './MemberBook.jsx'
 
 /* ===========================================================================
    Medlemmer: the group and the words about us side by side above, the five
@@ -121,67 +119,10 @@ function GroupText() {
   )
 }
 
-function Portrait({ person, index, onOpen }) {
-  const [ref, inView] = useReveal()
-  const { still } = useMotion()
-  const pending = !person.src
-
-  return (
-    <li
-      className={cx('member', pending && 'member--pending', inView && 'is-in')}
-      style={{ '--d': `${index * 90}ms` }}
-      ref={ref}
-      onPointerMove={pending || still ? undefined : follow}
-      onPointerLeave={pending || still ? undefined : release}
-    >
-      {pending ? (
-        <span className="member__pending">{members.pendingLabel}</span>
-      ) : (
-        /* The whole portrait is the control that opens it up. It carries its
-           own name rather than reading the caption, so the button says what
-           it does instead of only who it shows. A pointer resting on it, or
-           focus arriving, fetches the large copy ahead of the press. */
-        <button
-          type="button"
-          className="member__open"
-          aria-label={`${members.detail.open} ${person.fullName ?? person.name}`}
-          aria-haspopup="dialog"
-          onClick={() => onOpen(person)}
-          onPointerEnter={() => warmPortrait(person)}
-          onFocus={() => warmPortrait(person)}
-        >
-          <figure className="member__figure">
-            {/* The frame is what flies: Flip finds it in the profile again by
-                the same id. */}
-            <div className="member__photo" data-flip-id={portraitId(person)}>
-              <img
-                src={person.src}
-                alt=""
-                width={members.portrait.width}
-                height={members.portrait.height}
-                loading="lazy"
-                decoding="async"
-              />
-              {/* Four corner marks, like a map sheet's, that open out to the
-                  edges of the picture under the pointer - the picture is
-                  about to grow past them. */}
-              <span className="member__marks" aria-hidden="true" />
-            </div>
-            <figcaption className="member__name">{person.name}</figcaption>
-          </figure>
-        </button>
-      )}
-    </li>
-  )
-}
-
 export default function MembersSection() {
-  /* The row, where every portrait leaves from and lands back in; the profile
-     they open up into; and whether they are away from the row right now, in
-     which case the row holds their empty places for them. */
-  const row = useRef(null)
-  const profile = useRef(null)
-  const [lifted, setLifted] = useState(false)
+  /* Which book is open, if any: one at a time, so opening one shuts the
+     last one. */
+  const [open, setOpen] = useState(null)
 
   return (
     <div className="members">
@@ -192,18 +133,20 @@ export default function MembersSection() {
         <GroupText />
       </div>
 
-      <ul className={cx('members__row', lifted && 'is-lifted')} ref={row}>
+      <ul className={cx('members__row', open !== null && 'has-open')}>
         {members.people.map((person, index) => (
-          <Portrait
+          <MemberBook
             person={person}
             index={index}
-            onOpen={(chosen) => profile.current?.open(chosen)}
+            open={open === index}
+            onOpen={() => setOpen(index)}
+            /* Only this book's own closing: a press that has already opened
+               another one is left alone. */
+            onClose={() => setOpen((current) => (current === index ? null : current))}
             key={person.name ?? `pending-${index}`}
           />
         ))}
       </ul>
-
-      <MemberProfile ref={profile} row={row} onLift={setLifted} />
     </div>
   )
 }
