@@ -164,8 +164,8 @@
    element - a fixed, pointer-transparent layer composites once.
    --------------------------------------------------------------------------- */
 :root {
-  /* Named, so the open profile - which sits above this sheet, in the top
-     layer - can lay the same grain over its own ground. */
+  /* Named, so anything that wants the same grain over its own ground can
+     lay it there. */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
