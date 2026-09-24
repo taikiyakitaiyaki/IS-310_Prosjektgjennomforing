@@ -35,7 +35,6 @@ Bilder legges i `public/media/` som webp. Originalene ligger i `Assets/Images/`.
 Model/site.js            innhold
 View/components/         én komponent per del av siden
 View/lib/motion.jsx      redusert bevegelse, lav effekt
-View/lib/portrait.js     portrettene i raden og profilen de åpner seg til
 View/lib/scroll.jsx      myk rulling (Lenis), ankerlenker, #hash ved lasting
 View/lib/reveal.jsx      inntredener når ting rulles inn i bildet
 View/lib/heightField.js  fjellet, som tall (ingen avhengigheter)
@@ -61,16 +60,17 @@ View/css/sections.css    medlemmer, video, bedrift, ambisjonsnivå
   skjermen og i skjulte faner, og står stille ved redusert bevegelse.
   Mus og berøring bøyer strømmen forsiktig lokalt på GPU-en, uten å blokkere
   rulling eller legge til ekstra tegnepass.
-- Et portrett i raden åpner seg til en profil: bildet vokser ut av plassen
-  sin i raden til et stort portrett, de fire andre trer til side i en liten
-  rad, og navn, studie og «Om» kommer i fokus ord for ord. Lukk spiller det
-  baklengs, og bildet lander på plassen det kom fra. Mellom personene går man
-  med pilene, piltastene, et trykk på et ansikt eller et sveip på telefon.
-  Bildene flyttes med GSAP Flip, bare med transform og opacity; ordene er det
-  eneste som gjøres uskarpe, og ikke på svakere enheter. Redusert bevegelse
-  åpner, bytter og lukker uten animasjon.
-- `member-*-large.webp` er det samme utsnittet som portrettet i raden, i
-  halvannen gang størrelsen, skåret fra originalen i `Assets/Images/`.
-  Profilen viser det lille bildet med én gang og legger det store over når
-  det er lastet, så de to må ha nøyaktig samme utsnitt.
+- Hvert portrett er omslaget på en liten bok om personen. Et trykk løfter
+  boken ut av raden og slår opp omslaget: inni ligger en passside (bilde,
+  navn og maskinlesbar linje), og så kapitlene Om meg, Kompetanse,
+  Interesser og hobbyer og Finn meg. Man blar med pilene under boken, et
+  trykk på venstre eller høyre side, piltastene eller et sveip på telefon.
+  Escape, et trykk utenfor boken eller å bla bakover forbi første side
+  lukker den. På bred skjerm ligger boken oppslått med to sider; på telefon
+  vises én side om gangen.
+  Boken legges ut i full størrelse med én gang og krympes ned til portrettet,
+  så teksten er skarp hele veien. Løftet, hver side som blas og lyset over
+  den er bare transform og opacity. Redusert bevegelse blar uten animasjon.
+  Innholdet står i `members.people` i `Model/site.js`; `hobbies` fylles inn
+  av hver enkelt.
 - Ansiktsmodellens kilde og lisens ligger i `public/media/face/README.md`.
