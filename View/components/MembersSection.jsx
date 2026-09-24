@@ -3,11 +3,11 @@ import { members } from '../../Model/site.js'
 import { follow, release } from '../lib/follow.js'
 import { gsap, useGSAP } from '../lib/gsap.js'
 import { useMotion } from '../lib/motion.jsx'
+import { portraitId, warmPortrait } from '../lib/portrait.js'
 import { useReveal } from '../lib/reveal.jsx'
 import { cx } from '../lib/cx.js'
-import Chevron from './Chevron.jsx'
 import LitText from './LitText.jsx'
-import MemberPanel from './MemberPanel.jsx'
+import MemberProfile from './MemberProfile.jsx'
 
 /* ===========================================================================
    Medlemmer: the group and the words about us side by side above, the five
@@ -137,17 +137,23 @@ function Portrait({ person, index, onOpen }) {
       {pending ? (
         <span className="member__pending">{members.pendingLabel}</span>
       ) : (
-        /* The whole portrait is the control that opens the panel. It carries
-           its own name rather than reading the caption, so the button says
-           what it does instead of only who it shows. */
+        /* The whole portrait is the control that opens it up. It carries its
+           own name rather than reading the caption, so the button says what
+           it does instead of only who it shows. A pointer resting on it, or
+           focus arriving, fetches the large copy ahead of the press. */
         <button
           type="button"
           className="member__open"
           aria-label={`${members.detail.open} ${person.fullName ?? person.name}`}
+          aria-haspopup="dialog"
           onClick={() => onOpen(person)}
+          onPointerEnter={() => warmPortrait(person)}
+          onFocus={() => warmPortrait(person)}
         >
           <figure className="member__figure">
-            <div className="member__photo">
+            {/* The frame is what flies: Flip finds it in the profile again by
+                the same id. */}
+            <div className="member__photo" data-flip-id={portraitId(person)}>
               <img
                 src={person.src}
                 alt=""
@@ -156,9 +162,10 @@ function Portrait({ person, index, onOpen }) {
                 loading="lazy"
                 decoding="async"
               />
-              {/* The panel slides in from the right, so the mark points the
-                  way it will travel. */}
-              <Chevron className="member__hint" direction="left" />
+              {/* Four corner marks, like a map sheet's, that open out to the
+                  edges of the picture under the pointer - the picture is
+                  about to grow past them. */}
+              <span className="member__marks" aria-hidden="true" />
             </div>
             <figcaption className="member__name">{person.name}</figcaption>
           </figure>
@@ -169,9 +176,12 @@ function Portrait({ person, index, onOpen }) {
 }
 
 export default function MembersSection() {
-  /* Which portrait is open, or null. One panel serves all five: the person is
-     what changes, not the panel. */
-  const [opened, setOpened] = useState(null)
+  /* The row, where every portrait leaves from and lands back in; the profile
+     they open up into; and whether they are away from the row right now, in
+     which case the row holds their empty places for them. */
+  const row = useRef(null)
+  const profile = useRef(null)
+  const [lifted, setLifted] = useState(false)
 
   return (
     <div className="members">
@@ -182,18 +192,18 @@ export default function MembersSection() {
         <GroupText />
       </div>
 
-      <ul className="members__row">
+      <ul className={cx('members__row', lifted && 'is-lifted')} ref={row}>
         {members.people.map((person, index) => (
           <Portrait
             person={person}
             index={index}
-            onOpen={setOpened}
+            onOpen={(chosen) => profile.current?.open(chosen)}
             key={person.name ?? `pending-${index}`}
           />
         ))}
       </ul>
 
-      <MemberPanel person={opened} onClose={() => setOpened(null)} />
+      <MemberProfile ref={profile} row={row} onLift={setLifted} />
     </div>
   )
 }
