@@ -1,4 +1,4 @@
-import { createContext, use, useCallback, useEffect, useRef } from 'react'
+import { createContext, use, useCallback, useEffect, useMemo, useRef } from 'react'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import { gsap, ScrollTrigger } from './gsap.js'
@@ -171,11 +171,30 @@ export function SmoothScroll({ children }) {
     return () => document.removeEventListener('click', onClick)
   }, [scrollTo])
 
-  return <ScrollContext value={{ scrollTo }}>{children}</ScrollContext>
+  /* Stops the page wherever it is, the moment something is about to cover
+     it. A scroll still easing out would otherwise carry the page on
+     underneath, and move the places the cover means to fly things back to.
+     Only the easing is stopped, never the scroll itself: the page keeps its
+     scrollbar, so nothing behind the cover shifts sideways. What covers the
+     page keeps the wheel and the finger to itself - see .profile in
+     sections.css. */
+  const halt = useCallback(() => {
+    lenis.current?.reset()
+  }, [])
+
+  const value = useMemo(() => ({ scrollTo, halt }), [scrollTo, halt])
+
+  return <ScrollContext value={value}>{children}</ScrollContext>
 }
 
 export function useScrollTo() {
   const value = use(ScrollContext)
   if (!value) throw new Error('useScrollTo must be used inside <SmoothScroll>')
   return value.scrollTo
+}
+
+export function useScrollHalt() {
+  const value = use(ScrollContext)
+  if (!value) throw new Error('useScrollHalt must be used inside <SmoothScroll>')
+  return value.halt
 }
