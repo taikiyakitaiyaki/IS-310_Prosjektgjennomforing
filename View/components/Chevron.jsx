@@ -1,7 +1,7 @@
 /* ===========================================================================
    A chevron pointing the way its thing comes in, or the way to go: down under
-   the group on the landing, toward the rest of the page; left and right in an
-   open profile, to the person before and after.
+   the group on the landing, toward the rest of the page; left and right under an
+   open book, to the page before and after.
 
    Purely for the eye - the button it sits on already says what it does - so
    it is hidden from assistive technology here rather than at every use.
