@@ -347,11 +347,6 @@ function pagesFor(person, sideOf) {
       <Paper side="right" last className="book__paper--end">
         <div className="book__end">
           <span className="book__mark">{site.name}</span>
-          <p className="book__colophon">
-            {site.course}
-            <br />
-            {site.group}
-          </p>
           <Barcode seed={name} />
         </div>
       </Paper>
