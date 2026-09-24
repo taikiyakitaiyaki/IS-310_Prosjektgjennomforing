@@ -20,6 +20,9 @@ export const site = {
   name: 'SYMITO',
   group: 'Gruppe 11',
   course: 'IS-310 Prosjektgjennomføring',
+  /* The course's code on its own, for the passport line in each member's
+     book. */
+  courseCode: 'IS-310',
   email: 'gruppe11@is310.no',
   tagline: 'Vi går hele veien',
 }
@@ -89,67 +92,73 @@ export const members = {
       { src: media('group-3.webp'), width: 1800, height: 1350 },
     ],
   },
-  /* Every portrait opens up into a profile, and this is what the profile
-     says. `name` is the caption under the picture; everything else belongs to
-     the profile.
+  /* Every portrait opens into a small book about the person, and this is what
+     the book says. `name` is the caption under the picture; the book has
+     `fullName`, `role` and `study` on its passport page, then a chapter
+     each for `description` (Om meg), `skills`, `interests` and `hobbies`,
+     and the three links.
 
-     `large` is the same picture at one and a half times the size, cut from the
-     original in Assets/Images with exactly the crop of `src` - the profile
-     shows `src` the moment it opens and lays `large` over it once it has
-     arrived, so the two have to line up to the pixel. A person without one
-     simply keeps `src`.
+     `skills`, `interests` and `hobbies` are each a few sentences of prose,
+     read on their own page. A chapter with nothing in it yet says so, in the
+     book's own words, rather than being left blank. A link with an address becomes a link; leave it
+     empty and it shows as waiting. Nobody's profile address is guessed at
+     from here - a wrong link would point at a stranger.
 
-     Empty fields are left out of the profile rather than printed blank, so a
-     half-finished entry still reads properly. That goes for the three links in
-     particular: paste a profile address in and the button becomes a link,
-     leave it empty and it shows as waiting. Nobody's profile address is
-     guessed at from here - a wrong link would point at a stranger.
-
-     `age` and `interests` are optional and unused so far; fill either in and
-     the profile grows a row for it. */
+     What is written here is taken from each person's own site, which the
+     portfolio link points to. `hobbies` is for each of them to fill in. */
   people: [
     {
       name: 'Isak',
-      fullName: 'Isak Gulaker',
+      fullName: 'Isak Johansen Gulaker',
+      role: 'IT-student og utvikler',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-isak.webp'),
-      large: media('member-isak-large.webp'),
       age: null,
-      interests: [],
+      interests:
+        'Mest interessert i systemarkitektur, sikker utvikling og teknisk ledelse, og vil på sikt få mer teknisk ansvar og lederansvar.',
+      hobbies: '',
+      skills:
+        'Lager iOS-apper i Swift og SwiftUI, med SwiftData og CloudKit til lagring og synkronisering. Bygger API-er med FastAPI og PostgreSQL, kjører dem i Docker og har jobbet med språkmodeller, RAG og embeddings. Kan også JavaScript, Python og SQL, og jobber med Git, pull requests, kodegjennomgang og GitHub Actions.',
       description:
-        'Interessert i prosjektstyring, systemutvikling og å bygge gode digitale løsninger. Liker å kombinere positiv innstilling med struktur, samarbeid og teknisk utvikling i prosjekter.',
+        'Har publisert iOS-appen Teori1, som har 4,8 av 5 stjerner i App Store, og laget Restlager, et automatiseringsverktøy som er i drift hos apotek. Var med og vant Expo med beredskapskartet Atlas, og er nå i praksis hos Kartverket på et AI-prosjekt. Vil forstå i dybden hvordan systemene fungerer.',
       links: {
         linkedin: 'https://www.linkedin.com/in/isak-gulaker-8b53423b0',
         github: 'https://github.com/IsakJG',
-        portfolio: '',
+        portfolio: 'https://isakjg.github.io/S-knadsNettside/',
       },
     },
     {
       name: 'My',
       fullName: 'My Trinh Hoang',
+      role: 'IT-student med fokus på systemutvikling',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-my.webp'),
-      large: media('member-my-large.webp'),
       age: null,
-      interests: [],
+      interests: 'Er opptatt av japansk kultur, matopplevelser og baking, og er glad i katter.',
+      hobbies: '',
+      skills:
+        'Programmerer i C#, Python og SQL, og lager nettsider med HTML og CSS. Har laget kart med Leaflet og MapLibre, og jobber med Git, GitHub, Docker og Jupyter Notebook. Har også erfaring med kravspesifikasjon og systemanalyse.',
       description:
-        'Interessert i frontendutvikling, webutvikling og kunstig intelligens. Liker å lage brukervennlige digitale løsninger og lære nye teknologier.',
+        'Interessert i hvordan organisasjoner bruker IT-systemer i praksis, og hvordan systemene kan gi bedre beslutningsstøtte. Var med og bygde beredskapskartet Atlas, som vant Expo i IS-218, med MapLibre, Turf.js og PostGIS. Lager nå en AI-drevet økonomirådgiver i praksis hos Kartverket.',
       links: {
         linkedin: 'https://www.linkedin.com/in/my-t-hoang-2bb246385',
         github: 'https://github.com/taikiyakitaiyaki',
-        portfolio: '',
+        portfolio: 'https://taikiyakitaiyaki.github.io/',
       },
     },
     {
       name: 'Oskar',
       fullName: 'Oskar Moberg Kirkbride',
+      role: 'Utvikler & frontend',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-oskar.webp'),
-      large: media('member-oskar-large.webp'),
       age: null,
-      interests: [],
+      interests: '',
+      hobbies: '',
+      skills:
+        'Utvikler fullstack med Python, React, TypeScript, C# og SQL, og har erfaring med AI, UI/UX, systemutvikling, GIS og systemadministrasjon.',
       description:
-        'Liker å utforske nye teknologier og bygge brukervennlige systemer. Brenner for problemløsning og godt samarbeid. Erfaring med fullstackutvikling og har en generell interesse for teknologi og innovasjon.',
+        'Liker å utforske nye teknologier og bygge brukervennlige systemer. Brenner for problemløsning og godt samarbeid. Erfaring med fullstackutvikling og en generell interesse for teknologi og innovasjon.',
       links: {
         linkedin: 'https://www.linkedin.com/in/oskar-kirkbride',
         github: 'https://github.com/oskarmk24',
@@ -161,15 +170,18 @@ export const members = {
       fullName: 'Sabrine N B Hansen',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-sabrine.webp'),
-      large: media('member-sabrine-large.webp'),
+      role: 'IT-student med bakgrunn fra design',
       age: null,
-      interests: [],
+      interests: '',
+      hobbies: '',
+      skills:
+        'Har jobbet med GIS og kart i Leaflet, og med databaser i MySQL og Entity Framework Core. Kompetansen spenner fra frontend og sluttbrukeropplevelse til backend-arkitektur, databasedesign og AI-integrasjon. Tar med seg presisjon, nøyaktighet og teknisk ansvar fra jobben som lab-assistent.',
       description:
-        'Team building, sluttbrukeropplevelse, frontend, backend-arkitektur, databasedesign og AI-integrasjon.',
+        'Har gått interiør og utstillingsdesign på Tangen videregående, og jobbet to år som lab-assistent hos Tannregulering Sør. Var med og bygde beredskapskartet Atlas i IS-218, og jobbet med registrering av luftfartshindre for Kartverket i NRL-prosjektet.',
       links: {
         linkedin: 'https://www.linkedin.com/in/sabrine-hansen-791264406',
         github: 'https://github.com/snbhansen',
-        portfolio: '',
+        portfolio: 'https://snbhansen.github.io/snbhansen-praksis/',
       },
     },
     {
@@ -177,11 +189,14 @@ export const members = {
       fullName: 'Yones Feili',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-yones.webp'),
-      large: media('member-yones-large.webp'),
+      role: 'IT-student og kreativ utvikler',
       age: null,
-      interests: [],
+      interests: 'Interessert i design, teknologi og gjennomarbeidede digitale løsninger.',
+      hobbies: '',
+      skills:
+        'Designer og bygger grensesnitt i HTML, CSS og JavaScript, med vekt på UI/UX og responsivt design. Har laget kart med MapLibre og PostGIS, og databaser med SQL og MariaDB. Kan også C#.',
       description:
-        'Kreativ teknolog med kompetanse i grensesnittet mellom UI/UX-design og frontend. Brenner for romfart, dyp tech og integrering av ny AI-teknologi for å skape fremtidsrettede løsninger som enda ikke finnes. Har også et helhetlig blikk innenfor backend og systemarkitektur.',
+        'Kreativ teknolog som kombinerer UI/UX-design og frontend. Brenner for romfart, dyp tech og ny AI-teknologi. Designet databasen i NRL-prosjektet for Kartverket fra konsept til implementasjon, og kartopplevelsen i Atlas. Er med-gründer av LuksusEiendom, som bruker KI til å forbedre boligbilder, og nå i praksis hos Kartverket.',
       links: {
         linkedin: 'https://www.linkedin.com/in/yones-m-44616536a',
         github: 'https://github.com/YonesF',
@@ -190,23 +205,33 @@ export const members = {
     },
   ],
   portrait: { width: 700, height: 934 },
-  portraitLarge: { width: 1050, height: 1401 },
   pendingLabel: 'Kommer',
   detail: {
-    open: 'Se mer om',
+    /* What the cover says it does, before the person's name, and what the
+       open book is called. */
+    open: 'Åpne boken om',
+    /* Over a portrait, under the pointer. */
+    read: 'Les',
+    book: 'Boken om',
     close: 'Lukk',
-    /* The way from one person to the next without closing the profile. */
-    previous: 'Forrige',
-    next: 'Neste',
-    show: 'Vis',
+    previous: 'Forrige side',
+    next: 'Neste side',
+    page: 'Side',
     of: 'av',
-    age: 'Alder',
-    years: 'år',
+    /* The passport page inside the cover. */
+    personalia: 'Personalia',
+    name: 'Navn',
+    role: 'Rolle',
+    study: 'Studie',
+    /* The chapters, in order. */
+    about: 'Om meg',
+    skills: 'Kompetanse',
     interests: 'Interesser',
-    about: 'Om',
-    empty: 'Mer om dette kommer.',
-    links: 'Lenker',
-    /* The order these appear in the profile. */
+    hobbies: 'Hobbyer',
+    links: 'Finn meg',
+    /* A chapter nobody has written yet. */
+    pending: 'Kommer snart.',
+    /* The order the links appear in. */
     linkOrder: [
       { key: 'linkedin', label: 'LinkedIn' },
       { key: 'github', label: 'GitHub' },
