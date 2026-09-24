@@ -199,37 +199,65 @@
   transform: translate(calc(var(--mx) * -7px), calc(var(--my) * -7px)) scale(1.1);
 }
 
-/* The mark that says the portrait opens. It sits at the right edge, halfway
-   down - the edge the panel will come in over - and points left, the way the
-   panel travels. Where there is a pointer it waits out of sight and comes in
-   from that edge as the portrait is hovered; a finger has no hover, so on a
-   touch screen it is simply there. */
-.member__hint {
+/* Pressed: it gives a little under the finger at once, on the compositor, so
+   the press is answered before the profile has even been drawn - and the
+   flight out lifts off from exactly this. */
+.member__open:active .member__photo img {
+  transform: translate(calc(var(--mx) * -7px), calc(var(--my) * -7px)) scale(1.02);
+  transition-duration: 0.12s;
+}
+
+/* Four corner marks, like the registration marks on a map sheet, that say the
+   portrait opens up. Where there is a pointer they wait a little way in and
+   open out to the corners as the portrait is hovered - the picture is about
+   to grow past them. A finger has no hover, so on a touch screen they are
+   simply there, a shade quieter. */
+.member__marks {
+  --mark-ink: rgba(255, 255, 255, 0.95);
+  --mark-arm: clamp(0.75rem, 1.15vw, 1.1rem);
+  --mark-weight: 2px;
   position: absolute;
-  top: 50%;
-  right: 0.6rem;
-  width: clamp(1.15rem, 1.7vw, 1.6rem);
-  height: auto;
-  color: rgba(255, 255, 255, 0.92);
-  filter: drop-shadow(0 1px 8px rgba(8, 13, 20, 0.55));
-  translate: 0 -50%;
-  transition:
-    translate 0.6s var(--ease-out),
-    opacity 0.4s ease;
+  inset: clamp(0.5rem, 0.85vw, 0.8rem);
+  background:
+    linear-gradient(var(--mark-ink) 0 0) left top / var(--mark-arm) var(--mark-weight),
+    linear-gradient(var(--mark-ink) 0 0) left top / var(--mark-weight) var(--mark-arm),
+    linear-gradient(var(--mark-ink) 0 0) right top / var(--mark-arm) var(--mark-weight),
+    linear-gradient(var(--mark-ink) 0 0) right top / var(--mark-weight) var(--mark-arm),
+    linear-gradient(var(--mark-ink) 0 0) left bottom / var(--mark-arm) var(--mark-weight),
+    linear-gradient(var(--mark-ink) 0 0) left bottom / var(--mark-weight) var(--mark-arm),
+    linear-gradient(var(--mark-ink) 0 0) right bottom / var(--mark-arm) var(--mark-weight),
+    linear-gradient(var(--mark-ink) 0 0) right bottom / var(--mark-weight) var(--mark-arm);
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 1px 6px rgba(8, 13, 20, 0.5));
+  opacity: 0.8;
   pointer-events: none;
+  transition:
+    opacity 0.45s ease,
+    scale 0.8s var(--ease-out);
 }
 
 @media (hover: hover) {
-  .member__hint {
+  .member__marks {
     opacity: 0;
-    translate: 0.4rem -50%;
+    scale: 0.84;
   }
 
-  .member:hover .member__hint,
-  .member__open:focus-visible .member__hint {
+  .member:hover .member__marks,
+  .member__open:focus-visible .member__marks {
     opacity: 1;
-    translate: -0.25rem -50%;
+    scale: 1;
   }
+}
+
+/* While the portraits are away on the profile, the row keeps their places:
+   each frame stands empty, outlined, until its picture lands back in it. */
+.members__row.is-lifted .member__photo {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.members__row.is-lifted .member__photo > * {
+  visibility: hidden;
 }
 
 .member__name {
@@ -240,189 +268,8 @@
   letter-spacing: -0.02em;
 }
 
-/* ---------------------------------------------------------------------------
-   The panel a portrait opens. A sheet down the right-hand side rather than a
-   box in the middle: the row of portraits stays where it was, and the panel
-   reads as somewhere you went rather than something that landed on top.
-
-   It slides in and out under its own transition. `display` and `overlay` are
-   in that transition so the closing half is not cut short the moment the
-   dialog stops being open; where a browser does not understand that, the panel
-   simply appears and disappears, which is no worse than not having it.
-   --------------------------------------------------------------------------- */
-.member-panel {
-  width: min(30rem, 100vw);
-  max-width: 100vw;
-  height: 100dvh;
-  max-height: 100dvh;
-  /* Pinned to the right edge: dialogs are centred by default. */
-  margin: 0 0 0 auto;
-  padding: 0;
-  border: 0;
-  border-left: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--text);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  translate: 0 0;
-  opacity: 1;
-  transition:
-    translate 0.55s var(--ease-out),
-    opacity 0.4s ease,
-    overlay 0.55s allow-discrete,
-    display 0.55s allow-discrete;
-}
-
-.member-panel:not([open]) {
-  translate: 100% 0;
-  opacity: 0;
-}
-
-/* While the panel is being dragged: the hand holds it, and nothing underneath
-   gets selected as it moves. */
-.member-panel.is-dragging {
-  cursor: grabbing;
-  user-select: none;
-}
-
-@starting-style {
-  .member-panel[open] {
-    translate: 100% 0;
-    opacity: 0;
-  }
-}
-
-.member-panel::backdrop {
-  background: rgba(6, 11, 18, 0.55);
-  opacity: 1;
-  transition:
-    opacity 0.45s ease,
-    overlay 0.45s allow-discrete,
-    display 0.45s allow-discrete;
-}
-
-.member-panel:not([open])::backdrop {
-  opacity: 0;
-}
-
-@starting-style {
-  .member-panel[open]::backdrop {
-    opacity: 0;
-  }
-}
-
-.member-panel__sheet {
-  --panel-gap: clamp(1.25rem, 3vw, 2rem);
-  position: relative;
-  display: grid;
-  align-content: start;
-  gap: var(--panel-gap);
-  min-height: 100%;
-  padding: clamp(1.5rem, 3.5vw, 2.75rem);
-}
-
-/* Sticky rather than fixed: the panel sets `translate`, which makes the dialog
-   the containing block for fixed children, and a fixed child of a scrolling
-   containing block scrolls away with the content - exactly what this must not
-   do. A sticky bar of zero height keeps the button at the top of the panel
-   however far a long entry is scrolled, and costs no row of its own. */
-.member-panel__bar {
-  position: sticky;
-  z-index: 2;
-  top: clamp(0.75rem, 2vw, 1.25rem);
-  display: flex;
-  justify-content: flex-end;
-  height: 0;
-  margin-bottom: calc(-1 * var(--panel-gap));
-}
-
-.member-panel__close {
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--surface) 70%, transparent);
-  color: var(--text);
-  font-size: 1.4rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.member-panel__close:hover,
-.member-panel__close:focus-visible {
-  background: var(--surface-strong);
-}
-
-/* Capped rather than left at the portrait's own 3:4, which at this width fills
-   the panel and pushes the name and everything under it off the bottom. The
-   crop is held high so the face survives it. */
-.member-panel__photo {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  max-height: min(44dvh, 22rem);
-  object-fit: cover;
-  object-position: center 20%;
-  background: var(--surface-strong);
-}
-
-.member-panel__text {
-  display: grid;
-  gap: clamp(1rem, 2.4vw, 1.6rem);
-}
-
-.member-panel__name {
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-  font-weight: 680;
-  letter-spacing: -0.045em;
-  line-height: 1;
-}
-
-.member-panel__role {
-  margin-top: 0.4rem;
-  color: var(--accent);
-  font-family: var(--font-body);
-  font-size: clamp(0.95rem, 1.05vw, 1.1rem);
-  font-weight: 600;
-  line-height: 1.3;
-  text-wrap: pretty;
-}
-
-.member-panel__study {
-  margin-top: 0.3rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: clamp(0.62rem, 0.8vw, 0.72rem);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-/* Everything below the name is meant to be read, so it runs in the body face
-   at reading size, the way the ambitions do. */
-.member-panel__age,
-.member-panel__about,
-.member-panel__interests,
-.member-panel__empty {
-  color: var(--text-muted);
-  font-family: var(--font-body);
-  font-size: clamp(0.94rem, 1vw, 1.05rem);
-  font-weight: 400;
-  line-height: 1.55;
-  text-wrap: pretty;
-}
-
-.member-panel__block {
-  display: grid;
-  gap: 0.5rem;
-}
-
-/* Any paragraph lit word by word as it rises up its panel - descriptions in the
-   portrait panels, the group's own text in theirs. The paragraph carries the
-   progress; each word carries where its own share of that progress begins,
+/* Any paragraph lit word by word as it is scrolled up to - the words beside
+   the group. The paragraph carries the progress; each word carries where its own share of that progress begins,
    exactly as the contour lines do with --draw. Default 1 so the text is
    readable before a single line of script has run, or if none ever does. */
 [data-lit] {
@@ -443,16 +290,456 @@
   font-weight: calc(500 + 60 * var(--t));
 }
 
-.member-panel__label {
+/* ---------------------------------------------------------------------------
+   The profile a portrait opens up into. Not a panel laid over the page: the
+   page clears around the portrait instead, in its own colour, and the picture
+   that was pressed grows into the large portrait on the left while the other
+   four step aside into a small row of their own. MemberProfile.jsx moves
+   everything; what is here is only where everything comes to rest.
+
+   The layout is a map sheet's: the portrait on the left, the name set large
+   beside it in the headings' own setting, and the small row along the bottom
+   of the column like the sheet's index - the hollow slot in it outlined in
+   the brand, which is where the portrait came from and where it goes back.
+   --------------------------------------------------------------------------- */
+.profile {
+  position: fixed;
+  inset: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--text);
-  font-family: var(--font-mono);
-  font-size: clamp(0.62rem, 0.8vw, 0.72rem);
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  /* The profile keeps every scroll to itself: the wheel, the finger and the
+     keys all stop at its edges and never reach the page behind, which has to
+     stay exactly where it is for the pictures to land back in their places.
+     `contain` only holds on something that can scroll, which is why the
+     sheet inside is always a pixel taller than the screen. Its scrollbar is
+     not drawn - there is at most that pixel to scroll, except on a phone,
+     whose scrollbars are drawn over the content anyway. */
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.profile::-webkit-scrollbar {
+  display: none;
+}
+
+/* A pixel taller than the screen, as above, and a column the layout can
+   centre itself in top to bottom - running on down, where it is taller than
+   the screen, rather than out of the top. */
+.profile__sheet {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100% + 1px);
+}
+
+/* While the pictures are in the air they can be well outside the profile's
+   box; that is not a reason for it to scroll. */
+.profile[data-moving] {
+  overflow: hidden;
+}
+
+/* It takes focus itself when it opens, so that the way out is one Tab away
+   rather than ringed before anything has been read. */
+.profile:focus {
+  outline: none;
+}
+
+/* The ground is drawn by the profile itself, so it can fade. */
+.profile::backdrop {
+  background: transparent;
+}
+
+/* The page's own ground, its own weather and its own grain - the page
+   clearing around the portrait, not a different surface arriving over it. */
+.profile__ground {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(70vmax 70vmax at 100% 100%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%),
+    radial-gradient(60vmax 60vmax at 0% 0%, color-mix(in srgb, var(--surface-2) 16%, transparent), transparent 70%),
+    var(--surface);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.profile__ground::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: var(--grain);
+  background-size: 240px 240px;
+}
+
+/* Where the navigation was, in the navigation's own type: the section, whose
+   turn it is, and the way out. */
+.profile__bar {
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  right: 0;
+  left: 0;
+  min-height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-inline: var(--pad-x);
+  pointer-events: none;
+}
+
+.profile__bar > * {
+  pointer-events: auto;
+}
+
+.profile__where {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
   text-transform: uppercase;
 }
 
-.member-panel__interests {
+.profile__count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* The number rolls: out of the way it is going, into its line from the
+   other side. */
+.profile__count-mask {
+  display: inline-block;
+  overflow: hidden;
+  padding-block: 0.1em;
+  margin-block: -0.1em;
+  vertical-align: bottom;
+}
+
+.profile__count-now {
+  display: inline-block;
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .profile__count-now {
+    animation: count-in 0.45s var(--ease-out);
+  }
+
+  .profile__count[data-direction='-1'] .profile__count-now {
+    animation-name: count-in-back;
+  }
+}
+
+@keyframes count-in {
+  from {
+    transform: translateY(110%);
+  }
+}
+
+@keyframes count-in-back {
+  from {
+    transform: translateY(-110%);
+  }
+}
+
+.profile__close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.1rem;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(0.8rem, 1.05vw, 1rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* A cross of two hairlines that turns a quarter under the pointer. */
+.profile__close-mark {
+  position: relative;
+  width: 1.1em;
+  height: 1.1em;
+  transition: rotate 0.7s var(--ease-out);
+}
+
+.profile__close-mark::before,
+.profile__close-mark::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  margin-top: -1px;
+  background: currentColor;
+  rotate: 45deg;
+}
+
+.profile__close-mark::after {
+  rotate: -45deg;
+}
+
+.profile__close:hover .profile__close-mark,
+.profile__close:focus-visible .profile__close-mark {
+  rotate: 90deg;
+}
+
+/* The sheet. The portrait is as tall as the screen allows below the bar,
+   and no wider than two fifths of it; the words take the rest. */
+.profile__layout {
+  --stage-top: clamp(4.75rem, 12dvh, 7.5rem);
+  --stage-bottom: clamp(2rem, 7dvh, 4.5rem);
+  --gutter: var(--pad-x);
+  --portrait-w: min(calc((100dvh - var(--stage-top) - var(--stage-bottom)) * 0.75), 40vw);
+  --thumb: clamp(2.6rem, 3.9vw, 4.25rem);
+  --mx: 0;
+  --my: 0;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: var(--portrait-w) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'portrait text'
+    'portrait rail';
+  column-gap: clamp(2.5rem, 6vw, 7.5rem);
+  row-gap: clamp(1.5rem, 3dvh, 2.5rem);
+  width: 100%;
+  margin-block: auto;
+  padding: var(--stage-top) var(--gutter) var(--stage-bottom);
+  /* Up and down scrolls the profile; sideways is a swipe to the next
+     person, which the script handles. */
+  touch-action: pan-y;
+}
+
+/* The first name behind the portrait, cut by the foot of the screen. It
+   follows the pointer less than the portrait does - the layer further back
+   moves less, as the landing's word does behind the group - on `translate`,
+   so the script can raise it into place on `transform` without the two
+   fighting. */
+.profile__echo {
+  position: fixed;
+  z-index: 0;
+  right: -0.02em;
+  bottom: -0.2em;
+  color: color-mix(in srgb, var(--text) 6%, transparent);
+  font-family: var(--font-display);
+  font-size: clamp(7rem, 19vw, 34rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  translate: calc(var(--mx) * -5px) calc(var(--my) * -5px);
+  transition: translate 0.6s var(--ease-out);
+  pointer-events: none;
+  user-select: none;
+}
+
+.profile__space {
+  grid-area: portrait;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+
+.profile__text {
+  grid-area: text;
+  align-self: start;
+  display: grid;
+  align-content: start;
+  gap: clamp(1.1rem, 2.6dvh, 1.75rem);
+  min-width: 0;
+  max-width: 42rem;
+}
+
+.profile__head {
+  display: grid;
+  gap: clamp(0.9rem, 2dvh, 1.3rem);
+}
+
+/* The headings' own setting, a size up: the person is the headline here. */
+.profile__name {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5.4vw, 6.25rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.profile__role {
+  color: var(--accent);
+  font-size: clamp(0.95rem, 1.05vw, 1.1rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.profile__study,
+.profile__label {
+  font-family: var(--font-mono);
+  font-size: clamp(0.64rem, 0.8vw, 0.76rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.profile__study {
+  color: var(--text-muted);
+}
+
+.profile__label {
+  margin: 0;
+  color: var(--text);
+}
+
+/* A hairline between who the person is and what they say, drawn out from
+   the left as the name arrives. */
+.profile__rule {
+  display: block;
+  height: 1px;
+  background: var(--line);
+}
+
+.profile__block {
+  display: grid;
+  gap: 0.65rem;
+}
+
+/* Meant to be read: the body face at reading size, the way the words beside
+   the group are set. */
+.profile__body,
+.profile__interests {
+  max-width: 36rem;
+  color: var(--text-muted);
+  font-size: clamp(1rem, 1.18vw, 1.24rem);
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.profile__body--empty {
+  font-style: italic;
+}
+
+/* A box of its own, so it can move and clear on its own. */
+.profile__word {
+  display: inline-block;
+}
+
+/* How the words come and go. One attribute on the layout says which way they
+   are moving - data-text is 'before', 'in' or 'out' - and everything below
+   moves by transform and opacity alone, which the browser runs on the
+   compositor: no word is repainted while it moves, and a busy main thread
+   cannot make them stutter. The script only numbers the words (--i) and sets
+   how far apart they start (--word-step) and when (--text-delay). With no
+   attribute at all - as for a visitor who asked for stillness - everything
+   simply shows. */
+.profile__layout {
+  --text-delay: 0ms;
+  --word-step: 12ms;
+}
+
+/* Hidden, at once: the state they are shown from. */
+.profile__layout[data-text='before'] :is(.profile__name .split__word, .profile__text [data-word], .profile__rule, .profile__echo) {
+  transition: none;
+}
+
+.profile__layout[data-text='before'] .profile__name .split__word {
+  transform: translateY(118%);
+}
+
+.profile__layout[data-text='before'] .profile__text [data-word] {
+  opacity: 0;
+  transform: translateY(0.4em);
+}
+
+.profile__layout[data-text='before'] .profile__rule {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+.profile__layout[data-text='before'] .profile__echo {
+  opacity: 0;
+  transform: translateY(30%);
+}
+
+/* In: the name rises out of its line a word at a time, the rule draws across,
+   and the words under it lift and fade up in reading order - all of them in
+   within half a second, however long the text. */
+.profile__layout[data-text='in'] .profile__name .split__word {
+  transition: transform 0.62s var(--ease-out) calc(var(--text-delay) + var(--i, 0) * 45ms);
+}
+
+.profile__layout[data-text='in'] .profile__rule {
+  transform-origin: 0 50%;
+  transition: transform 0.6s var(--ease-out) calc(var(--text-delay) + 100ms);
+}
+
+.profile__layout[data-text='in'] .profile__text [data-word] {
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out);
+  transition-delay: calc(var(--text-delay) + 80ms + var(--i, 0) * var(--word-step));
+}
+
+.profile__layout[data-text='in'] .profile__echo {
+  transition:
+    opacity 0.9s var(--ease-out) var(--text-delay),
+    transform 0.9s var(--ease-out) var(--text-delay),
+    translate 0.6s var(--ease-out);
+}
+
+/* Out, quickly and all together - on the way to the next person, or out of
+   the profile. */
+.profile__layout[data-text='out'] .profile__name .split__word {
+  transform: translateY(-118%);
+  transition: transform 0.16s ease-in;
+}
+
+.profile__layout[data-text='out'] .profile__text [data-word] {
+  opacity: 0;
+  transition: opacity 0.12s ease-in;
+}
+
+.profile__layout[data-text='out'] .profile__rule {
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+  transition: transform 0.18s ease-in;
+}
+
+.profile__layout[data-text='out'] .profile__echo {
+  opacity: 0;
+  transform: translateY(12%);
+  transition:
+    opacity 0.2s ease-in,
+    transform 0.2s ease-in,
+    translate 0.6s var(--ease-out);
+}
+
+.profile__interests {
   display: grid;
   gap: 0.4rem;
   margin: 0;
@@ -460,30 +747,25 @@
   list-style: none;
 }
 
-.member-panel__interests li {
+.profile__interests li {
   position: relative;
   padding-left: 1.35rem;
 }
 
-.member-panel__interests li::before {
+.profile__interests li::before {
   content: '';
   position: absolute;
-  top: 0.72em;
+  top: 0.78em;
   left: 0;
   width: 0.7rem;
   height: 1px;
   background: var(--accent);
 }
 
-.member-panel__empty {
-  color: var(--text-muted);
-  font-style: italic;
-}
-
-/* The three profiles. A link that has an address is a button you can press; one
-   that does not is the same shape, greyed, with a word saying so - the row
-   keeps its form while the addresses are still being gathered. */
-.member-panel__links {
+/* The three profiles elsewhere. A link that has an address is a button to
+   press; one that does not is the same shape, dashed, with a word saying so -
+   the row keeps its form while the addresses are still being gathered. */
+.profile__links {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -492,60 +774,279 @@
   list-style: none;
 }
 
-.member-panel__link {
+.profile__link {
   display: inline-flex;
   align-items: baseline;
   gap: 0.45rem;
-  padding: 0.55rem 0.9rem;
+  padding: 0.62rem 1rem;
   border: 1px solid var(--line);
   color: var(--text);
-  font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.86rem;
   font-weight: 600;
   line-height: 1;
-  text-decoration: none;
   transition:
     background 0.3s ease,
     border-color 0.3s ease;
 }
 
 /* A real link is an action - the one thing on this page a company can do
-   about a person - so it takes the brand: filled, white type, a step lighter
-   under the pointer and a step darker under the press. The waiting ones stay
-   as outlines, so the difference is read before it is tried. */
-a.member-panel__link {
+   about a person - so it takes the brand. */
+a.profile__link {
   border-color: var(--cta);
   background: var(--cta);
   color: var(--on-cta);
 }
 
-a.member-panel__link:hover,
-a.member-panel__link:focus-visible {
+a.profile__link:hover,
+a.profile__link:focus-visible {
   border-color: var(--cta-hover);
   background: var(--cta-hover);
 }
 
-a.member-panel__link:active {
+a.profile__link:active {
   border-color: var(--cta-active);
   background: var(--cta-active);
 }
 
-.member-panel__link.is-pending {
+.profile__link.is-pending {
   border-style: dashed;
   color: var(--text-muted);
 }
 
-.member-panel__link-note {
+.profile__link-note {
   font-family: var(--font-mono);
   font-size: 0.58rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
+/* The small row: every face in the page's order, an arrow at either end.
+   Level with the foot of the portrait. */
+.profile__rail {
+  grid-area: rail;
+  align-self: end;
+  justify-self: start;
+  display: grid;
+  grid-template-columns: auto repeat(var(--count), var(--thumb)) auto;
+  align-items: center;
+  column-gap: clamp(0.4rem, 0.6vw, 0.65rem);
+}
+
+.profile__step {
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.profile__step--previous {
+  grid-column: 1;
+  margin-right: clamp(0.35rem, 0.8vw, 0.75rem);
+}
+
+.profile__step--next {
+  grid-column: -2;
+  margin-left: clamp(0.35rem, 0.8vw, 0.75rem);
+}
+
+.profile__step:hover,
+.profile__step:focus-visible {
+  border-color: var(--accent);
+  background: var(--brand-soft);
+}
+
+.profile__step-mark {
+  width: 1.05rem;
+  height: auto;
+  transition: translate 0.5s var(--ease-out);
+}
+
+.profile__step--previous:hover .profile__step-mark {
+  translate: -0.15rem 0;
+}
+
+.profile__step--next:hover .profile__step-mark {
+  translate: 0.15rem 0;
+}
+
+.profile__slot {
+  grid-row: 1;
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--accent);
+}
+
+/* A face. In the small row it is a button to the person; lifted out onto the
+   portrait's place it is the portrait, and nothing to press. The frame only
+   ever moves by the transform Flip gives it, so nothing in CSS may animate
+   its transform. */
+.profile__frame {
+  position: relative;
+  z-index: 2;
+  grid-row: 1;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: var(--surface-strong);
+  cursor: pointer;
+}
+
+/* Lifted out of the small row onto the portrait's place. An absolute box
+   inside a grid takes its place from that grid, so it names the layout's own
+   portrait area and sits exactly where the space held for it is. */
+.profile__frame.is-current {
+  position: absolute;
+  z-index: 3;
+  grid-area: portrait;
+  top: 0;
+  left: 0;
+  width: var(--portrait-w);
+  box-shadow: 0 48px 90px -44px rgba(var(--shadow), 0.5);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* On its way home it leaves the shadow behind at once, as it lifts off,
+   rather than fading it: a shadow that changes while its picture flies is
+   redrawn on every frame of the flight, and a still one is drawn once and
+   carried along. */
+.profile[data-closing] .profile__frame.is-current {
+  box-shadow: none;
+}
+
+/* Held a little larger than its frame, as in the row, so it can follow the
+   pointer without showing an edge; the faces in the small row sit a little
+   back until they are pointed at. */
+.profile__picture {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.06);
+  transition:
+    transform 0.6s var(--ease-out),
+    opacity 0.4s ease;
+}
+
+.profile__frame:not(.is-current) .profile__picture {
+  opacity: 0.82;
+}
+
+.profile__frame.is-current .profile__picture {
+  transform: translate(calc(var(--mx) * -12px), calc(var(--my) * -12px)) scale(1.06);
+}
+
+@media (hover: hover) {
+  .profile__frame:not(.is-current):hover .profile__picture {
+    opacity: 1;
+    transform: scale(1.14);
+  }
+}
+
+.profile__frame:not(.is-current):focus-visible .profile__picture {
+  opacity: 1;
+}
+
+.profile__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile__img--large {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.profile__img--large.is-loaded {
+  opacity: 1;
+}
+
+/* A tall, narrow screen - a phone, a tablet on its end - stacks the sheet:
+   the portrait across the top, the small row under it, the words below,
+   and the whole profile scrolls. */
+@media (max-width: 767px), (max-aspect-ratio: 3/4) {
+  .profile__bar {
+    background: linear-gradient(to bottom, var(--surface) 55%, color-mix(in srgb, var(--surface) 0%, transparent));
+  }
+
+  .profile__layout {
+    --stage-top: calc(var(--nav-h) + 0.25rem);
+    --stage-bottom: max(3rem, env(safe-area-inset-bottom));
+    --portrait-w: min(calc(100vw - 2 * var(--gutter)), calc(60svh * 0.75), 36rem);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'portrait'
+      'rail'
+      'text';
+    justify-items: center;
+    row-gap: clamp(1.25rem, 3svh, 2rem);
+    margin-block: 0 auto;
+  }
+
+  .profile__space,
+  .profile__rail,
+  .profile__text {
+    width: var(--portrait-w);
+  }
+
+  .profile__frame.is-current {
+    left: 50%;
+    margin-left: calc(var(--portrait-w) / -2);
+  }
+
+  .profile__rail {
+    justify-self: center;
+    grid-template-columns: auto repeat(var(--count), minmax(0, 1fr)) auto;
+  }
+
+  .profile__text {
+    max-width: none;
+  }
+
+  /* Stacked, there is no portrait beside the words for the name to stand
+     behind - only the words themselves. */
+  .profile__echo {
+    display: none;
+  }
+}
+
 @media (max-width: 767px) {
-  /* Too narrow to sit beside anything, so it takes the screen. */
-  .member-panel {
-    width: 100vw;
+  .profile__bar {
+    padding-inline: 1.25rem;
+  }
+
+  .profile__layout {
+    --gutter: 1.25rem;
+  }
+
+  .profile__name {
+    font-size: clamp(2.1rem, 10.5vw, 3.4rem);
+  }
+
+  .profile__step {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .profile__step--previous {
+    margin-right: 0.2rem;
+  }
+
+  .profile__step--next {
+    margin-left: 0.2rem;
   }
 }
 
