@@ -778,14 +778,6 @@ a.book__entry:focus-visible {
   line-height: 1;
 }
 
-.book__colophon {
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 3.4cqi;
-  font-weight: 600;
-  line-height: 1.6;
-}
-
 .book__barcode {
   width: 42cqi;
   height: 11cqi;
