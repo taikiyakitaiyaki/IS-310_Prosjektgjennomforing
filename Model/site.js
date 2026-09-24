@@ -89,23 +89,31 @@ export const members = {
       { src: media('group-3.webp'), width: 1800, height: 1350 },
     ],
   },
-  /* Every portrait opens a panel, and this is what the panel says. `name` is
-     the caption under the picture; everything else belongs to the panel.
+  /* Every portrait opens up into a profile, and this is what the profile
+     says. `name` is the caption under the picture; everything else belongs to
+     the profile.
 
-     Empty fields are left out of the panel rather than printed blank, so a
+     `large` is the same picture at one and a half times the size, cut from the
+     original in Assets/Images with exactly the crop of `src` - the profile
+     shows `src` the moment it opens and lays `large` over it once it has
+     arrived, so the two have to line up to the pixel. A person without one
+     simply keeps `src`.
+
+     Empty fields are left out of the profile rather than printed blank, so a
      half-finished entry still reads properly. That goes for the three links in
      particular: paste a profile address in and the button becomes a link,
      leave it empty and it shows as waiting. Nobody's profile address is
      guessed at from here - a wrong link would point at a stranger.
 
      `age` and `interests` are optional and unused so far; fill either in and
-     the panel grows a row for it. */
+     the profile grows a row for it. */
   people: [
     {
       name: 'Isak',
       fullName: 'Isak Gulaker',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-isak.webp'),
+      large: media('member-isak-large.webp'),
       age: null,
       interests: [],
       description:
@@ -121,6 +129,7 @@ export const members = {
       fullName: 'My Trinh Hoang',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-my.webp'),
+      large: media('member-my-large.webp'),
       age: null,
       interests: [],
       description:
@@ -136,6 +145,7 @@ export const members = {
       fullName: 'Oskar Moberg Kirkbride',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-oskar.webp'),
+      large: media('member-oskar-large.webp'),
       age: null,
       interests: [],
       description:
@@ -151,6 +161,7 @@ export const members = {
       fullName: 'Sabrine N B Hansen',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-sabrine.webp'),
+      large: media('member-sabrine-large.webp'),
       age: null,
       interests: [],
       description:
@@ -166,6 +177,7 @@ export const members = {
       fullName: 'Yones Feili',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-yones.webp'),
+      large: media('member-yones-large.webp'),
       age: null,
       interests: [],
       description:
@@ -178,17 +190,23 @@ export const members = {
     },
   ],
   portrait: { width: 700, height: 934 },
+  portraitLarge: { width: 1050, height: 1401 },
   pendingLabel: 'Kommer',
   detail: {
     open: 'Se mer om',
     close: 'Lukk',
+    /* The way from one person to the next without closing the profile. */
+    previous: 'Forrige',
+    next: 'Neste',
+    show: 'Vis',
+    of: 'av',
     age: 'Alder',
     years: 'år',
     interests: 'Interesser',
     about: 'Om',
     empty: 'Mer om dette kommer.',
     links: 'Lenker',
-    /* The order these appear in the panel. */
+    /* The order these appear in the profile. */
     linkOrder: [
       { key: 'linkedin', label: 'LinkedIn' },
       { key: 'github', label: 'GitHub' },
