@@ -171,18 +171,18 @@ export function SmoothScroll({ children }) {
     return () => document.removeEventListener('click', onClick)
   }, [scrollTo])
 
-  /* Stops the page wherever it is, the moment something is about to cover
-     it. A scroll still easing out would otherwise carry the page on
-     underneath, and move the places the cover means to fly things back to.
-     Only the easing is stopped, never the scroll itself: the page keeps its
-     scrollbar, so nothing behind the cover shifts sideways. What covers the
-     page keeps the wheel and the finger to itself - see .profile in
-     sections.css. */
-  const halt = useCallback(() => {
-    lenis.current?.reset()
+  /* Moves the page by a distance rather than to a place - to bring something
+     that has just grown back into full view. */
+  const scrollBy = useCallback((distance) => {
+    if (!distance) return
+    if (lenis.current) {
+      lenis.current.scrollTo(window.scrollY + distance)
+      return
+    }
+    window.scrollBy({ top: distance, behavior: stillRef.current ? 'auto' : 'smooth' })
   }, [])
 
-  const value = useMemo(() => ({ scrollTo, halt }), [scrollTo, halt])
+  const value = useMemo(() => ({ scrollTo, scrollBy }), [scrollTo, scrollBy])
 
   return <ScrollContext value={value}>{children}</ScrollContext>
 }
@@ -193,8 +193,8 @@ export function useScrollTo() {
   return value.scrollTo
 }
 
-export function useScrollHalt() {
+export function useScrollBy() {
   const value = use(ScrollContext)
-  if (!value) throw new Error('useScrollHalt must be used inside <SmoothScroll>')
-  return value.halt
+  if (!value) throw new Error('useScrollBy must be used inside <SmoothScroll>')
+  return value.scrollBy
 }
