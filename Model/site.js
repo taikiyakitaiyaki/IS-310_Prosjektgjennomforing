@@ -181,7 +181,7 @@ export const members = {
       links: {
         linkedin: 'https://www.linkedin.com/in/sabrine-hansen-791264406',
         github: 'https://github.com/snbhansen',
-        portfolio: 'https://snbhansen.github.io/snbhansen-praksis/',
+        portfolio: 'https://snbhansen.github.io/snbhansen-portfolio/',
       },
     },
     {
