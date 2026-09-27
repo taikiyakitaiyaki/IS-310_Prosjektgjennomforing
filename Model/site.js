@@ -175,9 +175,9 @@ export const members = {
       interests: '',
       hobbies: '',
       skills:
-        'Har jobbet med GIS og kart i Leaflet, og med databaser i MySQL og Entity Framework Core. Kompetansen spenner fra frontend og sluttbrukeropplevelse til backend-arkitektur, databasedesign og AI-integrasjon. Tar med seg presisjon, nøyaktighet og teknisk ansvar fra jobben som lab-assistent.',
+        'Har jobbet med GIS i QGIS, kart i Leaflet, og med databaser i MySQL og Entity Framework Core. Kompetansen spenner fra frontend og sluttbrukeropplevelse til backend-arkitektur, databasedesign og AI-integrasjon. Jeg tar med meg presisjon, nøyaktighet og teknisk ansvar fra jobben som lab-assistent. Teknisk stack inkluderer Python, React, CSS, HTML, C#, GIS, SQL.',
       description:
-        'Har gått interiør og utstillingsdesign på Tangen videregående, og jobbet to år som lab-assistent hos Tannregulering Sør. Var med og bygde beredskapskartet Atlas i IS-218, og jobbet med registrering av luftfartshindre for Kartverket i NRL-prosjektet.',
+        'Jeg har faglig bakgrunn innen interiør og utstillingsdesign, og jobbet som lab-assistent hos kjeveortopedisk klinikk. Var med og bygde beredskapskartet Atlas i IS-218, og jobbet med registrering av luftfartshindre for Kartverket i NRL-prosjektet. Prosjektet jeg jobber med nå er utvikling av en AI-drevet økonomiassistent for Kartverket.',
       links: {
         linkedin: 'https://www.linkedin.com/in/sabrine-hansen-791264406',
         github: 'https://github.com/snbhansen',
