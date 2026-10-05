@@ -21,13 +21,13 @@
 /* ---------------------------------------------------------------------------
    Tokens.
 
-   The page is a warm cream sheet with dark brown type - a paper register
-   rather than a night one - and one saturated colour against it. That colour
-   is a deep sage green: the only fully saturated tone on the page, so
-   wherever it appears it is the thing to press or the line to follow.
-   Surfaces step down from the cream in muted khaki and moss; the photographs
-   and the hero carry their own light. A [data-theme='dark'] override further
-   down swaps every one of these for its night counterpart.
+   The page is a quiet, warm off-white with near-black type - neutral enough
+   to read on for a long time without tiring the eye, and to let the
+   photographs carry the colour - and one saturated tone against it: a deep
+   sage green, so wherever it appears it is the thing to press or the line to
+   follow. Neither the ground nor the type is pure white or pure black; the
+   hard edge between the two is what glares. A [data-theme='dark'] override
+   further down swaps every one of these for its night counterpart.
 
    Sharp corners everywhere; the site is set like a map sheet, and a map sheet
    has no rounded corners.
@@ -41,19 +41,18 @@
   --design-width: 1600;
   --design-height: 900;
 
-  /* The ground, and the two steps down from it: a panel's sheet, then a frame
-     or a card while its picture is still on its way. */
-  --surface: #f9e1cd;
-  --surface-2: #c1b176;
-  --surface-strong: #95a494;
-  --sky: #f9e1cd;
+  /* The ground, and a step down from it for a frame or a card while its
+     picture is still on its way. */
+  --surface: #f5f2ec;
+  --surface-strong: #dcd6cb;
+  --sky: #f5f2ec;
   /* The video's frame sits a shade darker and cooler still than the cream
      ground around it, with the same white type as the skip link. */
   --plate: #191b21;
   --ink: #ffffff;
 
-  --text: #3c3025;
-  --text-muted: #51412f;
+  --text: #23211d;
+  --text-muted: #4d4942;
 
   /* The brand. --brand is the deep sage fill of anything that is an action -
      its hover goes a step darker, its press darker still. --accent mirrors it
@@ -72,11 +71,11 @@
   --cta-active: var(--brand-active);
   --on-cta: var(--on-brand);
 
-  --line: rgba(60, 48, 37, 0.16);
-  --line-soft: rgba(60, 48, 37, 0.08);
-  --map-line: rgba(60, 48, 37, 0.16);
-  --map-major: rgba(60, 48, 37, 0.32);
-  --shadow: 60, 48, 37;
+  --line: rgba(35, 33, 29, 0.14);
+  --line-soft: rgba(35, 33, 29, 0.07);
+  --map-line: rgba(35, 33, 29, 0.14);
+  --map-major: rgba(35, 33, 29, 0.28);
+  --shadow: 35, 33, 29;
 
   /* For whatever asks a visitor to notice a state: a form that took, a field
      that needs another look, something that failed. Chosen to hold up as type
@@ -113,29 +112,34 @@
 /* ---------------------------------------------------------------------------
    Dark mode. The light tokens above are the site's default; ThemeToggle.jsx
    sets data-theme on the root, and only what changes between the two modes
-   is repeated here. --plate, --ink and the state colours hold across both.
+   is repeated here. --ink and the state colours hold across both.
+
+   The night ground is a soft charcoal with a breath of the sage in it, so
+   the brand belongs to it, and the type is an off-white rather than white.
+   Shadows here are shadows - darker, not a glow - so the video's plate is
+   lifted a step above the ground instead, to still read as a frame.
    --------------------------------------------------------------------------- */
 :root[data-theme='dark'] {
-  --surface: #321a06;
-  --surface-2: #89793e;
-  --surface-strong: #5d6b5b;
-  --sky: #321a06;
+  --surface: #161816;
+  --surface-strong: #2a2d29;
+  --sky: #161816;
+  --plate: #24282d;
 
-  --text: #dacec3;
-  --text-muted: #c4b9af;
+  --text: #e8e6e1;
+  --text-muted: #b8b5ae;
 
   --brand: #abc8a7;
   --brand-hover: #91aa8e;
   --brand-active: #7b9078;
   --brand-soft: rgba(171, 200, 167, 0.1);
   --accent: #abc8a7;
-  --on-brand: #321a06;
+  --on-brand: #161816;
 
-  --line: rgba(218, 206, 195, 0.16);
-  --line-soft: rgba(218, 206, 195, 0.08);
-  --map-line: rgba(218, 206, 195, 0.16);
-  --map-major: rgba(218, 206, 195, 0.32);
-  --shadow: 218, 206, 195;
+  --line: rgba(232, 230, 225, 0.14);
+  --line-soft: rgba(232, 230, 225, 0.07);
+  --map-line: rgba(232, 230, 225, 0.14);
+  --map-major: rgba(232, 230, 225, 0.28);
+  --shadow: 0, 0, 0;
 
   color-scheme: dark;
 }
