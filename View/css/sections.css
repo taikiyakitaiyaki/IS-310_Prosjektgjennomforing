@@ -131,7 +131,7 @@
 }
 
 .members__body {
-  color: var(--text-muted);
+  color: var(--text);
   font-family: var(--font-body);
   font-size: clamp(0.98rem, 1.1vw, 1.15rem);
   font-weight: 500;
@@ -204,17 +204,14 @@
   transition-duration: 0.12s;
 }
 
-/* Pointed at, the portrait darkens and says what a press does: LES, with a
-   rule drawn out under it. Opacity and transform only, so it costs nothing to
-   show. Not while the book is out of the row, and not on a touch screen,
+/* Pointed at, the portrait darkens and says what a press does: LES. Opacity
+   and transform only, so it costs nothing to show. Not while the book is out of the row, and not on a touch screen,
    which has no pointer to rest on it. */
 .member__read {
   position: absolute;
   inset: 0;
   display: grid;
   place-content: center;
-  justify-items: center;
-  gap: 0.55rem;
   background: rgba(18, 12, 6, 0.58);
   color: #fff;
   font-family: var(--font-display);
@@ -236,22 +233,12 @@
   transition: transform 0.5s var(--ease-out);
 }
 
-.member__read::after {
-  content: '';
-  width: 1.9em;
-  height: 2px;
-  background: currentColor;
-  transform: scaleX(0);
-  transition: transform 0.5s var(--ease-out) 0.05s;
-}
-
 @media (hover: hover) {
   .member:not([data-raised]):hover .member__read {
     opacity: 1;
   }
 
-  .member:not([data-raised]):hover .member__read-word,
-  .member:not([data-raised]):hover .member__read::after {
+  .member:not([data-raised]):hover .member__read-word {
     transform: none;
   }
 }
@@ -260,8 +247,7 @@
   opacity: 1;
 }
 
-.member__open:focus-visible .member__read-word,
-.member__open:focus-visible .member__read::after {
+.member__open:focus-visible .member__read-word {
   transform: none;
 }
 
@@ -568,11 +554,11 @@ a.profile__link:focus-visible {
 .lit-word {
   --span: 0.16;
   --t: clamp(0, calc((var(--lit) - var(--from)) / var(--span)), 1);
-  /* True black. A word waiting its turn sits at half strength - a clear
-     grey, so the eye can tell what has been read from what is to come - and
-     a word that has been read is set a shade heavier, which the variable
-     font can do by degrees. */
-  color: var(--text-muted);
+  /* The page's own darkest type. A word waiting its turn sits at half
+     strength - a clear grey, so the eye can tell what has been read from
+     what is to come - and a word that has been read is set a shade heavier,
+     which the variable font can do by degrees. */
+  color: var(--text);
   opacity: calc(0.5 + 0.5 * var(--t));
   font-weight: calc(500 + 60 * var(--t));
 }
