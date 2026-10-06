@@ -241,12 +241,22 @@ export const members = {
   },
 }
 
-/* Point `src` at the film when it exists (YouTube link or video file) and
-   the frame plays it. Until then the frame stands with the label. */
+/* The film, encoded twice from the 1080p master (see README): AV1 first, the
+   smaller file for the same picture, then H.264, which every device plays.
+   The frame takes the first one the device decodes smoothly in hardware.
+   `poster` stands in the frame until it is played, and `title` names the
+   player for screen readers. With no sources the frame stands with the label
+   instead. */
 export const video = {
-  src: 'https://youtu.be/RxXMXqspqQA',
+  sources: [
+    { src: media('symito-av1.mp4'), codec: 'av01.0.08M.10', bitrate: 2_950_000 },
+    { src: media('symito-h264.mp4'), codec: 'avc1.640029', bitrate: 4_500_000 },
+  ],
+  width: 1920,
+  height: 1080,
+  framerate: 30,
   title: 'Symito introvideo',
-  poster: null,
+  poster: media('symito-poster.webp'),
   pendingLabel: 'Kommer',
 }
 
@@ -274,10 +284,10 @@ export const controls = {
 
 /* `title` is what the navigation and the landing titles call a section.
    A section that should be headed by something else on the page itself
-   carries that in `heading`; the first one is headed by the question the
-   words beside the picture answer. */
+   carries that in `heading`; Medlemmer is headed by the question the words
+   beside the picture answer. */
 export const sections = [
-  { id: 'medlemmer', title: 'Medlemmer', heading: members.group.about.subtitle },
   { id: 'video', title: 'Video' },
+  { id: 'medlemmer', title: 'Medlemmer', heading: members.group.about.subtitle },
   { id: 'ambisjonsniva', title: 'Ambisjonsnivå' },
 ]
