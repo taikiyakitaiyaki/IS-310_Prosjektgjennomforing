@@ -10,7 +10,6 @@ import ThemeToggle from './View/components/ThemeToggle.jsx'
 import Landing from './View/components/Landing.jsx'
 import MembersSection from './View/components/MembersSection.jsx'
 import VideoSection from './View/components/VideoSection.jsx'
-import PendingSection from './View/components/PendingSection.jsx'
 import AmbitionSection from './View/components/AmbitionSection.jsx'
 import './View/css/base.css'
 import './View/css/site.css'
@@ -22,7 +21,6 @@ import './View/css/sections.css'
 const SECTION_CONTENT = {
   medlemmer: MembersSection,
   video: VideoSection,
-  bedrift: PendingSection,
   ambisjonsniva: AmbitionSection,
 }
 
