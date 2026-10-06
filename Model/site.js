@@ -249,12 +249,6 @@ export const video = {
   pendingLabel: 'Kommer',
 }
 
-/* The company section. There is no company yet: the section holds its place
-   and says so, in the same word the fifth portrait uses. */
-export const company = {
-  pendingLabel: 'Kommer',
-}
-
 /* The heading carries the section on its own; this is the line beside it. */
 /* The ambitions as prose under the heading, opening on `lead`, every word
    blurred until it is scrolled up to; the globe turns beneath them. */
@@ -284,6 +278,5 @@ export const controls = {
 export const sections = [
   { id: 'medlemmer', title: 'Medlemmer', heading: members.group.about.subtitle },
   { id: 'video', title: 'Video' },
-  { id: 'bedrift', title: 'Bedrift' },
   { id: 'ambisjonsniva', title: 'Ambisjonsnivå' },
 ]
