@@ -11,3 +11,7 @@ taste-skill/
 # Installed agent skills stay local
 .agents/
 .claude/
+
+# The film's master is far over GitHub's 100 MB limit; only the web encodes in
+# public/media/ are checked in (see README).
+/*.mp4
