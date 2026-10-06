@@ -23,10 +23,37 @@ trenger å røres for å endre tekst, navn, bilder eller rekkefølge.
 | Bytte landingsbildet              | `landing.photo`                           |
 | Endre seksjoner eller rekkefølge  | `sections`                                |
 | Legge inn det femte portrettet    | `members.people` (bytt ut `null`-raden)   |
-| Legge inn filmen                  | `video.src` og `video.poster`             |
+| Bytte filmen                      | `video.sources` og `video.poster` (se under) |
 | Endre teksten i Ambisjonsnivå     | `ambition.lead`, `ambition.goals`         |
 
 Bilder legges i `public/media/` som webp. Originalene ligger i `Assets/Images/`.
+
+### Filmen
+
+Originalen (`Symito (Final Draft).mp4`, 1080p, ca. 300 MB) er for stor for
+GitHub og sjekkes ikke inn. Siden bruker to kodinger av den i `public/media/`:
+AV1 til enheter som dekoder den i maskinvare, og H.264 til alle andre. Begge er
+1080p som originalen, med lyden uendret. Ingenting av filmen lastes ned før
+noen trykker på play. Ny versjon av filmen kodes slik (med ffmpeg), og
+plakaten er omslagsbildet som ligger i filen:
+
+```bash
+SRC="Symito (Final Draft).mp4"
+FELLES="-map 0:v:0 -map 0:a:0 -c:a copy -map_metadata -1 -map_chapters -1 -movflags +faststart -g 60"
+
+# AV1, ca. 3 Mbit/s
+ffmpeg -i "$SRC" $FELLES -c:v libsvtav1 -preset 4 -crf 30 -pix_fmt yuv420p10le public/media/symito-av1.mp4
+
+# H.264, 4,5 Mbit/s i to pass
+X264="-c:v libx264 -preset slower -b:v 4500k -maxrate 9M -bufsize 18M -profile:v high -level:v 4.1 -pix_fmt yuv420p"
+ffmpeg -i "$SRC" -map 0:v:0 -an $X264 -g 60 -pass 1 -f null -
+ffmpeg -i "$SRC" $FELLES $X264 -pass 2 public/media/symito-h264.mp4
+
+# Plakaten
+ffmpeg -i "$SRC" -map 0:v:1 -frames:v 1 -c:v libwebp -quality 80 public/media/symito-poster.webp
+```
+
+Endres lengden eller bitraten mye, oppdateres `bitrate` i `video.sources`.
 
 ## Struktur
 
