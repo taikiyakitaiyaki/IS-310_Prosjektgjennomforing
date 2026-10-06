@@ -24,7 +24,6 @@ trenger å røres for å endre tekst, navn, bilder eller rekkefølge.
 | Endre seksjoner eller rekkefølge  | `sections`                                |
 | Legge inn det femte portrettet    | `members.people` (bytt ut `null`-raden)   |
 | Legge inn filmen                  | `video.src` og `video.poster`             |
-| Fylle inn bedriften når den er klar | `company` (og en egen komponent)         |
 | Endre teksten i Ambisjonsnivå     | `ambition.lead`, `ambition.goals`         |
 
 Bilder legges i `public/media/` som webp. Originalene ligger i `Assets/Images/`.
@@ -42,7 +41,7 @@ View/lib/contours.js     fjellet som kart (SVG-konturer)
 View/lib/terrain.js      fjellet for three.js
 View/css/base.css        tokens, reset, inntredener
 View/css/site.css        navigasjon, landing, seksjonsskall
-View/css/sections.css    medlemmer, video, bedrift, ambisjonsnivå
+View/css/sections.css    medlemmer, video, ambisjonsnivå
 ```
 
 ## Bevegelse og tilgjengelighet
