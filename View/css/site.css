@@ -591,10 +591,10 @@
     opacity: 0.78;
   }
 
-  /* The cue comes up last, after the fourth title. */
+  /* The cue comes up last, after the third title. */
   .landing__cue {
     transform: translateY(120%);
-    transition: transform 1.3s var(--ease-out) calc(4 * 95ms + 420ms);
+    transition: transform 1.3s var(--ease-out) calc(3 * 95ms + 420ms);
   }
 
   .is-ready .landing__cue {
