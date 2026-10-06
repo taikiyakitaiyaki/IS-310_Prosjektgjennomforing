@@ -241,10 +241,11 @@ export const members = {
   },
 }
 
-/* Point `src` at the film when it exists (and `poster` at a still from it) and
+/* Point `src` at the film when it exists (YouTube link or video file) and
    the frame plays it. Until then the frame stands with the label. */
 export const video = {
-  src: null,
+  src: 'https://youtu.be/RxXMXqspqQA',
+  title: 'Symito introvideo',
   poster: null,
   pendingLabel: 'Kommer',
 }

@@ -15,6 +15,17 @@ import ContourMap from './ContourMap.jsx'
 
 const FINE_POINTER = '(hover: hover) and (pointer: fine)'
 
+function getYouTubeEmbedUrl(url) {
+  if (!url) return null
+  const match = url.match(
+    /(?:youtu\.be\/|(?:www\.)?youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/,
+  )
+  if (match && match[1]) {
+    return `https://www.youtube-nocookie.com/embed/${match[1]}?rel=0`
+  }
+  return null
+}
+
 export default function VideoSection() {
   const root = useRef(null)
   const frame = useRef(null)
@@ -64,10 +75,22 @@ export default function VideoSection() {
     { dependencies: [still], revertOnUpdate: true, scope: root },
   )
 
+  const youtubeEmbedUrl = getYouTubeEmbedUrl(video.src)
+
   return (
     <div className="video" ref={root}>
       <div className="video__frame" ref={frame}>
-        {video.src ? (
+        {youtubeEmbedUrl ? (
+          <iframe
+            className="video__player video__player--iframe"
+            src={youtubeEmbedUrl}
+            title={video.title ?? 'Video'}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            loading="lazy"
+          />
+        ) : video.src ? (
           <video
             className="video__player"
             controls
