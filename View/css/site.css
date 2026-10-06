@@ -502,7 +502,7 @@
   display: block;
   max-width: 100%;
   font-family: var(--font-display);
-  /* Sized so all four stand on one line across a laptop screen. */
+  /* Sized so all three stand on one line across a laptop screen. */
   font-size: clamp(1.6rem, 2.9vw, 3.2rem);
   font-weight: 700;
   letter-spacing: -0.04em;
@@ -635,25 +635,6 @@
   text-wrap: balance;
 }
 
-/* A section with nothing in it yet holds its place, the way the fifth
-   portrait does. Centred, so it sits under the heading above it. */
-.topic__pending {
-  justify-self: center;
-  width: min(100%, 44rem);
-  aspect-ratio: 21 / 9;
-  display: grid;
-  place-items: center;
-  border: 1px dashed var(--line);
-}
-
-.topic__pending-label {
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: clamp(0.6rem, 0.75vw, 0.7rem);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 /* ---------------------------------------------------------------------------
    Small screens.
    --------------------------------------------------------------------------- */
@@ -746,9 +727,15 @@
     row-gap: 0.8rem;
   }
 
-  /* Sized so Bedrift and Ambisjonsnivå share the second line on a phone. */
+  /* Sized so Ambisjonsnivå fits the second line on a phone, centred under
+     the two above it. */
   .hero-title {
     font-size: clamp(1rem, 5.5vw, 2rem);
+  }
+
+  .hero-title:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
   }
 
   /* Placed against the photograph, as on the desktop fold: the heads stand
@@ -771,10 +758,6 @@
      running off the screen. */
   .topic__title {
     font-size: clamp(1.8rem, 8vw, 2.9rem);
-  }
-
-  .topic__pending {
-    aspect-ratio: 4 / 3;
   }
 }
 
