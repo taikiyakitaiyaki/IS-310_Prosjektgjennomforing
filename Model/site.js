@@ -378,14 +378,16 @@ export const projects = {
       about: 'Gratis treningsapp for å loggføre økter, lære øvelser med video og beskrivelse, og regne ut BMI, vekt og anbefalte økter.',
       by: ['Yones'],
       color: '#8b5fbf',
-      media: null,
+      media: media('prosjekt-treningen.mp4'),
+      poster: media('prosjekt-treningen-poster.webp'),
     },
     {
       name: 'Plant det!',
       about: 'Hyperlokal hageprofil for adressen din, med råd ut fra sanntidsvær fra Yr, herdighetssone (H1–H8), jordtype og sol.',
       by: ['Yones'],
       color: '#5e9a4e',
-      media: null,
+      media: media('prosjekt-plantdet.mp4'),
+      poster: media('prosjekt-plantdet-poster.webp'),
     },
     {
       name: 'GIS-OSINT',
