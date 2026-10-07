@@ -85,6 +85,7 @@ const FRAGMENT = /* glsl */ `
   uniform sampler2D uMedia;
   uniform sampler2D uLabel;
   uniform float uHasMedia;
+  uniform float uDecode;
   uniform vec2 uCover;
   uniform vec3 uTop;
   uniform vec3 uBottom;
@@ -120,6 +121,10 @@ const FRAGMENT = /* glsl */ `
     vec3 color = mix(uBottom, uTop, smoothstep(0.0, 1.0, uv.y));
     color += uTop * 0.35 * (1.0 - smoothstep(0.0, 0.8, distance(uv, vec2(0.5, 0.95))));
     vec3 media = texture2D(uMedia, (uv - 0.5) * uCover + 0.5).rgb;
+    /* A loop's frames arrive still sRGB-encoded - three.js decodes video
+       only in its own materials - so they are decoded here, as a picture is
+       by the GPU. Otherwise a playing loop is paler than its own poster. */
+    media = mix(media, sRGBTransferEOTF(vec4(media, 1.0)).rgb, uDecode);
     color = mix(color, media, uHasMedia);
 
     /* Darker toward the foot, where the lettering stands. Over a loop or a
@@ -228,6 +233,7 @@ function makeCard(project, labels, geometry, blank, anisotropy) {
     uMedia: { value: blank },
     uLabel: { value: label },
     uHasMedia: { value: 0 },
+    uDecode: { value: 0 },
     uCover: { value: new THREE.Vector2(1, 1) },
     uTop: { value: top },
     uBottom: { value: top.clone().multiplyScalar(0.3) },
@@ -327,6 +333,7 @@ function Stage({ items, labels, target, eager, still, live, rig, shelf, onSteer,
         cover(card, video.videoWidth, video.videoHeight)
         card.uniforms.uMedia.value = texture
         card.uniforms.uHasMedia.value = 1
+        card.uniforms.uDecode.value = 1
         texture.needsUpdate = true
         invalidate()
       }
@@ -375,6 +382,7 @@ function Stage({ items, labels, target, eager, still, live, rig, shelf, onSteer,
         card.wantsPlay = false
         card.uniforms.uMedia.value = blank
         card.uniforms.uHasMedia.value = 0
+        card.uniforms.uDecode.value = 0
       }
     })
     return () => undo.forEach((step) => step?.())
