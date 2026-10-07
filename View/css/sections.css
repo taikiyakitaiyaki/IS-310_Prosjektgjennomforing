@@ -332,8 +332,8 @@
   }
 }
 
-/* The badge's side: a dim room with a light from above, in either colour
-   scheme, so the card stands out. A drag that starts on the card is the
+/* The badge's side: a dim room with a light from above, a shade darker than
+   the page, so the card stands out. A drag that starts on the card is the
    card's; anywhere else it scrolls. */
 .profile-dialog__stage {
   position: relative;
@@ -1007,12 +1007,14 @@ a.profile-dialog__link:focus-visible {
   pointer-events: none;
 }
 
-/* Room for two lines, so a longer line does not move the buttons. It sits up
+/* The line about the project in front, and the link to its code. It sits up
    in the foot of the stage, where the reflections have already faded out -
    positioned, so it is drawn over the canvas and takes its own clicks. */
 .showcase__caption {
   position: relative;
-  min-height: 3.2em;
+  /* Three lines of the description and the row with the link to the code,
+     whatever the project - so the buttons under it never move. */
+  min-height: calc(3 * 1.5 * clamp(0.95rem, 1.2vw, 1.1rem) + 3.45rem);
   margin-top: calc(-1 * clamp(1.5rem, 4vw, 3.5rem));
   padding-inline: var(--pad-x);
 }
@@ -1035,6 +1037,68 @@ a.profile-dialog__link:focus-visible {
   }
 }
 
+/* The way to the project's code, under the line about it. The row keeps its
+   height when a project has none, so the buttons under it stay put. */
+.showcase__repo {
+  display: flex;
+  justify-content: center;
+  min-height: 2.6rem;
+  margin-top: 0.85rem;
+}
+
+.showcase__repo-link,
+.project__repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.95rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.showcase__repo-link {
+  animation: showcase-in 0.8s var(--ease-out) both;
+}
+
+.project__repo {
+  justify-self: start;
+  margin-top: 0.6rem;
+}
+
+.showcase__repo-link:hover,
+.showcase__repo-link:focus-visible,
+.project__repo:hover,
+.project__repo:focus-visible {
+  border-color: var(--accent);
+  background: var(--brand-soft);
+  color: var(--accent);
+}
+
+.showcase__repo-link:focus-visible,
+.project__repo:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.showcase__repo-link svg,
+.project__repo svg {
+  width: 0.7em;
+  height: 0.7em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .showcase__controls {
   display: flex;
   justify-content: center;
@@ -1048,7 +1112,7 @@ a.profile-dialog__link:focus-visible {
   position: relative;
   isolation: isolate;
   grid-template-columns: minmax(0, 1fr) min(44rem, 54dvh, 44vw) minmax(0, 1fr);
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
   align-items: center;
   column-gap: clamp(1.5rem, 3vw, 3rem);
   row-gap: clamp(0.75rem, 1.6vw, 1.25rem);
@@ -1147,11 +1211,51 @@ a.profile-dialog__link:focus-visible {
   inset: 0;
 }
 
+/* The contact line: the last row of the section, centred at the very foot
+   of the page, its entries well apart - wrapping onto another line only
+   where there is no room for them on one. */
+.contact {
+  position: relative;
+  z-index: 1;
+  grid-row: 3;
+  grid-column: 1 / -1;
+  justify-self: center;
+  align-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem clamp(2rem, 8vw, 6rem);
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+}
+
+.contact__item {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.contact__label {
+  color: var(--text);
+  font-weight: 700;
+  transition: color 0.25s ease;
+}
+
+.contact__item:hover,
+.contact__item:focus-visible,
+.contact__item:hover .contact__label,
+.contact__item:focus-visible .contact__label {
+  color: var(--accent);
+}
+
 @media (max-width: 959px) {
   .topic--ambisjonsniva {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
     row-gap: 1.5rem;
+  }
+
+  .contact {
+    grid-row: 5;
   }
 
   .ambition__prose {
