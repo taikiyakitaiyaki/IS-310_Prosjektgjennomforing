@@ -402,15 +402,12 @@ export const projects = {
 }
 
 /* The heading carries the section on its own; this is the line beside it. */
-/* The ambitions as prose under the heading, opening on `lead`, every word
-   blurred until it is scrolled up to; the globe turns beneath them. */
+/* The ambitions as prose under the heading, `left` and `right` of the globe,
+   every word blurred until it is scrolled up to. */
 export const ambition = {
-  lead: 'Våre ambisjoner:',
-  goals: [
-    'Få inngående erfaring med utvikling og implementering av moderne AI-løsninger i offentlig sektor.',
-    'Styrke kompetansen innen teamarbeid, smidig prosjektmetodikk og faglig formidling.',
-    'Skape et reelt, fungerende verktøy som gir merverdi for bedrifter vi samarbeider med.',
-  ],
+  left: 'Ambisjonsnivået vårt er å levere en komplett og stabil løsning som dekker de viktigste behovene hos samarbeidspartneren, og som kan demonstreres med realistiske bruksscenarioer.',
+  right:
+    'Vi sikter mot en løsning som går utover en enkel prototype: Den skal være brukervennlig, teknisk robust og gi dokumenterbar nytteverdi. Dersom tiden tillater det, ønsker vi også å gjøre løsningen klar for videre testing og bruk etter prosjektperioden.',
 }
 
 /* The line at the very foot of the page, centred under the globe. Each item
