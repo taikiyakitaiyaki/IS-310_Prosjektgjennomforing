@@ -149,7 +149,7 @@ export const members = {
     {
       name: 'Oskar',
       fullName: 'Oskar Moberg Kirkbride',
-      role: 'Utvikler & frontend',
+      role: 'Fullstack utvikler',
       study: 'IT og informasjonssystemer, 3 år, UiA',
       src: media('member-oskar.webp'),
       age: null,
@@ -158,7 +158,7 @@ export const members = {
       skills:
         'Utvikler fullstack med Python, React, TypeScript, C# og SQL, og har erfaring med AI, UI/UX, systemutvikling, GIS og systemadministrasjon.',
       description:
-        'Liker å utforske nye teknologier og bygge brukervennlige systemer. Brenner for problemløsning og godt samarbeid. Erfaring med fullstackutvikling og en generell interesse for teknologi og innovasjon.',
+        'Jeg liker å utforske nye teknologier og bygge brukervennlige systemer. Brenner for problemløsning og godt samarbeid. Jeg har erfaring med fullstack-utvikling og har fagbrev i IKT - servicefag. Er generelt interessert i teknologi og innovasjon.',
       links: {
         linkedin: 'https://www.linkedin.com/in/oskar-kirkbride',
         github: 'https://github.com/oskarmk24',
