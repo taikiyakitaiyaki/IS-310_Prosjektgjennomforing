@@ -3,13 +3,14 @@ import { createRoot } from 'react-dom/client'
 import { controls, sections } from './Model/site.js'
 import { MotionProvider } from './View/lib/motion.jsx'
 import { SmoothScroll } from './View/lib/scroll.jsx'
-import { SplitWords } from './View/lib/reveal.jsx'
+import { Reveal, SplitWords } from './View/lib/reveal.jsx'
 import Veil from './View/components/Veil.jsx'
 import SiteNav from './View/components/SiteNav.jsx'
 import ThemeToggle from './View/components/ThemeToggle.jsx'
 import Landing from './View/components/Landing.jsx'
 import MembersSection from './View/components/MembersSection.jsx'
 import VideoSection from './View/components/VideoSection.jsx'
+import ProjectsSection from './View/components/ProjectsSection.jsx'
 import AmbitionSection from './View/components/AmbitionSection.jsx'
 import './View/css/base.css'
 import './View/css/site.css'
@@ -21,6 +22,7 @@ import './View/css/sections.css'
 const SECTION_CONTENT = {
   medlemmer: MembersSection,
   video: VideoSection,
+  prosjekter: ProjectsSection,
   ambisjonsniva: AmbitionSection,
 }
 
@@ -29,20 +31,35 @@ function TopicSections() {
     <div className="topics">
       {sections.map((section) => {
         const Content = SECTION_CONTENT[section.id]
+        const title = (
+          <SplitWords
+            as="h2"
+            id={`${section.id}-title`}
+            text={section.heading ?? section.title}
+            className="topic__title"
+          />
+        )
 
         return (
           <section
             className={`topic topic--${section.id}`}
             id={section.id}
             aria-labelledby={`${section.id}-title`}
+            aria-describedby={section.subtitle ? `${section.id}-subtitle` : undefined}
             key={section.id}
           >
-            <SplitWords
-              as="h2"
-              id={`${section.id}-title`}
-              text={section.heading ?? section.title}
-              className="topic__title"
-            />
+            {/* A subtitle stays with its heading, one block in the section's
+                grid, rather than a whole row gap below it. */}
+            {section.subtitle ? (
+              <header className="topic__head">
+                {title}
+                <Reveal as="p" id={`${section.id}-subtitle`} className="topic__subtitle" delay={180}>
+                  {section.subtitle}
+                </Reveal>
+              </header>
+            ) : (
+              title
+            )}
             {Content ? <Content /> : null}
           </section>
         )
