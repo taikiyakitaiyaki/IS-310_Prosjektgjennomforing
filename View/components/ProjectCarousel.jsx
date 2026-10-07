@@ -3,7 +3,6 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { credit } from '../lib/credit.js'
 import { cx } from '../lib/cx.js'
-import { usePalette } from '../lib/palette.js'
 
 /* ===========================================================================
    Prosjekter in 3D: the projects as tall cards standing in an arc on a
@@ -53,9 +52,8 @@ const FADE = [2.35, 2.95]
    little longer. */
 const DURATION = { auto: 1.8, user: 1 }
 
-/* How strongly the floor gives a card back: a dark floor shows a
-   reflection more, as polished stone does, and a pale one less. */
-const MIRROR = { dark: 0.42, light: 0.28 }
+/* How strongly the dark floor gives a card back, as polished stone does. */
+const MIRROR = 0.42
 
 /* Only the card in front plays its loop - from the moment it is more than
    halfway there - so one video is decoding at a time; the others show their
@@ -200,11 +198,14 @@ function drawLabel(project, labels) {
   context.globalAlpha = 1
   context.fillText(project.name, centre, baseline)
 
-  if (!project.media) {
+  /* Over the name: that its loop is still coming, or else - when its code is
+     public - that pressing the card opens it. */
+  const mark = !project.media ? labels.pending : project.repo ? labels.repo : null
+  if (mark) {
     context.font = `700 20px ${FONT}`
     context.letterSpacing = '6px'
     context.globalAlpha = 0.72
-    context.fillText(labels.pending.toUpperCase(), centre, baseline - size - 16)
+    context.fillText(mark.toUpperCase(), centre, baseline - size - 16)
   }
   return canvas
 }
@@ -236,7 +237,7 @@ function makeCard(project, labels, geometry, blank, anisotropy) {
     uLight: { value: 1 },
     uOpacity: { value: 1 },
     uReflection: { value: 0 },
-    uMirror: { value: MIRROR.light },
+    uMirror: { value: MIRROR },
   }
   const settings = { vertexShader: VERTEX, fragmentShader: FRAGMENT, transparent: true, depthTest: false, depthWrite: false }
 
@@ -394,17 +395,6 @@ function Stage({ items, labels, target, eager, still, live, rig, shelf, onSteer,
     invalidate()
   }, [eager, invalidate, live, still, target])
 
-  /* The floor follows the page's colour scheme. */
-  const palette = usePalette()
-  useEffect(() => {
-    const [r, g, b] = palette.surface.toArray()
-    const dark = 0.2126 * r + 0.7152 * g + 0.0722 * b < 0.4
-    cards.forEach((card) => {
-      card.uniforms.uMirror.value = dark ? MIRROR.dark : MIRROR.light
-    })
-    invalidate()
-  }, [cards, invalidate, palette])
-
   useEffect(() => {
     invalidate()
     const frame = requestAnimationFrame(() => onReady())
@@ -484,19 +474,34 @@ function Stage({ items, labels, target, eager, still, live, rig, shelf, onSteer,
     if (moving || (playing && !HAS_FRAME_CALLBACK)) invalidate()
   })
 
+  /* A press on a card to the side brings it to the front; on the card in
+     front, it opens the project's code in a new tab, if that is public. */
   const press = (index) => (event) => {
     if (event.delta > 8 || cards[index].uniforms.uOpacity.value < 0.3) return
     event.stopPropagation()
     const motion = rig.current
-    onSteer(Math.round(motion.position + around(index - motion.position, count)))
+    const p = around(index - motion.position, count)
+    if (Math.abs(p) < 0.5) {
+      const { repo } = cards[index].project
+      if (repo) window.open(repo, '_blank', 'noopener,noreferrer')
+      return
+    }
+    onSteer(Math.round(motion.position + p))
   }
-  const point = (on) => () => {
-    gl.domElement.style.cursor = on ? 'pointer' : ''
+  /* The hand shows wherever a press does something. */
+  const point = (index, on) => () => {
+    const front = Math.abs(around(index - rig.current.position, count)) < 0.5
+    gl.domElement.style.cursor = on && (!front || cards[index].project.repo) ? 'pointer' : ''
   }
 
   return cards.map((card, index) => (
     <group key={card.project.name}>
-      <primitive object={card.mesh} onClick={press(index)} onPointerOver={point(true)} onPointerOut={point(false)} />
+      <primitive
+        object={card.mesh}
+        onClick={press(index)}
+        onPointerOver={point(index, true)}
+        onPointerOut={point(index, false)}
+      />
       <primitive object={card.mirror} />
     </group>
   ))
