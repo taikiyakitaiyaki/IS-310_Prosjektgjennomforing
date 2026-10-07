@@ -63,6 +63,11 @@ Hvert prosjekt i `projects.items` har navn, en kort linje, hvem som laget det
 (`media`). Prosjektene står som høye kort i en bue i 3D (WebGL), og buen
 dreier seg ett prosjekt om gangen.
 
+Har prosjektet offentlig kode, står lenken i `repo`. Da står det GITHUB ↗ på
+kortet, et trykk på kortet foran åpner koden i en ny fane, og under
+beskrivelsen står en lenke dit. Prosjekter uten `repo` er private eller har
+ingen kode å vise.
+
 Prosjektene og teksten om dem er hentet fra medlemmenes egne sider. Loopene
 i `public/media/prosjekt-*` er klippet fra opptakene og bildene der: der bildet
 fyller kortet er det beskåret til 9:16, og skjermbilder med tekst står hele
