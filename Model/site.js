@@ -207,22 +207,23 @@ export const members = {
   portrait: { width: 700, height: 934 },
   pendingLabel: 'Kommer',
   detail: {
-    /* What the cover says it does, before the person's name, and what the
-       open book is called. */
-    open: 'Åpne boken om',
+    /* What a portrait says it does, before the person's name. */
+    open: 'Åpne profilen til',
     /* Over a portrait, under the pointer. */
     read: 'Les',
-    book: 'Boken om',
     close: 'Lukk',
-    previous: 'Forrige side',
-    next: 'Neste side',
-    page: 'Side',
+    /* "Medlem 2 av 5", over the name. */
+    member: 'Medlem',
     of: 'av',
-    /* The passport page inside the cover. */
-    personalia: 'Personalia',
-    name: 'Navn',
-    role: 'Rolle',
-    study: 'Studie',
+    /* The buttons at the foot that go on to the others. */
+    otherMembers: 'De andre medlemmene',
+    previous: 'Forrige medlem',
+    next: 'Neste medlem',
+    /* Under the badge: what it does. */
+    hint: 'Dra i kortet, eller trykk for å snu det',
+    hintStill: 'Trykk på kortet for å snu det',
+    /* On the badge's foil strip. */
+    badgeMember: 'Medlem',
     /* The chapters, in order. */
     about: 'Om meg',
     skills: 'Kompetanse',
