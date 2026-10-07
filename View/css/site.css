@@ -272,35 +272,6 @@
   opacity: 1;
 }
 
-/* Fixed over everything, clear of the scroll: a compact word in the nav's
-   own type, naming the mode the page is in right now. */
-.theme-toggle {
-  position: fixed;
-  z-index: var(--z-nav);
-  right: clamp(1rem, 3vw, 2rem);
-  bottom: clamp(1rem, 3vw, 2rem);
-  padding: 0.55rem 1rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    background 0.3s ease,
-    border-color 0.3s ease;
-}
-
-.theme-toggle:hover,
-.theme-toggle:focus-visible {
-  border-color: var(--accent);
-  background: var(--surface-strong);
-}
-
 /* ---------------------------------------------------------------------------
    The landing. The group photograph fills the fold; the titles sit in a row
    along the top of it, over the bare wall above the group.
