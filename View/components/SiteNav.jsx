@@ -31,9 +31,8 @@ export default function SiteNav() {
 
   /* Out of the way while the page is read downward, and back the moment it is
      scrolled up - which is when a visitor goes looking for it. While a
-     member's card is open the page is locked (MemberBook sets `overflow:
-     hidden` on body) and the nav stays as it was, so the nudge that brings
-     the card into view cannot drop the nav over it. */
+     member's profile is open the page is locked (MemberProfile sets
+     `overflow: hidden` on body) and the nav stays as it was. */
   useEffect(() => {
     let last = window.scrollY
     let frame = 0
