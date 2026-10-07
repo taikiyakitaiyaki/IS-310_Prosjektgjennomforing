@@ -21,13 +21,25 @@ const LazyProjectCarousel = lazy(() => import('./ProjectCarousel.jsx'))
 const INTERVAL = 4800
 
 const LOOP = /\.(mp4|webm)$/i
-const LABELS = { pending: projects.pendingLabel }
+const LABELS = { pending: projects.pendingLabel, repo: projects.repoShort }
 
 function Arrow({ back }) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true">
       <path d={back ? 'M10 3 5 8l5 5' : 'M6 3l5 5-5 5'} />
     </svg>
+  )
+}
+
+/* A project's code, when it is public: opens in a new tab. */
+function RepoLink({ href, className }) {
+  return (
+    <a className={className} href={href} target="_blank" rel="noopener noreferrer">
+      {projects.repo}
+      <svg viewBox="0 0 12 12" aria-hidden="true">
+        <path d="M3 9 9 3M4.5 3H9v4.5" />
+      </svg>
+    </a>
   )
 }
 
@@ -141,6 +153,7 @@ function ProjectsRow() {
               <p className="project__by">
                 {credit(project.by)}
               </p>
+              {project.repo ? <RepoLink href={project.repo} className="project__repo" /> : null}
             </li>
           ))}
         </ul>
@@ -256,6 +269,10 @@ export default function ProjectsSection() {
             {credit(project.by)}.
           </span>
         </p>
+        {/* The row is kept for every project, so the buttons under it stay put. */}
+        <div className="showcase__repo">
+          {project.repo ? <RepoLink href={project.repo} className="showcase__repo-link" key={current} /> : null}
+        </div>
       </div>
 
       <div className="showcase__controls">
