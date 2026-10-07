@@ -21,13 +21,13 @@
 /* ---------------------------------------------------------------------------
    Tokens.
 
-   The page is a quiet, warm off-white with near-black type - neutral enough
-   to read on for a long time without tiring the eye, and to let the
-   photographs carry the colour - and one saturated tone against it: a deep
-   sage green, so wherever it appears it is the thing to press or the line to
-   follow. Neither the ground nor the type is pure white or pure black; the
-   hard edge between the two is what glares. A [data-theme='dark'] override
-   further down swaps every one of these for its night counterpart.
+   The page is dark, and only dark: a soft charcoal with a breath of the sage
+   in it, so the brand belongs to it, with off-white type - quiet enough to
+   read on for a long time without tiring the eye, and to let the
+   photographs carry the colour - and one tone against it: a pale sage
+   green, so wherever it appears it is the thing to press or the line to
+   follow. Neither the ground nor the type is pure black or pure white; the
+   hard edge between the two is what glares.
 
    Sharp corners everywhere; the site is set like a map sheet, and a map sheet
    has no rounded corners.
@@ -43,39 +43,40 @@
 
   /* The ground, and a step down from it for a frame or a card while its
      picture is still on its way. */
-  --surface: #f5f2ec;
-  --surface-strong: #dcd6cb;
-  --sky: #f5f2ec;
-  /* The video's frame sits a shade darker and cooler still than the cream
-     ground around it, with the same white type as the skip link. */
-  --plate: #191b21;
+  --surface: #161816;
+  --surface-strong: #2a2d29;
+  --sky: #161816;
+  /* The video's frame. Shadows here are shadows - darker, not a glow - so
+     the plate is lifted a step above the ground instead, to still read as a
+     frame, with the same white type as the skip link. */
+  --plate: #24282d;
   --ink: #ffffff;
 
-  --text: #23211d;
-  --text-muted: #4d4942;
+  --text: #e8e6e1;
+  --text-muted: #b8b5ae;
 
-  /* The brand. --brand is the deep sage fill of anything that is an action -
+  /* The brand. --brand is the pale sage fill of anything that is an action -
      its hover goes a step darker, its press darker still. --accent mirrors it
      for small type and focus rings, since here that is the brand itself.
      --brand-soft is the tint a hovered outline fills with. --cta is the
      action colour by name, so a page can reach for it without knowing it
      happens to be the brand. */
-  --brand: #3b5837;
-  --brand-hover: #324b2f;
-  --brand-active: #2a3f28;
-  --brand-soft: rgba(59, 88, 55, 0.1);
-  --accent: #3b5837;
-  --on-brand: #ffffff;
+  --brand: #abc8a7;
+  --brand-hover: #91aa8e;
+  --brand-active: #7b9078;
+  --brand-soft: rgba(171, 200, 167, 0.1);
+  --accent: #abc8a7;
+  --on-brand: #161816;
   --cta: var(--brand);
   --cta-hover: var(--brand-hover);
   --cta-active: var(--brand-active);
   --on-cta: var(--on-brand);
 
-  --line: rgba(35, 33, 29, 0.14);
-  --line-soft: rgba(35, 33, 29, 0.07);
-  --map-line: rgba(35, 33, 29, 0.14);
-  --map-major: rgba(35, 33, 29, 0.28);
-  --shadow: 35, 33, 29;
+  --line: rgba(232, 230, 225, 0.14);
+  --line-soft: rgba(232, 230, 225, 0.07);
+  --map-line: rgba(232, 230, 225, 0.14);
+  --map-major: rgba(232, 230, 225, 0.28);
+  --shadow: 0, 0, 0;
 
   /* For whatever asks a visitor to notice a state: a form that took, a field
      that needs another look, something that failed. Chosen to hold up as type
@@ -105,41 +106,6 @@
   --z-grain: 50;
   --z-veil: 60;
   --z-skip: 70;
-
-  color-scheme: light;
-}
-
-/* ---------------------------------------------------------------------------
-   Dark mode. The light tokens above are the site's default; ThemeToggle.jsx
-   sets data-theme on the root, and only what changes between the two modes
-   is repeated here. --ink and the state colours hold across both.
-
-   The night ground is a soft charcoal with a breath of the sage in it, so
-   the brand belongs to it, and the type is an off-white rather than white.
-   Shadows here are shadows - darker, not a glow - so the video's plate is
-   lifted a step above the ground instead, to still read as a frame.
-   --------------------------------------------------------------------------- */
-:root[data-theme='dark'] {
-  --surface: #161816;
-  --surface-strong: #2a2d29;
-  --sky: #161816;
-  --plate: #24282d;
-
-  --text: #e8e6e1;
-  --text-muted: #b8b5ae;
-
-  --brand: #abc8a7;
-  --brand-hover: #91aa8e;
-  --brand-active: #7b9078;
-  --brand-soft: rgba(171, 200, 167, 0.1);
-  --accent: #abc8a7;
-  --on-brand: #161816;
-
-  --line: rgba(232, 230, 225, 0.14);
-  --line-soft: rgba(232, 230, 225, 0.07);
-  --map-line: rgba(232, 230, 225, 0.14);
-  --map-major: rgba(232, 230, 225, 0.28);
-  --shadow: 0, 0, 0;
 
   color-scheme: dark;
 }
