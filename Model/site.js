@@ -387,6 +387,13 @@ export const projects = {
       color: '#5e9a4e',
       media: null,
     },
+    {
+      name: 'GIS-OSINT',
+      about: 'GIS-OSINT-dashboard som henter data fra Allemannsdata Politiloggen MCP og visualiserer dataen på et interaktivt kart.',
+      by: ['Oskar'],
+      color: '#2b3a55',
+      media: media('prosjekt-gis-osint.webp'),
+    },
   ],
   label: 'Prosjekter',
   byLabel: 'Laget av',
