@@ -2,6 +2,7 @@ import { lazy, useCallback, useEffect, useRef, useState } from 'react'
 import { projects } from '../../Model/site.js'
 import { credit } from '../lib/credit.js'
 import { useMotion } from '../lib/motion.jsx'
+import { hasWebGL2 } from '../lib/webgl.js'
 import SceneSlot from './SceneSlot.jsx'
 
 const LazyProjectCarousel = lazy(() => import('./ProjectCarousel.jsx'))
@@ -21,17 +22,6 @@ const INTERVAL = 4800
 
 const LOOP = /\.(mp4|webm)$/i
 const LABELS = { pending: projects.pendingLabel }
-
-function hasWebGL2() {
-  try {
-    const context = document.createElement('canvas').getContext('webgl2')
-    const supported = Boolean(context)
-    context?.getExtension('WEBGL_lose_context')?.loseContext()
-    return supported
-  } catch {
-    return false
-  }
-}
 
 function Arrow({ back }) {
   return (
