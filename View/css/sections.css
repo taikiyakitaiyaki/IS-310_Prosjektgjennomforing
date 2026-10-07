@@ -148,8 +148,8 @@
   list-style: none;
 }
 
-/* One member: the portrait, which is the cover of a book about them, and
-   the first name under it. */
+/* One member: the portrait, which opens their profile, and the first name
+   under it. */
 .member {
   --mx: 0;
   --my: 0;
@@ -162,8 +162,8 @@
   will-change: opacity, transform;
 }
 
-/* The portrait is the cover of the book and the button that opens it; it
-   should still look exactly like a portrait. `display: contents` would drop
+/* The portrait is the button that opens the profile; it should still look
+   exactly like a portrait. `display: contents` would drop
    the focus ring, so the element stays in the layout and simply carries none
    of a button's own appearance. */
 .member__open {
@@ -198,14 +198,14 @@
 }
 
 /* Pressed: it gives a little under the finger at once, on the compositor, so
-   the press is answered before the book has begun to open. */
+   the press is answered before the profile has begun to open. */
 .member__open:active .member__photo img {
   transform: translate(calc(var(--mx) * -7px), calc(var(--my) * -7px)) scale(1.02);
   transition-duration: 0.12s;
 }
 
 /* Pointed at, the portrait darkens and says what a press does: LES. Opacity
-   and transform only, so it costs nothing to show. Not while the book is out of the row, and not on a touch screen,
+   and transform only, so it costs nothing to show. Not on a touch screen,
    which has no pointer to rest on it. */
 .member__read {
   position: absolute;
@@ -234,11 +234,11 @@
 }
 
 @media (hover: hover) {
-  .member:not([data-raised]):hover .member__read {
+  .member:hover .member__read {
     opacity: 1;
   }
 
-  .member:not([data-raised]):hover .member__read-word {
+  .member:hover .member__read-word {
     transform: none;
   }
 }
@@ -262,269 +262,270 @@
   transition: opacity 0.45s ease;
 }
 
-/* Scaled from its top-left corner, the corner the script measures from. */
-.member__lift {
-  transform-origin: 0 0;
-  transition: opacity 0.45s ease;
+/* ---- The profile -----------------------------------------------------------
+   Over the page, one member at a time (MemberProfile.jsx): their badge on its
+   lanyard in 3D on the left, everything about them on the right; on a phone,
+   the badge above and the words below, the whole of it scrolling. It fades
+   and rises in, and only opacity and transform ever move. */
+.profile-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.75rem, 3vw, 2rem);
+  animation: profile-in 0.5s var(--ease-out) both;
 }
 
-/* Out of the row: laid out at the size it is read at, where it is read, in
-   front of the others - while the row keeps the portrait's place. */
-.member[data-raised] {
-  z-index: 3;
-  grid-template-rows: var(--card-h) auto;
+.profile-dialog.is-leaving {
+  animation: profile-out 0.32s ease both;
 }
 
-.member[data-raised] .member__lift {
-  position: absolute;
-  top: var(--book-y);
-  left: var(--book-x);
-  width: var(--book-w);
+@keyframes profile-in {
+  from {
+    opacity: 0;
+  }
 }
 
-/* The others fall back while one is read. */
-.members__row.has-open .member:not(.is-open) :is(.member__lift, .member__name) {
-  opacity: 0.35;
+@keyframes profile-out {
+  to {
+    opacity: 0;
+  }
 }
 
-/* ---- The profile ---------------------------------------------------------
-   One page, in the site's own type and colour rather than a book's. Sizing
-   (--card-x, --card-y, --card-w, --card-h-open, --card-h) and the lift are
-   set by MemberBook.jsx; what is here is how it looks at rest. */
-.member[data-raised] {
-  z-index: 3;
-  grid-template-rows: var(--card-h) auto;
-}
-
-.member[data-raised] .member__lift {
-  position: absolute;
-  top: var(--card-y);
-  left: var(--card-x);
-  width: var(--card-w);
-}
-
-.member:not([data-raised]) .profile {
-  display: none;
-}
-
-.member[data-raised] .member__open {
+.profile-dialog__backdrop {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  opacity: 0;
-  pointer-events: none;
+  background: rgba(10, 11, 12, 0.62);
 }
 
-.profile {
+.profile-dialog__panel {
   position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  width: var(--card-w);
-  height: var(--card-h-open);
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  width: min(1120px, 100%);
+  height: min(760px, calc(100dvh - 2 * clamp(0.75rem, 3vw, 2rem)));
   overflow: hidden;
+  border-radius: 20px;
   background: var(--surface);
-  border: 1px solid var(--line);
-  box-shadow: 0 32px 64px -28px rgba(var(--shadow), 0.45);
-  opacity: 0;
+  color: var(--text);
+  box-shadow: 0 40px 120px -40px rgba(0, 0, 0, 0.6);
   outline: none;
-  transition: opacity 0.35s ease 0.1s;
+  animation: profile-rise 0.6s var(--ease-out) both;
 }
 
-.member.is-open .profile {
+.profile-dialog.is-leaving .profile-dialog__panel {
+  animation: profile-sink 0.32s ease both;
+}
+
+@keyframes profile-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.98);
+  }
+}
+
+@keyframes profile-sink {
+  to {
+    opacity: 0;
+    transform: translateY(1rem) scale(0.985);
+  }
+}
+
+/* The badge's side: a dim room with a light from above, in either colour
+   scheme, so the card stands out. A drag that starts on the card is the
+   card's; anywhere else it scrolls. */
+.profile-dialog__stage {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(255, 255, 255, 0.09), transparent 60%),
+    linear-gradient(180deg, #24272d, #111215);
+  touch-action: pan-y;
+}
+
+.badge3d {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.badge3d.is-ready {
   opacity: 1;
 }
 
-.profile:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
-}
-
-.profile__close {
+.profile-dialog__hint {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  height: 40px;
-  padding: 0 18px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: 0.78rem;
+  right: 1rem;
+  bottom: 1.1rem;
+  left: 1rem;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
+  text-align: center;
   text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    border-color 0.3s ease,
-    background 0.3s ease;
+  pointer-events: none;
 }
 
-.profile__close:hover,
-.profile__close:focus-visible {
-  border-color: var(--accent);
-  background: var(--brand-soft);
-}
-
-.profile__close-mark {
-  position: relative;
-  width: 12px;
-  height: 12px;
-}
-
-.profile__close-mark::before,
-.profile__close-mark::after {
-  content: '';
+/* Without WebGL: the badge as a plain card, standing still. */
+.profile-dialog__card {
   position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  margin-top: -1px;
-  background: currentColor;
-  rotate: 45deg;
-}
-
-.profile__close-mark::after {
-  rotate: -45deg;
-}
-
-.profile__scroll {
-  flex: 1;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  touch-action: pan-y;
-  padding: clamp(1.5rem, 3vw, 2.5rem);
-}
-
-.profile__head {
+  inset: 0;
   display: grid;
-  grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr);
-  align-items: end;
-  gap: clamp(1rem, 2.5vw, 1.75rem);
-  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
-  padding-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
-  border-bottom: 1px solid var(--line);
-}
-
-.profile__portrait {
-  display: block;
-  aspect-ratio: 3 / 4;
+  width: min(62%, 16rem);
+  height: fit-content;
+  margin: auto;
   overflow: hidden;
-  background: var(--surface-strong);
+  border-radius: 16px;
+  background: #f6f4ef;
+  color: #191b21;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
 }
 
-.profile__portrait img {
+.profile-dialog__card-band {
+  padding: 0.9rem 1.1rem;
+  background: #2f5130;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.profile-dialog__card img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
 }
 
-.profile__id {
-  display: grid;
-  gap: 0.35rem;
-}
-
-.profile__name {
-  margin: 0;
-  color: var(--text);
+.profile-dialog__card-name {
+  padding: 0.8rem 1rem 1rem;
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
   font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+  text-align: center;
 }
 
-.profile__role,
-.profile__study {
-  margin: 0;
+/* Everything about them, in the site's own type; it comes up anew for each
+   member. */
+.profile-dialog__info {
+  display: grid;
+  align-content: start;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 2.5rem);
+  animation: profile-text 0.7s var(--ease-out) both;
+}
+
+@keyframes profile-text {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+}
+
+.profile-dialog__count {
+  margin: 0 0 0.75rem;
   color: var(--text-muted);
-  font-size: 0.92rem;
-  font-weight: 600;
-}
-
-.profile__section {
-  margin-bottom: clamp(1.5rem, 3vw, 2rem);
-}
-
-.profile__section:last-child {
-  margin-bottom: 0;
-}
-
-.profile__title {
-  margin: 0 0 0.6rem;
-  color: var(--text-muted);
-  font-family: var(--font-display);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-.profile__text {
+.profile-dialog__name {
   margin: 0;
-  color: var(--text);
-  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
-  font-weight: 500;
-  line-height: 1.6;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.6vw, 3.1rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
+
+.profile-dialog__role {
+  margin: 0.7rem 0 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.profile-dialog__study {
+  margin: 0.15rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.profile-dialog__chapters {
+  display: grid;
+  row-gap: clamp(1.25rem, 2.4vw, 1.75rem);
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  padding-top: clamp(1.25rem, 2.4vw, 1.75rem);
+  border-top: 1px solid var(--line);
+}
+
+.profile-dialog__title {
+  margin: 0 0 0.5rem;
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.profile-dialog__text {
+  max-width: 62ch;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
   text-wrap: pretty;
 }
 
-.profile__text--pending {
+.profile-dialog__text.is-pending {
   color: var(--text-muted);
   font-style: italic;
 }
 
-.profile__label {
-  margin: 0.9rem 0 0.3rem;
-  color: var(--text-muted);
-  font-family: var(--font-display);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.profile__links {
-  display: grid;
-  gap: 0.5rem;
+.profile-dialog__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.profile__link {
+.profile-dialog__link {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
   color: var(--text);
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
-  transition: color 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease;
 }
 
-.profile__link.is-pending {
-  color: var(--text-muted);
-}
-
-a.profile__link:hover,
-a.profile__link:focus-visible {
+a.profile-dialog__link:hover,
+a.profile-dialog__link:focus-visible {
+  border-color: var(--accent);
+  background: var(--brand-soft);
   color: var(--accent);
 }
 
-a.profile__link:focus-visible {
+a.profile-dialog__link:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-.profile__arrow {
+.profile-dialog__link svg {
   width: 0.7em;
   height: 0.7em;
   fill: none;
@@ -534,11 +535,152 @@ a.profile__link:focus-visible {
   stroke-linejoin: round;
 }
 
-.profile__note {
-  font-size: 0.75rem;
+.profile-dialog__link.is-pending {
+  border-style: dashed;
+  color: var(--text-muted);
+}
+
+.profile-dialog__note {
+  font-size: 0.66rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.profile-dialog__steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.profile-dialog__step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.2rem;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.profile-dialog__step svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.profile-dialog__step:first-child:hover svg {
+  transform: translateX(-3px);
+}
+
+.profile-dialog__step:last-child:hover svg {
+  transform: translateX(3px);
+}
+
+.profile-dialog__step:focus-visible,
+.profile-dialog__close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.profile-dialog__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.25s ease;
+}
+
+.profile-dialog__close:hover {
+  border-color: var(--accent);
+}
+
+.profile-dialog__close-mark {
+  position: relative;
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.profile-dialog__close-mark::before,
+.profile-dialog__close-mark::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.6px;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+
+.profile-dialog__close-mark::after {
+  transform: rotate(-45deg);
+}
+
+/* A phone: the whole screen, the badge above and the words below, all of it
+   scrolling; the close button stays in the corner. */
+@media (max-width: 760px) {
+  .profile-dialog {
+    padding: 0;
+  }
+
+  .profile-dialog__panel {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    width: 100%;
+    height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 0;
+  }
+
+  .profile-dialog__stage {
+    height: min(58dvh, 32rem);
+  }
+
+  .profile-dialog__info {
+    overflow: visible;
+  }
+
+  .profile-dialog__close {
+    position: fixed;
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: 0.75rem;
+  }
+
+  /* Fading only: a transform on the panel, even one that has finished,
+     would make it the frame the close button is pinned to, and the button
+     would scroll away with the words. */
+  .profile-dialog__panel {
+    animation-name: profile-in;
+  }
+
+  .profile-dialog.is-leaving .profile-dialog__panel {
+    animation-name: profile-out;
+  }
 }
 
 /* Any paragraph lit word by word as it is scrolled up to - the words beside
