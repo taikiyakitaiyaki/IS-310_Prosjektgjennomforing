@@ -273,13 +273,18 @@ export const video = {
    comes to the front and plays, so only the loop in front is ever fetched.
    Until a project has media, its card is lit in `color` and says
    `pendingLabel`. The loops here are cut from the recordings and pictures
-   on the members' own sites. */
+   on the members' own sites.
+
+   `repo` is where the project's code can be read, when it is public:
+   pressing the card in front opens it. The ones without are private or
+   have none. */
 export const projects = {
   items: [
     {
       name: 'Atlas',
       about: 'Beredskapskart som finner nærmeste ressurs og beregner ruten dit. Én av tre vinnere på Expo i IS-218.',
       by: ['Isak', 'My', 'Sabrine', 'Yones'],
+      repo: 'https://github.com/snbhansen/IS218',
       color: '#d77d2c',
       media: media('prosjekt-atlas.mp4'),
       poster: media('prosjekt-atlas-poster.webp'),
@@ -288,6 +293,7 @@ export const projects = {
       name: 'NRL',
       about: 'Databasesystem for registrering, validering og håndtering av luftfartshindre for Kartverket.',
       by: ['Yones', 'Isak'],
+      repo: 'https://github.com/IsakJG/IT-2025-Kartverket',
       color: '#57b3ae',
       media: media('prosjekt-nrl.mp4'),
       poster: media('prosjekt-nrl-poster.webp'),
@@ -296,6 +302,7 @@ export const projects = {
       name: 'Luftfartshindre',
       about: 'Kartløsning for registrering, kvalitetssikring og behandling av luftfartshindre, laget med Kartverket og Norsk Luftambulanse.',
       by: ['My', 'Sabrine'],
+      repo: 'https://github.com/aanonho/NRL-prosjekt-Gr14-2025H',
       color: '#c8473f',
       media: media('prosjekt-luftfartshindre.mp4'),
       poster: media('prosjekt-luftfartshindre-poster.webp'),
@@ -304,6 +311,7 @@ export const projects = {
       name: 'AI-økonomiassistent',
       about: 'AI-basert økonomiveileder for Kartverket, et pågående praksisprosjekt.',
       by: ['Isak', 'My', 'Oskar', 'Sabrine', 'Yones'],
+      repo: 'https://github.com/snbhansen/KartverketPraksis26',
       color: '#8c93a1',
       media: media('prosjekt-ai.mp4'),
       poster: media('prosjekt-ai-poster.webp'),
@@ -312,6 +320,7 @@ export const projects = {
       name: 'Teori1',
       about: 'Gratis iOS-app for teoriprøven, med 4,8 av 5 fra 16 vurderinger i App Store.',
       by: ['Isak'],
+      repo: 'https://github.com/IsakJG/Teori1',
       color: '#2c2f38',
       media: media('prosjekt-teori1.webp'),
     },
@@ -326,6 +335,7 @@ export const projects = {
       name: 'LuksusEiendom',
       about: 'Eiendomskonsept som bruker KI til å forbedre boligbilder, med før og etter som selve opplevelsen.',
       by: ['Yones'],
+      repo: 'https://github.com/YonesF/BSN',
       color: '#e4a0b4',
       media: media('prosjekt-luksuseiendom.mp4'),
       poster: media('prosjekt-luksuseiendom-poster.webp'),
@@ -342,6 +352,7 @@ export const projects = {
       name: 'Study Buddies',
       about: 'Python-prototype for å registrere kurs, finne studiepartnere og booke grupperom.',
       by: ['My'],
+      repo: 'https://github.com/taikiyakitaiyaki/IS-211_Study_Buddies_2026V',
       color: '#2f5fb3',
       media: media('prosjekt-studybuddies.mp4'),
       poster: media('prosjekt-studybuddies-poster.webp'),
@@ -357,9 +368,24 @@ export const projects = {
       name: 'Portfolio',
       about: 'Personlig portefølje med animerte WebGL-scener, myk rulling og egne sider for erfaring og prosjekter.',
       by: ['Yones'],
+      repo: 'https://github.com/YonesF/Portfolio',
       color: '#c9b79c',
       media: media('prosjekt-portfolio.mp4'),
       poster: media('prosjekt-portfolio-poster.webp'),
+    },
+    {
+      name: 'Treningen',
+      about: 'Gratis treningsapp for å loggføre økter, lære øvelser med video og beskrivelse, og regne ut BMI, vekt og anbefalte økter.',
+      by: ['Yones'],
+      color: '#8b5fbf',
+      media: null,
+    },
+    {
+      name: 'Plant det!',
+      about: 'Hyperlokal hageprofil for adressen din, med råd ut fra sanntidsvær fra Yr, herdighetssone (H1–H8), jordtype og sol.',
+      by: ['Yones'],
+      color: '#5e9a4e',
+      media: null,
     },
   ],
   label: 'Prosjekter',
@@ -367,6 +393,9 @@ export const projects = {
   wholeGroup: 'hele gruppen',
   previous: 'Forrige prosjekt',
   next: 'Neste prosjekt',
+  /* Under the description, and small on the card itself. */
+  repo: 'Se koden på GitHub',
+  repoShort: 'GitHub ↗',
   pause: 'Sett karusellen på pause',
   play: 'Start karusellen igjen',
   pendingLabel: 'Kommer',
@@ -384,14 +413,28 @@ export const ambition = {
   ],
 }
 
+/* The line at the very foot of the page, centred under the globe. Each item
+   reads `label: value`, and `href` is what pressing it opens - a call, a new
+   mail, or a profile, which opens in a new tab. */
+export const contact = {
+  label: 'Kontakt',
+  items: [
+    { label: 'TLF', value: '99492005', href: 'tel:+4799492005' },
+    { label: 'Mail', value: 'yonesmf@uia.no', href: 'mailto:yonesmf@uia.no' },
+    {
+      label: 'LinkedIn',
+      value: 'www.linkedin.com/in/yones-m-44616536a',
+      href: 'https://www.linkedin.com/in/yones-m-44616536a',
+    },
+  ],
+}
+
 /* Labels for the site's own controls. */
 export const controls = {
   skip: 'Hopp til innhold',
   nav: 'Sidenavigasjon',
   heroNav: 'Gå til en del av siden',
   top: 'Til toppen',
-  themeToLight: 'Bytt til lys modus',
-  themeToDark: 'Bytt til mørk modus',
 }
 
 /* `title` is what the navigation and the landing titles call a section.
