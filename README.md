@@ -127,17 +127,16 @@ View/css/sections.css    medlemmer, video, prosjekter, ambisjonsnivå
   skjermen og i skjulte faner, og står stille ved redusert bevegelse.
   Mus og berøring bøyer strømmen forsiktig lokalt på GPU-en, uten å blokkere
   rulling eller legge til ekstra tegnepass.
-- Hvert portrett er omslaget på en liten bok om personen. Et trykk løfter
-  boken ut av raden og slår opp omslaget: inni ligger en passside (bilde,
-  navn og maskinlesbar linje), og så kapitlene Om meg, Kompetanse,
-  Interesser og hobbyer og Finn meg. Man blar med pilene under boken, et
-  trykk på venstre eller høyre side, piltastene eller et sveip på telefon.
-  Escape, et trykk utenfor boken eller å bla bakover forbi første side
-  lukker den. På bred skjerm ligger boken oppslått med to sider; på telefon
-  vises én side om gangen.
-  Boken legges ut i full størrelse med én gang og krympes ned til portrettet,
-  så teksten er skarp hele veien. Løftet, hver side som blas og lyset over
-  den er bare transform og opacity. Redusert bevegelse blar uten animasjon.
-  Innholdet står i `members.people` i `Model/site.js`; `hobbies` fylles inn
-  av hver enkelt.
+- Et trykk på et portrett åpner profilen til personen over siden. På den ene
+  siden henger medlemskortet deres i en snor i 3D (Three.js): bilde, navn og
+  rolle foran, gruppen bak. Kortet faller ned og svinger seg på plass, kan dras
+  og kastes med mus eller finger, og et trykk snur det. Snoren og kortet er en
+  liten fysikkmodell (Verlet) uten fysikkmotor, og ingenting tegnes når kortet
+  henger stille. På den andre siden står alt om personen som vanlig tekst: Om
+  meg, Kompetanse, Interesser, Hobbyer og Finn meg. Pilene nederst eller
+  piltastene går videre til de andre medlemmene; Escape, Lukk eller et trykk
+  utenfor lukker den, og fokus går tilbake til portrettet. På telefon ligger
+  kortet over teksten. Redusert bevegelse viser kortet stille; uten WebGL
+  vises et vanlig kort med bildet. Innholdet står i `members.people` i
+  `Model/site.js`; `hobbies` fylles inn av hver enkelt.
 - Ansiktsmodellens kilde og lisens ligger i `public/media/face/README.md`.
