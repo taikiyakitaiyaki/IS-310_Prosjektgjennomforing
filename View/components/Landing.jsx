@@ -93,6 +93,7 @@ export default function Landing() {
     <section
       className="landing"
       aria-labelledby="landing-title"
+      style={{ '--titles': sections.length }}
       ref={root}
       onPointerMove={still ? undefined : follow}
       onPointerLeave={still ? undefined : release}
