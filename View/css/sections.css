@@ -669,6 +669,237 @@ a.profile__link:focus-visible {
 }
 
 /* ---------------------------------------------------------------------------
+   Prosjekter: a row of cards out to both edges of the page, snapped so a card
+   always comes to rest lined up with the column. The next one shows at the
+   edge, which is what says the row goes on.
+   --------------------------------------------------------------------------- */
+.projects {
+  display: grid;
+  row-gap: clamp(1.5rem, 3vw, 2.5rem);
+  margin-inline: calc(-1 * var(--pad-x));
+}
+
+.projects__track {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--pad-x);
+  scrollbar-width: none;
+}
+
+.projects__track::-webkit-scrollbar {
+  display: none;
+}
+
+.projects__track:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* The padding sits on the list rather than the scroller, so the last card
+   can come to rest a column's margin from the edge too. */
+.projects__list {
+  display: flex;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  width: max-content;
+  margin: 0;
+  padding: 0 var(--pad-x) 0.5rem;
+  list-style: none;
+}
+
+.project {
+  display: grid;
+  align-content: start;
+  row-gap: 0.4rem;
+  width: clamp(16rem, 78vw, 30rem);
+  scroll-snap-align: start;
+}
+
+.project__frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.65rem;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--plate);
+  box-shadow: 0 30px 60px -36px rgba(var(--shadow), 0.45);
+}
+
+.project__media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project__pending {
+  color: rgba(255, 255, 255, 0.72);
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 0.8vw, 0.72rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.project__name {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.project__about {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.project__by {
+  margin: 0.35rem 0 0;
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.projects__controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.projects__step {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.projects__step:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--brand-soft);
+}
+
+.projects__step:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.projects__step:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.projects__step svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The arc in 3D (ProjectCarousel.jsx): a stage out to both edges of the
+   page, so the cards falling back to either side run off it, with the line
+   about the card in front and the buttons under it. The stage holds its
+   height before the scene arrives, and the scene fades in once it has drawn
+   itself. A drag sideways on it is the carousel's; up and down is the
+   page's. */
+.showcase {
+  display: grid;
+  justify-items: center;
+  row-gap: clamp(1rem, 2vw, 1.5rem);
+  margin-inline: calc(-1 * var(--pad-x));
+}
+
+.showcase__stage {
+  position: relative;
+  width: 100%;
+  height: clamp(26rem, 46vw, 46rem);
+  touch-action: pan-y;
+}
+
+.carousel3d {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.carousel3d.is-ready {
+  opacity: 1;
+}
+
+.carousel3d.is-dragging {
+  cursor: grabbing;
+}
+
+/* The loops are drawn onto the cards; their video elements only need to be
+   in the document, not seen. */
+.carousel3d__shelf {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Room for two lines, so a longer line does not move the buttons. It sits up
+   in the foot of the stage, where the reflections have already faded out -
+   positioned, so it is drawn over the canvas and takes its own clicks. */
+.showcase__caption {
+  position: relative;
+  min-height: 3.2em;
+  margin-top: calc(-1 * clamp(1.5rem, 4vw, 3.5rem));
+  padding-inline: var(--pad-x);
+}
+
+.showcase__about {
+  max-width: 40ch;
+  margin: 0 auto;
+  color: var(--text-muted);
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  line-height: 1.5;
+  text-align: center;
+  text-wrap: balance;
+  animation: showcase-in 0.8s var(--ease-out) both;
+}
+
+@keyframes showcase-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+}
+
+.showcase__controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* ---------------------------------------------------------------------------
    Ambisjonsnivå frames a centred globe with two short blocks of prose.
    --------------------------------------------------------------------------- */
 .topic--ambisjonsniva {
@@ -802,6 +1033,12 @@ a.profile__link:focus-visible {
    Small screens.
    --------------------------------------------------------------------------- */
 @media (max-width: 767px) {
+  /* Taller than wide, so the card in front is a good size and its
+     neighbours just show at the edges. */
+  .showcase__stage {
+    height: min(125vw, 36rem);
+  }
+
   /* Five across would be thumbnails at this width. */
   .members__row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
