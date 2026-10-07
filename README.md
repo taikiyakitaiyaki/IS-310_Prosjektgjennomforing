@@ -25,7 +25,7 @@ trenger å røres for å endre tekst, navn, bilder eller rekkefølge.
 | Legge inn det femte portrettet    | `members.people` (bytt ut `null`-raden)   |
 | Bytte filmen                      | `video.sources` og `video.poster` (se under) |
 | Legge til prosjekter og GIF-er    | `projects.items` (se under)               |
-| Endre teksten i Ambisjonsnivå     | `ambition.lead`, `ambition.goals`         |
+| Endre teksten i Ambisjonsnivå     | `ambition.left`, `ambition.right`         |
 
 Bilder legges i `public/media/` som webp. Originalene ligger i `Assets/Images/`.
 
