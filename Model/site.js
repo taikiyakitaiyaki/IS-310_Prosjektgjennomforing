@@ -260,6 +260,117 @@ export const video = {
   pendingLabel: 'Kommer',
 }
 
+/* The projects, one tall card each in the turning arc under Prosjekter, as
+   the members describe them on their own sites and in their texts above. `by` is who in the group made it, by
+   first name as on the portraits; a project all five made is credited to
+   `wholeGroup` instead of five names.
+
+   `media` is a short loop of the project, standing upright in 9:16 like a
+   phone screen. It has to be an .mp4 to move - a GIF shows only its first
+   frame on the cards (see README for turning one into the other). A loop's
+   `poster` is its first frame as a picture: what its card shows until it
+   comes to the front and plays, so only the loop in front is ever fetched.
+   Until a project has media, its card is lit in `color` and says
+   `pendingLabel`. The loops here are cut from the recordings and pictures
+   on the members' own sites. */
+export const projects = {
+  items: [
+    {
+      name: 'Atlas',
+      about: 'Beredskapskart som finner nærmeste ressurs og beregner ruten dit. Én av tre vinnere på Expo i IS-218.',
+      by: ['Isak', 'My', 'Sabrine', 'Yones'],
+      color: '#d77d2c',
+      media: media('prosjekt-atlas.mp4'),
+      poster: media('prosjekt-atlas-poster.webp'),
+    },
+    {
+      name: 'NRL',
+      about: 'Databasesystem for registrering, validering og håndtering av luftfartshindre for Kartverket.',
+      by: ['Yones', 'Isak'],
+      color: '#57b3ae',
+      media: media('prosjekt-nrl.mp4'),
+      poster: media('prosjekt-nrl-poster.webp'),
+    },
+    {
+      name: 'Luftfartshindre',
+      about: 'Kartløsning for registrering, kvalitetssikring og behandling av luftfartshindre, laget med Kartverket og Norsk Luftambulanse.',
+      by: ['My', 'Sabrine'],
+      color: '#c8473f',
+      media: media('prosjekt-luftfartshindre.mp4'),
+      poster: media('prosjekt-luftfartshindre-poster.webp'),
+    },
+    {
+      name: 'AI-økonomiassistent',
+      about: 'AI-basert økonomiveileder for Kartverket, et pågående praksisprosjekt.',
+      by: ['Isak', 'My', 'Oskar', 'Sabrine', 'Yones'],
+      color: '#8c93a1',
+      media: media('prosjekt-ai.mp4'),
+      poster: media('prosjekt-ai-poster.webp'),
+    },
+    {
+      name: 'Teori1',
+      about: 'Gratis iOS-app for teoriprøven, med 4,8 av 5 fra 16 vurderinger i App Store.',
+      by: ['Isak'],
+      color: '#2c2f38',
+      media: media('prosjekt-teori1.webp'),
+    },
+    {
+      name: 'Restlager',
+      about: 'Verktøy i drift hos apotek som automatiserer bestillingssjekk av restnoterte legemidler.',
+      by: ['Isak'],
+      color: '#df5b7c',
+      media: media('prosjekt-restlager.webp'),
+    },
+    {
+      name: 'LuksusEiendom',
+      about: 'Eiendomskonsept som bruker KI til å forbedre boligbilder, med før og etter som selve opplevelsen.',
+      by: ['Yones'],
+      color: '#e4a0b4',
+      media: media('prosjekt-luksuseiendom.mp4'),
+      poster: media('prosjekt-luksuseiendom-poster.webp'),
+    },
+    {
+      name: 'Globuskart',
+      about: 'Interaktiv kartplattform i 3D for sanntidsdata, havnivåstigning og geografiske analyser i Norge.',
+      by: ['Yones'],
+      color: '#5b8fd6',
+      media: media('prosjekt-globuskart.mp4'),
+      poster: media('prosjekt-globuskart-poster.webp'),
+    },
+    {
+      name: 'Study Buddies',
+      about: 'Python-prototype for å registrere kurs, finne studiepartnere og booke grupperom.',
+      by: ['My'],
+      color: '#2f5fb3',
+      media: media('prosjekt-studybuddies.mp4'),
+      poster: media('prosjekt-studybuddies-poster.webp'),
+    },
+    {
+      name: 'NattLogg',
+      about: 'Personlig app for bedre søvn, der brukeren logger og følger søvnmønsteret sitt over tid.',
+      by: ['Sabrine'],
+      color: '#3f4a8a',
+      media: null,
+    },
+    {
+      name: 'Portfolio',
+      about: 'Personlig portefølje med animerte WebGL-scener, myk rulling og egne sider for erfaring og prosjekter.',
+      by: ['Yones'],
+      color: '#c9b79c',
+      media: media('prosjekt-portfolio.mp4'),
+      poster: media('prosjekt-portfolio-poster.webp'),
+    },
+  ],
+  label: 'Prosjekter',
+  byLabel: 'Laget av',
+  wholeGroup: 'hele gruppen',
+  previous: 'Forrige prosjekt',
+  next: 'Neste prosjekt',
+  pause: 'Sett karusellen på pause',
+  play: 'Start karusellen igjen',
+  pendingLabel: 'Kommer',
+}
+
 /* The heading carries the section on its own; this is the line beside it. */
 /* The ambitions as prose under the heading, opening on `lead`, every word
    blurred until it is scrolled up to; the globe turns beneath them. */
@@ -285,9 +396,14 @@ export const controls = {
 /* `title` is what the navigation and the landing titles call a section.
    A section that should be headed by something else on the page itself
    carries that in `heading`; Medlemmer is headed by the question the words
-   beside the picture answer. */
+   beside the picture answer. `subtitle` is a line set under the heading. */
 export const sections = [
   { id: 'video', title: 'Video' },
   { id: 'medlemmer', title: 'Medlemmer', heading: members.group.about.subtitle },
+  {
+    id: 'prosjekter',
+    title: 'Prosjekter',
+    subtitle: 'Erfarne gruppemedlemmer med mange prosjekter under beltet',
+  },
   { id: 'ambisjonsniva', title: 'Ambisjonsnivå' },
 ]
