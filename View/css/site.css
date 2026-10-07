@@ -207,6 +207,7 @@
   transition:
     opacity 0.9s ease,
     transform 1.1s var(--ease-out),
+    translate 0.45s var(--ease-out),
     visibility 0s linear 1.1s;
 }
 
@@ -215,6 +216,14 @@
   visibility: visible;
   transform: translateY(0);
   transition-delay: 0s;
+}
+
+/* Tucked above the top edge while the page is scrolled down, back as soon as
+   it is scrolled up (SiteNav.jsx). It moves on `translate` rather than
+   `transform`, so this and the arrival above keep their own timing. A link
+   reached from the keyboard brings it back. */
+.site-nav.is-tucked:not(:focus-within) {
+  translate: 0 -100%;
 }
 
 /* Compact boxes, so a focus ring hugs the word rather than the bar. */
@@ -502,7 +511,7 @@
   display: block;
   max-width: 100%;
   font-family: var(--font-display);
-  /* Sized so all three stand on one line across a laptop screen. */
+  /* Sized so all of them stand on one line across a laptop screen. */
   font-size: clamp(1.6rem, 2.9vw, 3.2rem);
   font-weight: 700;
   letter-spacing: -0.04em;
@@ -591,10 +600,10 @@
     opacity: 0.78;
   }
 
-  /* The cue comes up last, after the third title. */
+  /* The cue comes up last, after the last title. */
   .landing__cue {
     transform: translateY(120%);
-    transition: transform 1.3s var(--ease-out) calc(3 * 95ms + 420ms);
+    transition: transform 1.3s var(--ease-out) calc(var(--titles, 4) * 95ms + 420ms);
   }
 
   .is-ready .landing__cue {
@@ -619,6 +628,27 @@
      so a section jumped to from it stops this far down - otherwise its heading
      would come to rest underneath the links. */
   scroll-margin-top: var(--nav-h);
+}
+
+/* A heading with a line under it: the two as one centred block. */
+.topic__head {
+  justify-self: center;
+  display: grid;
+  justify-items: center;
+  row-gap: clamp(0.75rem, 1.4vw, 1.1rem);
+  max-width: 100%;
+}
+
+/* One line wherever the column has room for it; on a phone it breaks into
+   two even lines rather than shrinking past reading size. */
+.topic__subtitle {
+  max-width: 100%;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+  line-height: 1.45;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .topic__title {
@@ -727,13 +757,13 @@
     row-gap: 0.8rem;
   }
 
-  /* Sized so Ambisjonsnivå fits the second line on a phone, centred under
-     the two above it. */
+  /* Sized so two titles share each line on a phone, Ambisjonsnivå included. */
   .hero-title {
     font-size: clamp(1rem, 5.5vw, 2rem);
   }
 
-  .hero-title:last-child {
+  /* One left over at the end is centred under the two above it. */
+  .hero-title:last-child:nth-child(odd) {
     grid-column: 1 / -1;
     justify-self: center;
   }
