@@ -22,20 +22,13 @@ export default function AmbitionSection() {
         <LazyParticleStream />
       </SceneSlot>
 
-      <BlurProse
-        className="ambition__prose ambition__prose--left"
-        lead={ambition.lead}
-        paragraphs={ambition.goals.slice(0, 1)}
-      />
+      <BlurProse className="ambition__prose ambition__prose--left" paragraphs={[ambition.left]} />
 
       <SceneSlot className="ambition__scene" aria-hidden="true">
         <LazyParticleGlobe />
       </SceneSlot>
 
-      <BlurProse
-        className="ambition__prose ambition__prose--right"
-        paragraphs={[ambition.goals.slice(1).join(' ')]}
-      />
+      <BlurProse className="ambition__prose ambition__prose--right" paragraphs={[ambition.right]} />
 
       <footer className="contact" aria-label={contact.label}>
         {contact.items.map((item) => (
