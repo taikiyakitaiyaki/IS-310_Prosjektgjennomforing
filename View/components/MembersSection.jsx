@@ -1,11 +1,24 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { members } from '../../Model/site.js'
 import { gsap, useGSAP } from '../lib/gsap.js'
 import { useMotion } from '../lib/motion.jsx'
 import { useReveal } from '../lib/reveal.jsx'
 import { cx } from '../lib/cx.js'
 import LitText from './LitText.jsx'
-import MemberBook from './MemberBook.jsx'
+import MemberPortrait from './MemberPortrait.jsx'
+import MemberProfile from './MemberProfile.jsx'
+
+/* The badge scene each profile opens with is fetched ahead - when the
+   browser is idle with the row in sight, or the moment a portrait is pointed
+   at - so a profile opens with its badge already there. */
+let prepared = false
+function prepareBadge() {
+  if (prepared) return
+  prepared = true
+  import('./MemberBadge.jsx').catch(() => {
+    prepared = false
+  })
+}
 
 /* ===========================================================================
    Medlemmer: the group and the words about us side by side above, the five
@@ -120,9 +133,30 @@ function GroupText() {
 }
 
 export default function MembersSection() {
-  /* Which book is open, if any: one at a time, so opening one shuts the
-     last one. */
+  /* Whose profile is open, if anyone's. */
   const [open, setOpen] = useState(null)
+  const close = useCallback(() => setOpen(null), [])
+  const row = useRef(null)
+  /* The portraits, so the focus can go back to the right one once a profile
+     closes - the last one shown, if the visitor went on to others. */
+  const portraits = useRef([])
+  const returnTo = useCallback((index) => portraits.current[index]?.focus({ preventScroll: true }), [])
+
+  useEffect(() => {
+    const node = row.current
+    if (!node) return undefined
+    const idle = window.requestIdleCallback ?? ((callback) => setTimeout(callback, 200))
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        observer.disconnect()
+        idle(prepareBadge)
+      },
+      { rootMargin: '50% 0px' },
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <div className="members">
@@ -133,20 +167,22 @@ export default function MembersSection() {
         <GroupText />
       </div>
 
-      <ul className={cx('members__row', open !== null && 'has-open')}>
+      <ul className="members__row" ref={row}>
         {members.people.map((person, index) => (
-          <MemberBook
+          <MemberPortrait
             person={person}
             index={index}
-            open={open === index}
             onOpen={() => setOpen(index)}
-            /* Only this book's own closing: a press that has already opened
-               another one is left alone. */
-            onClose={() => setOpen((current) => (current === index ? null : current))}
+            onPrepare={prepareBadge}
+            buttonRef={(node) => {
+              portraits.current[index] = node
+            }}
             key={person.name ?? `pending-${index}`}
           />
         ))}
       </ul>
+
+      <MemberProfile index={open} onSelect={setOpen} onClose={close} onReturn={returnTo} />
     </div>
   )
 }
